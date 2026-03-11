@@ -1,4 +1,4 @@
-"use client";
+ "use client";
 
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { useLocale } from "@/contexts/LocaleContext";
@@ -39,11 +39,13 @@ export function HeroVisual() {
           translateY: y,
         }}
       >
+        {/* background gradients */}
         <div className="absolute inset-0 rounded-[40px] bg-gradient-to-br from-[color:var(--grad-a)]/15 via-[color:var(--grad-b)]/10 to-[color:var(--grad-c)]/10 blur-2xl" />
-        <div className="absolute right-8 top-10 h-32 w-32 rounded-full bg-[color:var(--grad-b)]/16 blur-2xl" />
-        <div className="absolute left-10 bottom-10 h-40 w-40 rounded-full bg-[color:var(--grad-a)]/14 blur-2xl" />
+        <div className="absolute right-8 top-8 h-28 w-28 rounded-full bg-[color:var(--grad-b)]/20 blur-3xl" />
+        <div className="absolute left-8 bottom-8 h-36 w-36 rounded-full bg-[color:var(--grad-a)]/18 blur-3xl" />
       </motion.div>
 
+      {/* Web-page glass skeleton */}
       <motion.div
         className="absolute inset-0"
         style={{
@@ -52,106 +54,91 @@ export function HeroVisual() {
         }}
       >
         <motion.div
-          className="glass absolute inset-0 rounded-[28px] p-4 md:p-6 overflow-hidden"
+          className="absolute inset-[10%] md:inset-[8%] rounded-[26px] bg-background/40 border border-white/8 shadow-[0_22px_60px_rgba(15,23,42,0.55)] backdrop-blur-xl"
           animate={{ y: [0, -6, 0] }}
-          transition={{ duration: 5.2, repeat: Infinity, ease: "easeInOut" }}
+          transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
         >
-          <div className="absolute -right-10 -top-10 h-44 w-44 rounded-full bg-[color:var(--grad-b)]/18 blur-3xl" />
-          <div className="absolute -left-12 bottom-0 h-52 w-52 rounded-full bg-[color:var(--grad-a)]/14 blur-3xl" />
-
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="h-10 w-10 rounded-2xl bg-foreground/10 grid place-items-center">
-                <div className="h-2 w-2 rounded-full bg-[color:var(--grad-c)] shadow-[0_0_18px_color-mix(in_oklab,var(--grad-c)_55%,transparent)]" />
-              </div>
-              <div>
-                <div className="text-sm font-medium tracking-tight text-foreground">
-                  {t("heroVisual.productUIPreview")}
-                </div>
-                <div className="text-xs text-foreground/55">
-                  {t("heroVisual.cleanLayout")}
-                </div>
-              </div>
+          {/* top bar */}
+          <div className="flex items-center justify-between gap-4 border-b border-white/5 px-4 py-3 md:px-5 md:py-4">
+            <div className="flex items-center gap-2">
+              <span className="h-2 w-2 rounded-full bg-red-400/80" />
+              <span className="h-2 w-2 rounded-full bg-yellow-400/80" />
+              <span className="h-2 w-2 rounded-full bg-emerald-400/80" />
+              <span className="ml-3 text-[11px] md:text-xs text-foreground/55 truncate max-w-[140px] md:max-w-[220px]">
+                berdiyev.dev / portfolio
+              </span>
             </div>
-            <div className="hidden sm:flex items-center gap-2 text-xs text-foreground/55">
-              <div className="rounded-full bg-foreground/8 px-3 py-1">{t("heroVisual.grid")}</div>
-              <div className="rounded-full bg-foreground/8 px-3 py-1">{t("heroVisual.tokens")}</div>
-              <div className="rounded-full bg-foreground/8 px-3 py-1">{t("heroVisual.ux")}</div>
+            <div className="hidden sm:flex items-center gap-1.5 text-[11px] text-foreground/55">
+              <span className="rounded-full bg-foreground/5 px-2 py-1">
+                UI/UX
+              </span>
+              <span className="rounded-full bg-foreground/5 px-2 py-1">
+                Frontend
+              </span>
             </div>
           </div>
 
-          <div className="mt-5 grid gap-4 md:grid-cols-12">
-            <div className="md:col-span-7 space-y-3">
-              <div className="hairline rounded-2xl p-4 bg-foreground/4">
-                <div className="text-xs text-foreground/55">{t("heroVisual.primaryMetric")}</div>
-                <div className="mt-2 flex items-end justify-between gap-4">
-                  <div className="text-2xl font-semibold tracking-tight text-foreground">
-                    96%
-                  </div>
-                  <div className="text-xs text-foreground/55">{t("heroVisual.consistencyScore")}</div>
-                </div>
-                <div className="mt-3 h-2 rounded-full bg-foreground/10 overflow-hidden">
-                  <motion.div
-                    className="h-full rounded-full bg-gradient-to-r from-[color:var(--grad-a)] to-[color:var(--grad-b)]"
-                    initial={{ width: "0%" }}
-                    animate={{ width: "96%" }}
-                    transition={{ duration: 1.1, ease: [0.22, 1, 0.36, 1] }}
-                  />
-                </div>
+          <div className="grid h-full grid-cols-[0.75fr_1.25fr] gap-4 px-4 py-4 md:px-5 md:py-5">
+            {/* left sidebar */}
+            <div className="flex flex-col gap-3">
+              <div className="h-7 w-24 rounded-xl bg-foreground/10" />
+              <div className="space-y-2">
+                <div className="h-2.5 w-28 rounded-full bg-foreground/10" />
+                <div className="h-2.5 w-20 rounded-full bg-foreground/6" />
+                <div className="h-2.5 w-24 rounded-full bg-foreground/6" />
               </div>
-
-              <div className="grid gap-3 sm:grid-cols-2">
-                {[
-                  { k: "heroVisual.layout", v: "heroVisual.responsive" },
-                  { k: "heroVisual.motion", v: "heroVisual.subtle" },
-                  { k: "heroVisual.style", v: "heroVisual.glass" },
-                  { k: "heroVisual.system", v: "heroVisual.scalable" },
-                ].map((pair) => (
-                  <div key={pair.k} className="hairline rounded-2xl p-4 bg-foreground/3">
-                    <div className="text-xs text-foreground/55">{t(pair.k)}</div>
-                    <div className="mt-2 text-sm font-medium text-foreground/80">
-                      {t(pair.v)}
-                    </div>
-                  </div>
-                ))}
+              <div className="mt-3 space-y-2">
+                <div className="h-7 rounded-xl bg-foreground/7" />
+                <div className="h-7 rounded-xl bg-foreground/5" />
+                <div className="h-7 rounded-xl bg-foreground/4" />
+              </div>
+              <div className="mt-3 space-y-1.5">
+                <div className="h-2 w-16 rounded-full bg-foreground/10" />
+                <div className="h-2 w-14 rounded-full bg-foreground/8" />
               </div>
             </div>
 
-            <div className="md:col-span-5 space-y-3">
-              <div className="hairline rounded-2xl p-4 bg-foreground/3">
-                <div className="text-xs text-foreground/55">{t("heroVisual.components")}</div>
-                <div className="mt-3 space-y-2">
-                  {[72, 54, 40, 28].map((w, i) => (
-                    <div key={i} className="h-2 rounded-full bg-foreground/10 overflow-hidden">
-                      <motion.div
-                        className="h-full rounded-full bg-foreground/25"
-                        initial={{ width: "18%" }}
-                        animate={{ width: `${w}%` }}
-                        transition={{
-                          duration: 0.9,
-                          delay: 0.1 + i * 0.06,
-                          ease: [0.22, 1, 0.36, 1],
-                        }}
-                      />
-                    </div>
-                  ))}
-                </div>
+            {/* main content */}
+            <div className="relative flex flex-col gap-3">
+              {/* hero title block */}
+              <div className="rounded-2xl bg-foreground/6 p-3 md:p-4">
+                <div className="h-2.5 w-28 rounded-full bg-foreground/14" />
+                <div className="mt-2 h-4 w-44 rounded-full bg-foreground/18" />
+                <div className="mt-2 h-2.5 w-32 rounded-full bg-foreground/10" />
               </div>
 
-              <div className="hairline rounded-2xl p-4 bg-foreground/3">
-                <div className="text-xs text-foreground/55">{t("heroVisual.microInteraction")}</div>
-                <div className="mt-3 flex items-center gap-3">
-                  <motion.div
-                    className="h-10 flex-1 rounded-2xl bg-foreground/8"
-                    whileHover={{ backgroundColor: "rgba(255,255,255,0.14)" }}
-                    transition={{ duration: 0.25 }}
-                  />
-                  <motion.div
-                    className="h-10 w-10 rounded-2xl bg-foreground/10"
-                    animate={{ rotate: [0, 4, 0] }}
-                    transition={{ duration: 3.6, repeat: Infinity, ease: "easeInOut" }}
-                  />
+              {/* cards row */}
+              <div className="grid grid-cols-2 gap-3">
+                <motion.div
+                  className="rounded-2xl bg-foreground/5 p-3"
+                  animate={{ y: [0, -4, 0] }}
+                  transition={{ duration: 5.2, repeat: Infinity, ease: "easeInOut" }}
+                >
+                  <div className="h-16 rounded-xl bg-foreground/10" />
+                  <div className="mt-2 h-2.5 w-20 rounded-full bg-foreground/14" />
+                  <div className="mt-1 h-2 w-24 rounded-full bg-foreground/8" />
+                </motion.div>
+                <motion.div
+                  className="rounded-2xl bg-foreground/4 p-3"
+                  animate={{ y: [3, -3, 3] }}
+                  transition={{ duration: 4.6, repeat: Infinity, ease: "easeInOut" }}
+                >
+                  <div className="h-10 rounded-xl bg-foreground/10" />
+                  <div className="mt-2 grid grid-cols-3 gap-1.5">
+                    <div className="h-2.5 rounded-full bg-foreground/10" />
+                    <div className="h-2.5 rounded-full bg-foreground/8" />
+                    <div className="h-2.5 rounded-full bg-foreground/6" />
+                  </div>
+                </motion.div>
+              </div>
+
+              {/* bottom bar */}
+              <div className="mt-auto flex items-center justify-between gap-3">
+                <div className="flex gap-1.5">
+                  <div className="h-6 w-14 rounded-xl bg-foreground/8" />
+                  <div className="h-6 w-14 rounded-xl bg-foreground/6" />
                 </div>
+                <div className="h-2 w-20 rounded-full bg-foreground/8" />
               </div>
             </div>
           </div>

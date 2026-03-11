@@ -63,7 +63,7 @@ export default function Home() {
             </div>
 
             <Reveal delay={0.1}>
-              <div className="glass rounded-[32px] p-4 md:p-5">
+              <div className="rounded-[32px] p-4 md:p-5">
                 <HeroVisual />
               </div>
             </Reveal>
