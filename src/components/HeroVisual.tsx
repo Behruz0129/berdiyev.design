@@ -19,7 +19,7 @@ export function HeroVisual() {
 
   return (
     <div
-      className="relative h-[360px] md:h-[440px] lg:h-[520px]"
+      className="relative h-[320px] sm:h-[360px] md:h-[420px] lg:h-[520px]"
       onMouseMove={(e) => {
         const rect = (e.currentTarget as HTMLDivElement).getBoundingClientRect();
         const px = (e.clientX - rect.left) / rect.width;
@@ -33,7 +33,7 @@ export function HeroVisual() {
       }}
     >
       <motion.div
-        className="absolute -inset-6"
+        className="absolute inset-0"
         style={{
           translateX: x,
           translateY: y,
@@ -54,7 +54,7 @@ export function HeroVisual() {
         }}
       >
         <motion.div
-          className="absolute inset-[10%] md:inset-[8%] rounded-[26px] bg-background/40 border border-white/8 shadow-[0_22px_60px_rgba(15,23,42,0.55)] backdrop-blur-xl"
+          className="absolute inset-3 md:inset-[8%] rounded-[26px] bg-background/40 border border-white/8 shadow-[0_22px_60px_rgba(15,23,42,0.55)] backdrop-blur-xl overflow-hidden"
           animate={{ y: [0, -6, 0] }}
           transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
         >
@@ -65,7 +65,7 @@ export function HeroVisual() {
               <span className="h-2 w-2 rounded-full bg-yellow-400/80" />
               <span className="h-2 w-2 rounded-full bg-emerald-400/80" />
               <span className="ml-3 text-[11px] md:text-xs text-foreground/55 truncate max-w-[140px] md:max-w-[220px]">
-                berdiyev.dev / portfolio
+                berdiyev.design
               </span>
             </div>
             <div className="hidden sm:flex items-center gap-1.5 text-[11px] text-foreground/55">
@@ -78,7 +78,7 @@ export function HeroVisual() {
             </div>
           </div>
 
-          <div className="grid h-full grid-cols-[0.75fr_1.25fr] gap-4 px-4 py-4 md:px-5 md:py-5">
+          <div className="grid h-full gap-4 px-4 py-4 md:px-5 md:py-5 md:grid-cols-[0.75fr_1.25fr]">
             {/* left sidebar */}
             <div className="flex flex-col gap-3">
               <div className="h-7 w-24 rounded-xl bg-foreground/10" />
@@ -99,7 +99,7 @@ export function HeroVisual() {
             </div>
 
             {/* main content */}
-            <div className="relative flex flex-col gap-3">
+            <div className="relative flex flex-col gap-3 mt-1 md:mt-0">
               {/* hero title block */}
               <div className="rounded-2xl bg-foreground/6 p-3 md:p-4">
                 <div className="h-2.5 w-28 rounded-full bg-foreground/14" />
