@@ -1,0 +1,83 @@
+@import "tailwindcss";
+
+:root {
+  --bg: #0b0d12;
+  --fg: #e9eef7;
+  --muted: color-mix(in oklab, var(--fg) 70%, transparent);
+  --card: color-mix(in oklab, #ffffff 9%, transparent);
+  --card-border: color-mix(in oklab, #ffffff 16%, transparent);
+  --shadow: 0 18px 50px rgba(0, 0, 0, 0.22);
+  --shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.14);
+  --ring: color-mix(in oklab, #7c3aed 60%, transparent);
+
+  --grad-a: #7c3aed;
+  --grad-b: #06b6d4;
+  --grad-c: #22c55e;
+}
+
+@theme inline {
+  --color-background: var(--bg);
+  --color-foreground: var(--fg);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+[data-theme="light"] {
+  --bg: #f7f8fb;
+  --fg: #0b0d12;
+  --muted: color-mix(in oklab, var(--fg) 65%, transparent);
+  --card: color-mix(in oklab, #000000 4%, transparent);
+  --card-border: color-mix(in oklab, #000000 10%, transparent);
+  --shadow: 0 18px 50px rgba(0, 0, 0, 0.12);
+  --shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.10);
+  --ring: color-mix(in oklab, #2563eb 55%, transparent);
+
+  --grad-a: #2563eb;
+  --grad-b: #7c3aed;
+  --grad-c: #0ea5e9;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: radial-gradient(
+      1200px 800px at 70% -10%,
+      color-mix(in oklab, var(--grad-a) 20%, transparent),
+      transparent 60%
+    ),
+    radial-gradient(
+      900px 700px at 0% 10%,
+      color-mix(in oklab, var(--grad-b) 18%, transparent),
+      transparent 55%
+    ),
+    radial-gradient(
+      900px 700px at 100% 60%,
+      color-mix(in oklab, var(--grad-c) 14%, transparent),
+      transparent 55%
+    ),
+    var(--bg);
+  color: var(--fg);
+}
+
+::selection {
+  background: color-mix(in oklab, var(--ring) 40%, transparent);
+}
+
+@utility glass {
+  background: color-mix(in oklab, var(--card) 100%, transparent);
+  border: 1px solid var(--card-border);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: var(--shadow-soft);
+}
+
+@utility hairline {
+  border: 1px solid var(--card-border);
+}
+
+@utility focus-ring {
+  outline: none;
+  box-shadow: 0 0 0 4px color-mix(in oklab, var(--ring) 35%, transparent);
+}
