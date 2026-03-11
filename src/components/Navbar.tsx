@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Container } from "@/components/Container";
@@ -18,6 +19,7 @@ const links = [
 export function Navbar() {
   const pathname = usePathname();
   const { t } = useLocale();
+  const [open, setOpen] = useState(false);
 
   return (
     <header className="sticky top-0 z-50">
@@ -56,18 +58,65 @@ export function Navbar() {
               </nav>
 
               <div className="flex items-center gap-2">
-                <div className="md:hidden">
-                  <Link
-                    href="/projects"
-                    className="rounded-xl px-3 py-2 text-sm text-foreground/75 hover:text-foreground hover:bg-foreground/8 transition-colors"
-                  >
-                    {t("nav.projects")}
-                  </Link>
-                </div>
                 <LanguageSwitcher />
                 <ThemeToggle />
+                <button
+                  type="button"
+                  className="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-foreground/5 text-foreground/80 hover:bg-foreground/10 md:hidden focus-visible:focus-ring"
+                  aria-label="Open navigation"
+                  aria-expanded={open}
+                  onClick={() => setOpen((v) => !v)}
+                >
+                  <span className="sr-only">Toggle menu</span>
+                  <span className="relative flex h-3.5 w-4 flex-col justify-between">
+                    <span
+                      className={cn(
+                        "h-[2px] w-full rounded-full bg-current transition-transform",
+                        open && "translate-y-[5px] rotate-45",
+                      )}
+                    />
+                    <span
+                      className={cn(
+                        "h-[2px] w-full rounded-full bg-current transition-opacity",
+                        open && "opacity-0",
+                      )}
+                    />
+                    <span
+                      className={cn(
+                        "h-[2px] w-full rounded-full bg-current transition-transform",
+                        open && "-translate-y-[5px] -rotate-45",
+                      )}
+                    />
+                  </span>
+                </button>
               </div>
             </div>
+
+            {/* Mobile dropdown */}
+            {open && (
+              <div className="mt-3 border-t border-foreground/10 pt-3 md:hidden">
+                <nav className="flex flex-col gap-1">
+                  {links.map((l) => {
+                    const active = pathname === l.href;
+                    return (
+                      <Link
+                        key={l.href}
+                        href={l.href}
+                        onClick={() => setOpen(false)}
+                        className={cn(
+                          "rounded-xl px-3 py-2 text-sm transition-colors",
+                          active
+                            ? "bg-foreground/10 text-foreground"
+                            : "text-foreground/75 hover:text-foreground hover:bg-foreground/8",
+                        )}
+                      >
+                        {t(l.labelKey)}
+                      </Link>
+                    );
+                  })}
+                </nav>
+              </div>
+            )}
           </div>
         </Container>
       </div>
