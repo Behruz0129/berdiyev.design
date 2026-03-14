@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { cookies } from "next/headers";
 import { Geist, Geist_Mono } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 import { Providers } from "./providers";
 import { LocaleProvider } from "@/contexts/LocaleContext";
@@ -50,6 +51,7 @@ export default async function RootLayout({
             </div>
           </LocaleProvider>
         </Providers>
+        <Analytics />
       </body>
     </html>
   );
