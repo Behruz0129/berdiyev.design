@@ -11,8 +11,121 @@ import { useLocale } from "@/contexts/LocaleContext";
 const PROFILE_IMAGE = "/profile.jpg";
 
 export default function AboutPage() {
-  const { t } = useLocale();
+  const { t, locale } = useLocale();
   const [imgError, setImgError] = useState(false);
+  const [isGeneratingPdf, setIsGeneratingPdf] = useState(false);
+
+  async function handleDownloadResumePdf() {
+    setIsGeneratingPdf(true);
+    try {
+      const { jsPDF } = await import("jspdf");
+      const doc = new jsPDF({ unit: "pt", format: "a4" });
+      const margin = 44;
+      const lineHeight = 16;
+      const pageWidth = doc.internal.pageSize.getWidth();
+      const maxWidth = pageWidth - margin * 2;
+      let y = margin;
+
+      const writeTitle = (text: string) => {
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(16);
+        doc.text(text, margin, y);
+        y += 24;
+      };
+
+      const writeParagraph = (text: string) => {
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(11);
+        const lines = doc.splitTextToSize(text, maxWidth);
+        doc.text(lines, margin, y);
+        y += lines.length * lineHeight + 8;
+      };
+
+      const writeBullet = (text: string) => {
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(11);
+        const lines = doc.splitTextToSize(`- ${text}`, maxWidth);
+        doc.text(lines, margin, y);
+        y += lines.length * lineHeight + 4;
+      };
+
+      const ensureSpace = (required: number) => {
+        const pageHeight = doc.internal.pageSize.getHeight();
+        if (y + required > pageHeight - margin) {
+          doc.addPage();
+          y = margin;
+        }
+      };
+
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(20);
+      doc.text("Berdiyev Bexruzbek", margin, y);
+      y += 22;
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(12);
+      doc.text("UI/UX Designer & Frontend Developer", margin, y);
+      y += 22;
+
+      writeParagraph(t("about.bio1"));
+      writeParagraph(t("about.bio2"));
+
+      ensureSpace(120);
+      writeTitle(t("about.education"));
+      writeBullet(`${t("about.school1")} — ${t("about.school1Desc")}`);
+      writeBullet(`${t("about.school2")} — ${t("about.school2Desc")}`);
+      writeBullet(t("about.school2Note"));
+
+      ensureSpace(260);
+      writeTitle(t("about.experience"));
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(12);
+      doc.text(`${t("about.modmeTitle")} (${t("about.modmePeriod")})`, margin, y);
+      y += 16;
+      writeBullet(t("about.modmeBullet1"));
+      writeBullet(t("about.modmeBullet2"));
+      writeBullet(t("about.modmeBullet3"));
+      writeBullet(t("about.modmeBullet4"));
+      writeBullet(t("about.modmeBullet5"));
+
+      ensureSpace(280);
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(12);
+      doc.text(`${t("about.iccTitle")} (${t("about.iccPeriod")})`, margin, y);
+      y += 16;
+      writeParagraph(t("about.iccDesc"));
+      writeBullet(t("about.iccTheme1"));
+      writeBullet(t("about.iccTheme2"));
+      writeBullet(t("about.iccTheme3"));
+      writeParagraph(t("about.iccApps"));
+      writeBullet(t("about.iccBullet1"));
+      writeBullet(t("about.iccBullet2"));
+      writeBullet(t("about.iccBullet3"));
+      writeBullet(t("about.iccBullet4"));
+      writeBullet(t("about.iccBullet5"));
+      writeBullet(t("about.iccBullet6"));
+      writeBullet(t("about.iccBullet7"));
+      writeBullet(t("about.iccBullet8"));
+
+      ensureSpace(170);
+      writeTitle(t("about.softSkillsTitle"));
+      writeBullet(t("about.softSkill1"));
+      writeBullet(t("about.softSkill2"));
+      writeBullet(t("about.softSkill3"));
+      writeBullet(t("about.softSkill4"));
+
+      ensureSpace(160);
+      writeTitle(t("about.interestsTitle"));
+      writeBullet(t("about.interest1"));
+      writeBullet(t("about.interest2"));
+      writeBullet(t("about.interest3"));
+      writeBullet(t("about.interest4"));
+      writeBullet(t("about.interest5"));
+
+      doc.save(`berdiyev-bexruzbek-resume-${locale}.pdf`);
+    } finally {
+      setIsGeneratingPdf(false);
+    }
+  }
 
   return (
     <main>
@@ -41,9 +154,19 @@ export default function AboutPage() {
 
             <div className="min-w-0 flex-1">
               <Reveal delay={0.03}>
-                <h1 className="text-3xl font-semibold tracking-tight text-foreground md:text-4xl">
-                  {t("about.title")}
-                </h1>
+                <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                  <h1 className="text-3xl font-semibold tracking-tight text-foreground md:text-4xl">
+                    {t("about.title")}
+                  </h1>
+                  <button
+                    type="button"
+                    onClick={handleDownloadResumePdf}
+                    disabled={isGeneratingPdf}
+                    className="inline-flex items-center justify-center rounded-2xl bg-foreground px-4 py-2.5 text-sm font-medium text-background transition-colors hover:bg-foreground/85 focus-visible:focus-ring disabled:cursor-not-allowed disabled:opacity-70"
+                  >
+                    {isGeneratingPdf ? t("about.resumeGenerating") : t("about.resumeDownload")}
+                  </button>
+                </div>
               </Reveal>
 
               <Reveal delay={0.05}>

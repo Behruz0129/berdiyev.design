@@ -21,6 +21,8 @@ export const en = {
   },
   about: {
     title: "About Me",
+    resumeDownload: "Download Resume (PDF)",
+    resumeGenerating: "Generating PDF...",
     bio1:
       "Berdiyev Bexruzbek Qahramon o'g'li. Born in 2005 in Xovos district, Sirdaryo region, Uzbekistan. Uzbek nationality and citizen of the Republic of Uzbekistan.",
     bio2:

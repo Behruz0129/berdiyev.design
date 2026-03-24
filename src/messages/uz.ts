@@ -23,6 +23,8 @@ export const uz: Messages = {
   },
   about: {
     title: "Men haqimda",
+    resumeDownload: "Resume (PDF) yuklab olish",
+    resumeGenerating: "PDF tayyorlanmoqda...",
     bio1:
       "Berdiyev Bexruzbek Qahramon o'g'li. 2005-yilda Sirdaryo viloyati Xovos tumanida tug'ilgan. Millati o'zbek, O'zbekiston Respublikasi fuqarosi.",
     bio2:
