@@ -39,6 +39,36 @@
 
 html {
   scroll-behavior: smooth;
+  /* Mobil Safari'da gorizontal siljish paydo bo'lmasin. */
+  overflow-x: hidden;
+}
+
+/* Animatsiyani kamaytirishni so'ragan foydalanuvchilar uchun (framer-motion
+   allaqachon `MotionConfig reducedMotion="user"` bilan hurmat qiladi — bu esa
+   CSS animatsiyalari va smooth scroll uchun). */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 body {

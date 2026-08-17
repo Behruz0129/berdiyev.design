@@ -28,7 +28,7 @@ export function ScreenshotGallery({ screenshots }: { screenshots: ProjectScreens
           </div>
           <div className="relative aspect-video w-full">
             {failed.has(s.image) ? (
-              <div className="flex flex-col items-center justify-center gap-2 text-foreground/50 p-8">
+              <div className="flex flex-col items-center justify-center gap-2 text-foreground/60 p-8">
                 <ImageOff className="h-12 w-12" />
                 <span className="text-sm">{s.title}</span>
               </div>

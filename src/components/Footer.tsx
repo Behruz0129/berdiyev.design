@@ -37,7 +37,7 @@ export function Footer() {
                 {t("footer.contact")}
               </Link>
               <span className="text-foreground/35">•</span>
-              <span className="text-foreground/55">
+              <span className="text-foreground/65">
                 © {new Date().getFullYear()}
               </span>
             </div>

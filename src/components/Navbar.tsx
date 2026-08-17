@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Container } from "@/components/Container";
@@ -8,6 +8,7 @@ import { cn } from "@/lib/cn";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { useLocale } from "@/contexts/LocaleContext";
+import { siteConfig } from "@/data/site";
 
 const links = [
   { href: "/", labelKey: "nav.home" as const },
@@ -21,6 +22,25 @@ export function Navbar() {
   const { t } = useLocale();
   const [open, setOpen] = useState(false);
 
+  // Boshqa sahifaga o'tilganda (brauzer "orqaga" tugmasi bilan ham) mobil menyu
+  // ochiq qolmasin. React'ning "render paytida holatni moslash" naqshi —
+  // effect ishlatilsa ortiqcha qayta render bo'lardi.
+  const [lastPath, setLastPath] = useState(pathname);
+  if (lastPath !== pathname) {
+    setLastPath(pathname);
+    setOpen(false);
+  }
+
+  // Escape bilan yopish — klaviatura bilan ishlaydiganlar uchun.
+  useEffect(() => {
+    if (!open) return;
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(false);
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [open]);
+
   return (
     <header className="sticky top-0 z-50">
       <div className="bg-background/40 backdrop-blur supports-[backdrop-filter]:bg-background/30">
@@ -32,8 +52,8 @@ export function Navbar() {
                 <span className="text-sm font-medium tracking-tight text-foreground/90">
                   {t("footer.name")}
                 </span>
-                <span className="text-sm text-foreground/50 hidden sm:inline">
-                  UI/UX • Frontend
+                <span className="hidden text-sm text-foreground/60 sm:inline">
+                  {siteConfig.shortName}
                 </span>
               </Link>
 
@@ -63,11 +83,11 @@ export function Navbar() {
                 <button
                   type="button"
                   className="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-foreground/5 text-foreground/80 hover:bg-foreground/10 md:hidden focus-visible:focus-ring"
-                  aria-label="Open navigation"
+                  aria-label={open ? t("nav.closeMenu") : t("nav.openMenu")}
                   aria-expanded={open}
+                  aria-controls="mobile-nav"
                   onClick={() => setOpen((v) => !v)}
                 >
-                  <span className="sr-only">Toggle menu</span>
                   <span className="relative flex h-3.5 w-4 flex-col justify-between">
                     <span
                       className={cn(
@@ -94,7 +114,10 @@ export function Navbar() {
 
             {/* Mobile dropdown */}
             {open && (
-              <div className="mt-3 border-t border-foreground/10 pt-3 md:hidden">
+              <div
+                id="mobile-nav"
+                className="mt-3 animate-[fade-in_150ms_ease-out] border-t border-foreground/10 pt-3 md:hidden"
+              >
                 <nav className="flex flex-col gap-1">
                   {links.map((l) => {
                     const active = pathname === l.href;

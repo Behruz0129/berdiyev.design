@@ -9,6 +9,7 @@ import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { PageTransition } from "@/components/PageTransition";
 import type { Locale } from "@/lib/i18n";
+import { siteConfig } from "@/data/site";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -20,13 +21,49 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const title = `${siteConfig.name} — ${siteConfig.role}`;
+const description =
+  "Portfolio of Berdiyev Bexruzbek — UI/UX designer and frontend developer from Uzbekistan. Case studies: Modme CRM landing page and 600+ interactive applications for the Islamic Civilization Center.";
+
 export const metadata: Metadata = {
+  // metadataBase bo'lmasa OG rasm nisbiy path bilan qoladi va ijtimoiy
+  // tarmoqlarda ko'rinmaydi — link tashlanganda preview chiqmasligining sababi.
+  metadataBase: new URL(siteConfig.url),
   title: {
-    default: "Berdiyev Bexruzbek — UI/UX Designer & Frontend Developer",
-    template: "%s — Berdiyev Bexruzbek",
+    default: title,
+    template: `%s — ${siteConfig.name}`,
   },
-  description:
-    "Minimalistic personal portfolio for a UI/UX Designer and Frontend Developer.",
+  description,
+  keywords: [
+    "Berdiyev Bexruzbek",
+    "UI/UX designer",
+    "frontend developer",
+    "Uzbekistan",
+    "Next.js",
+    "Figma",
+    "portfolio",
+  ],
+  authors: [{ name: siteConfig.name, url: siteConfig.url }],
+  creator: siteConfig.name,
+  alternates: { canonical: "/" },
+  openGraph: {
+    type: "website",
+    siteName: siteConfig.shortName,
+    title,
+    description,
+    url: siteConfig.url,
+    locale: "en_US",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title,
+    description,
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true, "max-image-preview": "large" },
+  },
 };
 
 export default async function RootLayout({

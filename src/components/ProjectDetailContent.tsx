@@ -7,6 +7,7 @@ import { Container } from "@/components/Container";
 import { Section } from "@/components/Section";
 import { Reveal } from "@/components/Reveal";
 import { ScreenshotGallery } from "@/components/ScreenshotGallery";
+import { BulletList } from "@/components/BulletList";
 import type { Project } from "@/data/projects";
 
 function Pills({ items }: { items: string[] }) {
@@ -30,42 +31,32 @@ export function ProjectDetailContent({ project }: Props) {
   const { t } = useLocale();
   const slug = project.slug;
 
-  const overviewTools: string[] = [];
-  for (let i = 0; i < project.overview.tools.length; i++) {
-    const key = `projects.${slug}.overviewTool${i}` as const;
-    const translated = t(key);
-    overviewTools.push(translated || project.overview.tools[i]);
-  }
+  /**
+   * Ro'yxat matnlari tarjima faylida `problem0`, `problem1`… kabi raqamlangan
+   * kalitlar bilan saqlanadi. Tarjima topilmasa `projects.ts` dagi inglizcha
+   * asl matn ishlatiladi — sahifa hech qachon bo'sh qatorlar bilan qolmaydi.
+   */
+  const translateList = (items: string[], keyPrefix: string) =>
+    items.map((fallback, i) => t(`projects.${slug}.${keyPrefix}${i}`) || fallback);
 
-  const problemLines = project.problem.map((_, i) => {
-    const key = `projects.${slug}.problem${i}` as const;
-    return t(key) || project.problem[i];
-  });
+  const field = (key: string, fallback: string) => t(`projects.${slug}.${key}`) || fallback;
 
-  const solutionLines = project.solution.map((_, i) => {
-    const key = `projects.${slug}.solution${i}` as const;
-    return t(key) || project.solution[i];
-  });
+  const overviewTools = translateList(project.overview.tools, "overviewTool");
+  const problemLines = translateList(project.problem, "problem");
+  const solutionLines = translateList(project.solution, "solution");
+  const resultsLines = translateList(project.results, "results");
+  const siteFeaturesList = translateList(project.siteFeatures ?? [], "siteFeature");
 
-  const resultsLines = project.results.map((_, i) => {
-    const key = `projects.${slug}.results${i}` as const;
-    return t(key) || project.results[i];
-  });
+  const title = field("title", project.title);
+  const role = field("role", project.role);
+  const overviewRole = field("overviewRole", project.overview.role);
+  const overviewDuration = field("overviewDuration", project.overview.duration);
 
-  const siteFeaturesList =
-    project.siteFeatures?.map((_, i) => {
-      const key = `projects.${slug}.siteFeature${i}` as const;
-      return t(key) || project.siteFeatures![i];
-    }) ?? [];
-
-  const title = t(`projects.${slug}.title` as "projects.modme-landing.title") || project.title;
-  const role = t(`projects.${slug}.role` as "projects.modme-landing.role") || project.role;
-  const overviewRole =
-    t(`projects.${slug}.overviewRole` as "projects.modme-landing.overviewRole") ||
-    project.overview.role;
-  const overviewDuration =
-    t(`projects.${slug}.overviewDuration` as "projects.modme-landing.overviewDuration") ||
-    project.overview.duration;
+  const screenshots = (project.screenshots ?? []).map((shot, i) => ({
+    ...shot,
+    title: field(`screenshot${i}Title`, shot.title),
+    description: field(`screenshot${i}Desc`, shot.description ?? ""),
+  }));
 
   return (
     <main>
@@ -115,15 +106,15 @@ export function ProjectDetailContent({ project }: Props) {
                 </div>
                 <div className="mt-5 space-y-4 text-sm text-foreground/75">
                   <div className="flex items-start justify-between gap-4">
-                    <div className="text-foreground/55">{t("projects.detail.role")}</div>
+                    <div className="text-foreground/65">{t("projects.detail.role")}</div>
                     <div className="text-right">{overviewRole}</div>
                   </div>
                   <div className="flex items-start justify-between gap-4">
-                    <div className="text-foreground/55">{t("projects.detail.duration")}</div>
+                    <div className="text-foreground/65">{t("projects.detail.duration")}</div>
                     <div className="text-right">{overviewDuration}</div>
                   </div>
                   <div className="pt-1">
-                    <div className="text-foreground/55">{t("projects.detail.tools")}</div>
+                    <div className="text-foreground/65">{t("projects.detail.tools")}</div>
                     <div className="mt-3">
                       <Pills items={overviewTools} />
                     </div>
@@ -138,11 +129,7 @@ export function ProjectDetailContent({ project }: Props) {
                   <div className="text-sm text-foreground/60">
                     {t("projects.detail.problemTitle")}
                   </div>
-                  <ul className="mt-4 space-y-2 text-sm leading-6 text-foreground/70">
-                    {problemLines.map((x, i) => (
-                      <li key={i}>- {x}</li>
-                    ))}
-                  </ul>
+                  <BulletList className="mt-4" items={problemLines} accent="a" />
                 </div>
               </Reveal>
 
@@ -151,11 +138,7 @@ export function ProjectDetailContent({ project }: Props) {
                   <div className="text-sm text-foreground/60">
                     {t("projects.detail.solutionTitle")}
                   </div>
-                  <ul className="mt-4 space-y-2 text-sm leading-6 text-foreground/70">
-                    {solutionLines.map((x, i) => (
-                      <li key={i}>- {x}</li>
-                    ))}
-                  </ul>
+                  <BulletList className="mt-4" items={solutionLines} accent="b" />
                 </div>
               </Reveal>
 
@@ -164,11 +147,7 @@ export function ProjectDetailContent({ project }: Props) {
                   <div className="text-sm text-foreground/60">
                     {t("projects.detail.resultsTitle")}
                   </div>
-                  <ul className="mt-4 space-y-2 text-sm leading-6 text-foreground/70">
-                    {resultsLines.map((x, i) => (
-                      <li key={i}>- {x}</li>
-                    ))}
-                  </ul>
+                  <BulletList className="mt-4" items={resultsLines} accent="c" />
                 </div>
               </Reveal>
 
@@ -178,18 +157,14 @@ export function ProjectDetailContent({ project }: Props) {
                     <div className="text-sm text-foreground/60">
                       {t("projects.detail.siteFeaturesTitle")}
                     </div>
-                    <ul className="mt-4 space-y-2 text-sm leading-6 text-foreground/70">
-                      {siteFeaturesList.map((f, i) => (
-                        <li key={i}>• {f}</li>
-                      ))}
-                    </ul>
+                    <BulletList className="mt-4" items={siteFeaturesList} accent="b" />
                   </div>
                 </Reveal>
               )}
             </div>
           </div>
 
-          {project.screenshots && project.screenshots.length > 0 && (
+          {screenshots.length > 0 && (
             <Reveal delay={0.05} className="mt-10">
               <div className="mb-4">
                 <div className="text-sm text-foreground/60">
@@ -202,7 +177,7 @@ export function ProjectDetailContent({ project }: Props) {
                   {t("projects.detail.screenshotsDesc")}
                 </p>
               </div>
-              <ScreenshotGallery screenshots={project.screenshots} />
+              <ScreenshotGallery screenshots={screenshots} />
             </Reveal>
           )}
         </Container>

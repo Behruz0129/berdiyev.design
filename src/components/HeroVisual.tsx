@@ -1,14 +1,13 @@
- "use client";
+"use client";
 
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
-import { useLocale } from "@/contexts/LocaleContext";
+import { siteConfig } from "@/data/site";
 
 function clamp(v: number, min: number, max: number) {
   return Math.min(max, Math.max(min, v));
 }
 
 export function HeroVisual() {
-  const { t } = useLocale();
   const mx = useMotionValue(0);
   const my = useMotionValue(0);
 
@@ -64,11 +63,11 @@ export function HeroVisual() {
               <span className="h-2 w-2 rounded-full bg-red-400/80" />
               <span className="h-2 w-2 rounded-full bg-yellow-400/80" />
               <span className="h-2 w-2 rounded-full bg-emerald-400/80" />
-              <span className="ml-3 text-[11px] md:text-xs text-foreground/55 truncate max-w-[140px] md:max-w-[220px]">
-                berdiyev.design
+              <span className="ml-3 text-[11px] md:text-xs text-foreground/65 truncate max-w-[140px] md:max-w-[220px]">
+                {siteConfig.shortName}
               </span>
             </div>
-            <div className="hidden sm:flex items-center gap-1.5 text-[11px] text-foreground/55">
+            <div className="hidden sm:flex items-center gap-1.5 text-[11px] text-foreground/65">
               <span className="rounded-full bg-foreground/5 px-2 py-1">
                 UI/UX
               </span>
