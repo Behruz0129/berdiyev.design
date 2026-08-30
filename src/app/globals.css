@@ -1,56 +1,100 @@
 @import "tailwindcss";
 
+/**
+ * "Bento" tili: kulrang sahifa foni ustida oq kartochkalar.
+ *
+ * Fon ataylab oq emas — kartochkalar ko'tarilib turishi uchun. Har kartochka
+ * yumaloq, ichida kichkina yorliq bor. Aksent bitta — apelsin, va u faqat
+ * eng muhim joyda ishlatiladi (sarlavhaning oxirgi qatori, faol holat).
+ */
 :root {
-  --bg: #0b0d12;
-  --fg: #e9eef7;
-  --muted: color-mix(in oklab, var(--fg) 70%, transparent);
-  --card: color-mix(in oklab, #ffffff 9%, transparent);
-  --card-border: color-mix(in oklab, #ffffff 16%, transparent);
-  --shadow: 0 18px 50px rgba(0, 0, 0, 0.22);
-  --shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.14);
-  --ring: color-mix(in oklab, #7c3aed 60%, transparent);
+  --bg: #ececed;
+  --card: #ffffff;
+  --card-2: #f6f7f8;
+  --fg: #0f1013;
+  --muted: #6f7681;
+  --line: #e7e8eb;
+  --accent: #e94a12;
+  --ok: #21c55d;
 
-  --grad-a: #7c3aed;
-  --grad-b: #06b6d4;
-  --grad-c: #22c55e;
+  --shadow-card: 0 1px 2px rgba(16, 18, 24, 0.04), 0 8px 24px -12px rgba(16, 18, 24, 0.12);
+
+  /* Nakleyka (Sticker.tsx). Yorug' variantda yuzi ochroq, siyoh to'q jigarrang. */
+  --stk-shell: #f4f4f3;
+  --stk-edge-1: #f4f4f3;
+  --stk-edge-2: #fe4d07;
+  --stk-edge-2-a: 0.14;
+  --stk-edge-3: #ffffff;
+  --stk-face-1: #fe4d07;
+  --stk-face-2: #ffad8d;
+  --stk-ink: #4a1502;
+  --ring: #e94a12;
+
+  /* Eski komponentlar shu tokenlarga tayanadi */
+  --surface: #f6f7f8;
+  --surface-2: #eef0f2;
+  --grad-a: #e94a12;
+  --grad-b: #e94a12;
+  --grad-c: #e94a12;
+}
+
+[data-theme="dark"] {
+  --bg: #0a0b0d;
+  --card: #141619;
+  --card-2: #1b1e22;
+  --fg: #f1f2f5;
+  --muted: #949ba7;
+  --line: #232629;
+  --accent: #ff7a45;
+  --ok: #34d67f;
+
+  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.4), 0 8px 24px -12px rgba(0, 0, 0, 0.6);
+
+  /* Qorong'i variantda halqa to'qroq. Markaz ikkala temada ham och
+     (#f4f4f3) — chizmada shunday, shuning uchun siyoh ham to'q qoladi. */
+  --stk-shell: #f4f4f3;
+  --stk-edge-1: #f4f4f3;
+  --stk-edge-2: #f4f4f3;
+  --stk-edge-2-a: 1;
+  --stk-edge-3: #f4f4f3;
+  --stk-face-1: #fe4d07;
+  --stk-face-2: #982e04;
+  --stk-ink: #331000;
+  --ring: #ff7a45;
+
+  --surface: #1b1e22;
+  --surface-2: #22262b;
+  --grad-a: #ff7a45;
+  --grad-b: #ff7a45;
+  --grad-c: #ff7a45;
 }
 
 @theme inline {
   --color-background: var(--bg);
   --color-foreground: var(--fg);
-  --font-sans: var(--font-geist-sans);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-card: var(--card);
+  --color-card-2: var(--card-2);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-accent: var(--accent);
+  --color-ok: var(--ok);
+  --font-sans: var(--font-sans-family);
   --font-mono: var(--font-geist-mono);
 }
 
-[data-theme="light"] {
-  --bg: #f7f8fb;
-  --fg: #0b0d12;
-  --muted: color-mix(in oklab, var(--fg) 65%, transparent);
-  --card: color-mix(in oklab, #000000 4%, transparent);
-  --card-border: color-mix(in oklab, #000000 10%, transparent);
-  --shadow: 0 18px 50px rgba(0, 0, 0, 0.12);
-  --shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.10);
-  --ring: color-mix(in oklab, #2563eb 55%, transparent);
-
-  --grad-a: #2563eb;
-  --grad-b: #7c3aed;
-  --grad-c: #0ea5e9;
-}
-
 html {
-  scroll-behavior: smooth;
-  /* Mobil Safari'da gorizontal siljish paydo bo'lmasin. */
   overflow-x: hidden;
 }
 
-/* Animatsiyani kamaytirishni so'ragan foydalanuvchilar uchun (framer-motion
-   allaqachon `MotionConfig reducedMotion="user"` bilan hurmat qiladi — bu esa
-   CSS animatsiyalari va smooth scroll uchun). */
-@media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
+body {
+  background: var(--bg);
+  color: var(--fg);
+  text-rendering: optimizeLegibility;
+}
 
+@media (prefers-reduced-motion: reduce) {
   *,
   *::before,
   *::after {
@@ -60,10 +104,23 @@ html {
   }
 }
 
-@keyframes fade-in {
+/* Menyu paneli — pastdan chiqib, biroz kattalashadi */
+@keyframes menu-in {
   from {
     opacity: 0;
-    transform: translateY(-4px);
+    transform: translateY(-6px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Har bir band alohida — `animation-delay` bilan ketma-ket chiqadi */
+@keyframes menu-item-in {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
   }
   to {
     opacity: 1;
@@ -71,43 +128,191 @@ html {
   }
 }
 
-body {
-  background: radial-gradient(
-      1200px 800px at 70% -10%,
-      color-mix(in oklab, var(--grad-a) 20%, transparent),
-      transparent 60%
-    ),
-    radial-gradient(
-      900px 700px at 0% 10%,
-      color-mix(in oklab, var(--grad-b) 18%, transparent),
-      transparent 55%
-    ),
-    radial-gradient(
-      900px 700px at 100% 60%,
-      color-mix(in oklab, var(--grad-c) 14%, transparent),
-      transparent 55%
-    ),
-    var(--bg);
-  color: var(--fg);
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
-::selection {
-  background: color-mix(in oklab, var(--ring) 40%, transparent);
+/** Asosiy qurilish bloki — oq yumaloq kartochka. */
+@utility card {
+  position: relative;
+  border-radius: 1.5rem;
+  border: 1px solid var(--line);
+  background: var(--card);
+  box-shadow: var(--shadow-card);
 }
 
+/**
+ * Kartochka ichidagi kichkina yorliq. Referensda har blok shunday
+ * belgilangan — bu bento gridda "bu nima?" degan savolni bir qarashda yopadi.
+ */
+@utility card-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  border-radius: 9999px;
+  border: 1px solid var(--line);
+  background: var(--card-2);
+  padding: 0.3rem 0.7rem;
+  font-size: 0.75rem;
+  line-height: 1;
+  color: var(--muted);
+}
+
+/**
+ * Nakleyka matni. Tekis rang o'rniga harflar ichiga mayda shovqin
+ * quyiladi (`background-clip: text`), shundan matn "bosilgan" bo'lib
+ * ko'rinadi va nakleyka uslubiga qo'shilib ketadi.
+ *
+ * `@supports` shart: eski brauzerda `background-clip: text` ishlamasa
+ * matn shaffof bo'lib yo'qolib qolmasin — u yerda oddiy rang qoladi.
+ */
+.sticker-ink {
+  color: var(--stk-ink);
+}
+
+@supports ((-webkit-background-clip: text) or (background-clip: text)) {
+  .sticker-ink {
+    color: transparent;
+    background-color: var(--stk-ink);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23g)' opacity='0.4'/%3E%3C/svg%3E");
+    background-size: 46px 46px;
+    background-blend-mode: overlay;
+    -webkit-background-clip: text;
+    background-clip: text;
+  }
+}
+
+/** Yumaloq teg — texnologiyalar, vositalar, havolalar uchun. */
+@utility pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  border-radius: 9999px;
+  border: 1px solid var(--line);
+  background: var(--card-2);
+  padding: 0.35rem 0.8rem;
+  font-size: 0.8125rem;
+  line-height: 1.3;
+  color: color-mix(in oklab, var(--fg) 80%, transparent);
+  transition: background-color 0.15s, border-color 0.15s, color 0.15s;
+}
+
+/** Asosiy harakat tugmasi — qora (qorong'i temada oq) tabletka. */
+@utility btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 9999px;
+  background: var(--fg);
+  color: var(--bg);
+  padding: 0.8rem 1.5rem;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  line-height: 1;
+  transition: opacity 0.15s;
+}
+
+/** Asosiy chaqiruv tugmasi — brend gradienti bilan. */
+@utility btn-accent {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  border-radius: 9999px;
+  padding: 0.8rem 1.5rem;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  line-height: 1;
+  color: #fff;
+  background-image: linear-gradient(135deg, #ff6a2a 0%, #fe4d07 45%, #c93c0c 100%);
+  box-shadow: 0 1px 2px rgba(201, 60, 12, 0.3), 0 10px 22px -10px rgba(233, 74, 18, 0.75);
+  transition: filter 0.15s, box-shadow 0.15s, transform 0.15s;
+}
+
+/**
+ * Ichida aylanadigan ro'yxat: scrollbar ko'rinmaydi, chetlari esa
+ * so'nib boradi — shundan "davomi bor" degani o'qiladi.
+ */
+@utility scroll-fade {
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: none;
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent 0,
+    #000 14px,
+    #000 calc(100% - 14px),
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0,
+    #000 14px,
+    #000 calc(100% - 14px),
+    transparent 100%
+  );
+}
+
+.scroll-fade::-webkit-scrollbar {
+  display: none;
+}
+
+/** Yashil "jonli" nuqta — atrofida sekin pulsatsiya. */
+@utility live-dot {
+  position: relative;
+  display: inline-block;
+  flex-shrink: 0;
+  border-radius: 9999px;
+  background: var(--ok);
+  box-shadow: 0 0 0 0.14em color-mix(in oklab, var(--ok) 30%, transparent);
+}
+
+.live-dot::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 9999px;
+  background: var(--ok);
+  animation: live-pulse 2s ease-out infinite;
+}
+
+@keyframes live-pulse {
+  0% {
+    opacity: 0.7;
+    transform: scale(1);
+  }
+  70%,
+  100% {
+    opacity: 0;
+    transform: scale(2.4);
+  }
+}
+
+@utility eyebrow {
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* Eski komponentlarda qolgan nomlar */
 @utility glass {
-  background: color-mix(in oklab, var(--card) 100%, transparent);
-  border: 1px solid var(--card-border);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  box-shadow: var(--shadow-soft);
+  background: var(--card);
+  border: 1px solid var(--line);
 }
 
 @utility hairline {
-  border: 1px solid var(--card-border);
+  border: 1px solid var(--line);
 }
 
 @utility focus-ring {
-  outline: none;
-  box-shadow: 0 0 0 4px color-mix(in oklab, var(--ring) 35%, transparent);
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
 }

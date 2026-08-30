@@ -12,6 +12,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Vaqtincha saqlangan "ish stoli" (OS) versiyasi — saytda ishlatilmaydi.
+    ".os-version/**",
   ]),
 ]);
 

@@ -1,19 +1,20 @@
 import type { Metadata } from "next";
 import { cookies } from "next/headers";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Plus_Jakarta_Sans, Geist_Mono } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 import { Providers } from "./providers";
 import { LocaleProvider } from "@/contexts/LocaleContext";
-import { Navbar } from "@/components/Navbar";
-import { Footer } from "@/components/Footer";
-import { PageTransition } from "@/components/PageTransition";
 import type { Locale } from "@/lib/i18n";
 import { siteConfig } from "@/data/site";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
+// Geometrik grotesk: katta sarlavhada xarakterli, mayda matnda tinch o'qiladi.
+// Kirill ham kerak — sayt ruscha versiyada ham shu shriftda qolsin.
+const sans = Plus_Jakarta_Sans({
+  variable: "--font-sans-family",
+  subsets: ["latin", "latin-ext", "cyrillic-ext"],
+  weight: ["400", "500", "600", "700", "800"],
+  display: "swap",
 });
 
 const geistMono = Geist_Mono({
@@ -23,7 +24,7 @@ const geistMono = Geist_Mono({
 
 const title = `${siteConfig.name} — ${siteConfig.role}`;
 const description =
-  "Portfolio of Berdiyev Bexruzbek — UI/UX designer and frontend developer from Uzbekistan. Case studies: Modme CRM landing page and 600+ interactive applications for the Islamic Civilization Center.";
+  "Berdiyev Behruzbek — UI/UX designer and frontend developer in Tashkent. Landing pages, CRM interfaces and interactive systems. Case studies: GIGU Fashion Academy, the Modme CRM landing and 600+ interactive screens for the Islamic Civilization Center.";
 
 export const metadata: Metadata = {
   // metadataBase bo'lmasa OG rasm nisbiy path bilan qoladi va ijtimoiy
@@ -35,7 +36,7 @@ export const metadata: Metadata = {
   },
   description,
   keywords: [
-    "Berdiyev Bexruzbek",
+    "Berdiyev Behruzbek",
     "UI/UX designer",
     "frontend developer",
     "Uzbekistan",
@@ -78,15 +79,11 @@ export default async function RootLayout({
 
   return (
     <html lang={initialLocale} suppressHydrationWarning>
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+      <body
+        className={`${sans.variable} ${geistMono.variable} antialiased`}
+      >
         <Providers>
-          <LocaleProvider initialLocale={initialLocale}>
-            <div className="min-h-dvh">
-              <Navbar />
-              <PageTransition>{children}</PageTransition>
-              <Footer />
-            </div>
-          </LocaleProvider>
+          <LocaleProvider initialLocale={initialLocale}>{children}</LocaleProvider>
         </Providers>
         <Analytics />
       </body>

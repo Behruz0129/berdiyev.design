@@ -130,9 +130,15 @@ export async function downloadResumePdf(t: Translate, locale: Locale) {
 
   setText(9, false, COLORS.accent);
   doc.text(
-    [siteConfig.url.replace("https://", ""), "Telegram: @CBehruz", "GitHub: Behruz0129"].join(
+    [siteConfig.email, siteConfig.phoneDisplay, siteConfig.url.replace("https://", "")].join(
       "   ·   ",
     ),
+    margin,
+    y,
+  );
+  y += 13;
+  doc.text(
+    ["Telegram: @CBehruz", "GitHub: Behruz0129", "Toshkent, UTC+5"].join("   ·   "),
     margin,
     y,
   );
@@ -161,16 +167,19 @@ export async function downloadResumePdf(t: Translate, locale: Locale) {
 
   // ── Ta'lim ────────────────────────────────────────────────────────────────
   sectionTitle(t("about.education"));
-  jobHeader(t("about.school1Desc"), t("about.school1"));
   jobHeader(t("about.school2Desc"), t("about.school2"));
   paragraph(t("about.school2Note"), 9.5, COLORS.muted);
 
   // ── Ko'nikmalar va qiziqishlar ────────────────────────────────────────────
-  sectionTitle(t("about.softSkillsTitle"));
-  for (let i = 1; i <= 4; i++) bullet(t(`about.softSkill${i}`));
+  sectionTitle(t("about.skillsTitle"));
+  bullet(t("about.skillsDesign"));
+  bullet(t("about.skillsCode"));
+  bullet(t("about.skillsBackend"));
+  bullet(t("about.skillsOther"));
+  bullet(t("about.skillsLanguages"));
 
   sectionTitle(t("about.interestsTitle"));
-  for (let i = 1; i <= 5; i++) bullet(t(`about.interest${i}`));
+  for (let i = 1; i <= 3; i++) bullet(t(`about.interest${i}`));
 
   // ── Sahifa raqamlari ──────────────────────────────────────────────────────
   const pageCount = doc.getNumberOfPages();

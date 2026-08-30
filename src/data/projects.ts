@@ -10,6 +10,8 @@ export type Project = {
   year: string;
   role: string;
   shortDescription: string;
+  /** Loyiha qanday sharoitda bajarilgani — masalan asosiy ishdan tashqari loyiha. */
+  context?: string;
   heroImage: string;
   overview: {
     role: string;
@@ -29,12 +31,84 @@ export type Project = {
 
 export const projects: Project[] = [
   {
+    slug: "gigu-academy",
+    title: "GIGU Moda Akademiyasi",
+    year: "2025",
+    role: "UI/UX Design + Frontend",
+    shortDescription:
+      "Three-language landing site for a fashion academy: 11 campaign landing pages, applications going straight into Bitrix24 CRM, and a daily traffic report in Telegram.",
+    heroImage: "/projects/gigu.jpg",
+    overview: {
+      role: "UI/UX Design + Frontend Development",
+      duration: "",
+      tools: [
+        "Figma",
+        "Next.js",
+        "TypeScript",
+        "TailwindCSS",
+        "Framer Motion",
+        "Bitrix24 CRM",
+        "Upstash Redis",
+        "Vercel",
+      ],
+    },
+    problem: [
+      "The academy runs ads on several channels at once, and there was no way to tell which channel an application actually came from.",
+      "Applications were handled by hand instead of landing in the CRM the moment they were submitted.",
+      "The audience reads in three languages (Uzbek, Russian, English) and comes almost entirely from phones.",
+    ],
+    solution: [
+      "Designed and built a three-language site, plus 11 separate campaign landing pages so every ad source has its own URL and UTM tags.",
+      "Wired the application form directly into Bitrix24 with course, branch and age fields, so a lead reaches the sales team unedited.",
+      "Built an in-house analytics layer (visits, page views, clicks, applications by device, OS, country and referrer) that sends a report to Telegram every morning.",
+    ],
+    results: [
+      "The site is live at giguacademy.uz and takes applications for 5 branches and 2 study programmes.",
+      "Applications arrive in the CRM instantly — nothing is copied by hand any more.",
+      "Compressing the media brought the public folder from 137 MB down to about 9 MB, which cut hosting traffic sharply.",
+    ],
+    screenshots: [
+      {
+        title: "How studying works",
+        image: "/projects/gigu-study.jpg",
+        description: "O'qish sharoiti — foto bloklar bilan.",
+      },
+      {
+        title: "Programmes",
+        image: "/projects/gigu-courses.jpg",
+        description: "Ikki ta'lim dasturi taqqoslangan holda.",
+      },
+      {
+        title: "Application form",
+        image: "/projects/gigu-enroll.jpg",
+        description: "Kurs, filial va yosh tanlanadigan ariza formasi.",
+      },
+      {
+        title: "Student results",
+        image: "/projects/gigu-results.jpg",
+        description: "Bitiruvchilarning o'z brendlari.",
+      },
+    ],
+    siteFeatures: [
+      "Three languages (uz / ru / en)",
+      "11 campaign landing pages with their own UTM tags",
+      "Application form connected to Bitrix24 CRM",
+      "Course, branch and age selection",
+      "Graduate results section",
+      "FAQ and 5 branch locations",
+      "Daily traffic and application report in Telegram",
+    ],
+    demoUrl: "https://giguacademy.uz",
+  },
+  {
     slug: "modme-landing",
     title: "Modme.uz Landing Page",
     year: "2024",
     role: "UI/UX Design + Frontend",
     shortDescription:
       "Landing page for Modme CRM & LMS: premium design, micro-animations, platform info (pricing, benefits, docs, gamification), resources, and Telegram-integrated demo form.",
+    context:
+      "Modme LLC da IT qo'llab-quvvatlash menejeri sifatida ishlayman; landing sahifa asosiy vazifamdan tashqari loyiha bo'lib, dizayni va frontendini to'liq o'zim bajardim.",
     heroImage: "/projects/modme.png",
     overview: {
       role: "UI/UX Design + Frontend Development",
@@ -42,21 +116,19 @@ export const projects: Project[] = [
       tools: ["Figma", "Next.js", "TypeScript", "TailwindCSS", "Framer Motion", "GSAP"],
     },
     problem: [
-      "Educational centers needed a single, trustworthy entry point to learn about Modme CRM & LMS and request a demo.",
-      "Product value (pricing, benefits, documentation, video tutorials, gamification) had to be clear at a glance.",
-      "The site had to feel premium and on-brand, with smooth micro-animations and modern UI.",
-      "Demo requests needed to flow directly into the platform (e.g. Telegram) for fast follow-up.",
+      "To decide on Modme, the head of an educational center had to collect information from several places — price, features and documentation were not in one spot.",
+      "Demo requests slowed down on arrival: they landed in a mailbox and were copied over by hand.",
+      "The site had to look trustworthy — this is where a client chooses the system their whole business will run on.",
     ],
     solution: [
-      "Designed a high-end landing with brand identity colors and clear hierarchy for pricing, benefits, docs, video tutorials, gamification preview, and resource links.",
-      "Built the site in Next.js with Framer Motion and GSAP for micro-animations and polished interactions.",
-      "Integrated a demo request form that sends submissions to Telegram for instant platform-side handling.",
-      "Structured content so visitors can get full platform info and request a demo in one place.",
+      "Put the entire decision path on one page: why you need it, how it works, what it costs, request a demo. Each block answers one question.",
+      "Connected the demo form straight to Telegram, so a request reaches the team the moment it is sent.",
+      "Built it in Next.js myself; the animations (Framer Motion, GSAP) are there to direct attention, not to decorate.",
     ],
     results: [
-      "A single, conversion-focused landing where visitors get pricing, benefits, documentation, video tutorials, gamification preview, and resources.",
-      "Demo requests from the form are delivered to Telegram and processed by the platform team.",
-      "Premium look and feel with consistent micro-animations and modern stack (Next.js, Framer Motion, GSAP).",
+      "A visitor can see the price, the features and the documentation without leaving the page, and request a demo from there.",
+      "Demo requests are no longer copied by hand — they arrive in the team's Telegram.",
+      "The site is live at modme.uz.",
     ],
     screenshots: [
       {
@@ -88,7 +160,6 @@ export const projects: Project[] = [
       "Gamification preview — ballar, rozetkalar, motivatsiya",
       "Demo so‘rash formasi — Telegram orqali platformaga yuboriladi",
     ],
-    // TODO: shu yerga real demo linkingizni qo'ying (masalan https://modme.uz yoki demo form sahifasi)
     demoUrl: "https://modme.uz",
   },
   {
@@ -97,27 +168,29 @@ export const projects: Project[] = [
     year: "2025",
     role: "UI/UX Designer & Project Manager",
     shortDescription:
-      "Interactive educational applications for museum exhibitions.",
+      "Interactive systems for the exhibition halls of the Center of Islamic Civilization in Tashkent.",
+    context:
+      "An 8-month project. I designed the UI system, handed it over to the developers and managed production from start to finish.",
     heroImage: "/projects/icc.png",
     overview: {
       role: "UI/UX Design + Project Management",
       duration: "8 months",
-      tools: ["Figma", "Interactive systems", "Android", "Windows (.exe)"],
+      tools: ["Figma", "Android (.apk)", "Windows (.exe)", "BrightSign"],
     },
     problem: [
-      "Complex government technical specifications required precise interpretation.",
-      "Interfaces had to work across many screen sizes and touch displays.",
-      "The system needed consistent UX across hundreds of interactive apps.",
+      "The government technical specification was long and precise, and had to be turned into interfaces without losing a single requirement.",
+      "The same content had to work on touch displays and on large screens of very different sizes.",
+      "Hundreds of screens are made by different people — without one system each of them would look and behave differently.",
     ],
     solution: [
-      "Converted technical requirements into a scalable UI system in Figma.",
-      "Coordinated design handoff and ensured developers matched the intended UX.",
-      "Managed production flow, adaptation for multiple screen types, and exports.",
+      "Turned the specification into a scalable UI system in Figma: grid, type scale, components and states.",
+      "Handed the design over to the developers and reviewed the builds, so the shipped screen matched the intended behaviour.",
+      "Managed production across three themes: adapting for each screen type and exporting the builds.",
     ],
     results: [
-      "600+ interactive applications delivered across exhibition systems.",
-      "8 months development lifecycle managed end-to-end.",
-      "Installed for three themes: Pre-Islamic period, First Renaissance, Second Renaissance.",
+      "600+ interactive screens and apps delivered for the exhibition systems (.apk, .exe and BrightSign builds).",
+      "8 months of production managed from start to finish.",
+      "Installed in three halls: the Pre-Islamic period, the First Renaissance and the Second Renaissance.",
     ],
     screenshots: [
       {

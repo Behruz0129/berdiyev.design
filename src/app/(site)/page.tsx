@@ -8,8 +8,7 @@ export const metadata: Metadata = {
 
 /**
  * Qidiruv tizimlari uchun tuzilgan ma'lumot (schema.org). Google bu orqali
- * ism, kasb va ijtimoiy tarmoq havolalarini bir-biriga bog'laydi — "Berdiyev
- * Bexruzbek" so'rovida to'g'ri profil ko'rsatilishi ehtimolini oshiradi.
+ * ism, kasb va ijtimoiy tarmoq havolalarini bir-biriga bog'laydi.
  */
 const personJsonLd = {
   "@context": "https://schema.org",

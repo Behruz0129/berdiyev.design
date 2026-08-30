@@ -7,6 +7,5 @@ export function Section({
   className?: string;
   children: React.ReactNode;
 }) {
-  return <section className={cn("py-14 md:py-20", className)}>{children}</section>;
+  return <section className={cn("py-10", className)}>{children}</section>;
 }
-

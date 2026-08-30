@@ -54,13 +54,13 @@ export function ContactForm() {
   }
 
   const fieldClass =
-    "rounded-xl border border-transparent bg-foreground/6 px-4 text-sm text-foreground placeholder:text-foreground/40 transition-colors hover:bg-foreground/8 focus:border-[color:var(--ring)] focus-visible:focus-ring";
+    "rounded-xl border border-line bg-background px-4 text-sm text-foreground placeholder:text-muted transition-colors hover:border-foreground/25 focus-visible:focus-ring";
 
   return (
-    <form className="glass rounded-2xl p-6" onSubmit={handleSubmit} noValidate>
+    <form className="max-w-xl" onSubmit={handleSubmit} noValidate>
       <div className="grid gap-4">
         <div className="grid gap-2">
-          <label className="text-sm text-foreground/70" htmlFor="name">
+          <label className="text-sm text-muted" htmlFor="name">
             {t("contact.nameLabel")}
           </label>
           <input
@@ -76,7 +76,7 @@ export function ContactForm() {
         </div>
 
         <div className="grid gap-2">
-          <label className="text-sm text-foreground/70" htmlFor="email">
+          <label className="text-sm text-muted" htmlFor="email">
             {t("contact.emailLabel")}
           </label>
           <input
@@ -93,14 +93,14 @@ export function ContactForm() {
         </div>
 
         <div className="grid gap-2">
-          <label className="text-sm text-foreground/70" htmlFor="message">
+          <label className="text-sm text-muted" htmlFor="message">
             {t("contact.messageLabel")}
           </label>
           <textarea
             id="message"
             value={message}
             onChange={(e) => setMessage(e.target.value)}
-            className={`min-h-[140px] resize-y py-3 ${fieldClass}`}
+            className={`min-h-[160px] resize-y py-2.5 ${fieldClass}`}
             placeholder={t("contact.messagePlaceholder")}
             maxLength={2000}
             required
@@ -110,7 +110,7 @@ export function ContactForm() {
         <button
           type="submit"
           disabled={sending}
-          className="inline-flex h-11 items-center justify-center rounded-2xl bg-foreground px-5 text-sm font-medium text-background transition-colors hover:bg-foreground/85 focus-visible:focus-ring disabled:cursor-not-allowed disabled:opacity-70"
+          className="inline-flex h-11 items-center justify-center justify-self-start rounded-full bg-foreground px-6 text-sm font-medium text-background transition-opacity hover:opacity-85 focus-visible:focus-ring disabled:cursor-not-allowed disabled:opacity-60"
         >
           {sending ? t("contact.sending") : t("contact.submit")}
         </button>
@@ -118,12 +118,12 @@ export function ContactForm() {
         {/* Natija xabarlari — ekran o'quvchilar uchun ham e'lon qilinadi. */}
         <div aria-live="polite" className="empty:hidden">
           {sent ? (
-            <div className="rounded-xl bg-emerald-500/10 px-4 py-3 text-sm text-emerald-500">
+            <div className="rounded-xl border border-line bg-surface px-4 py-3 text-sm text-foreground">
               {t("contact.success")}
             </div>
           ) : null}
           {error ? (
-            <div className="rounded-xl bg-red-500/10 px-4 py-3 text-sm text-red-500">{error}</div>
+            <div className="rounded-xl border border-line bg-surface px-4 py-3 text-sm text-red-600">{error}</div>
           ) : null}
         </div>
       </div>

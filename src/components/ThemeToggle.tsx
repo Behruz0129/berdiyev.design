@@ -2,48 +2,40 @@
 
 import { useSyncExternalStore } from "react";
 import { useTheme } from "next-themes";
-import { Moon, Sun } from "lucide-react";
+import { Sun, MoonStars } from "@phosphor-icons/react";
 import { useLocale } from "@/contexts/LocaleContext";
 
 /**
  * Server hech qachon qaysi tema tanlanganini bilmaydi (u localStorage'da),
- * shuning uchun ikonka faqat hydration'dan keyin chiziladi. `useSyncExternalStore`
- * buni setState-in-effect'siz beradi: server snapshot = false, client = true.
+ * shuning uchun tugma matni faqat brauzerda paydo bo'ladi.
  */
-const emptySubscribe = () => () => {};
 const useMounted = () =>
   useSyncExternalStore(
-    emptySubscribe,
+    () => () => {},
     () => true,
     () => false,
   );
 
 export function ThemeToggle() {
-  const { theme, setTheme, resolvedTheme } = useTheme();
+  const { setTheme, resolvedTheme } = useTheme();
   const { t } = useLocale();
   const mounted = useMounted();
-
-  const current = theme === "system" ? resolvedTheme : theme;
-  const isDark = current !== "light";
+  const isDark = mounted && resolvedTheme === "dark";
 
   return (
     <button
       type="button"
       aria-label={t("theme.toggle")}
-      className="glass rounded-xl px-3 py-2 inline-flex items-center gap-2 text-sm text-foreground/80 hover:text-foreground transition-colors focus-visible:focus-ring"
+      title={mounted ? (isDark ? t("theme.light") : t("theme.dark")) : undefined}
+      className="card flex h-9 w-9 items-center justify-center rounded-full text-foreground/75 transition-colors hover:text-foreground focus-visible:focus-ring"
       onClick={() => setTheme(isDark ? "light" : "dark")}
     >
+      {/* Server temani bilmaydi — ikonka faqat brauzerda paydo bo'ladi */}
       {mounted ? (
-        isDark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />
+        isDark ? <Sun size={17} weight="bold" /> : <MoonStars size={17} weight="bold" />
       ) : (
-        <span className="h-4 w-4" />
-      )}
-      {mounted && (
-        <span className="hidden sm:inline">
-          {isDark ? t("theme.light") : t("theme.dark")}
-        </span>
+        <span className="h-[17px] w-[17px]" aria-hidden />
       )}
     </button>
   );
 }
-

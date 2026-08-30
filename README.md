@@ -41,14 +41,16 @@ Bu ikkisi bo'lmasa sayt ishlaydi, faqat forma yuborishda xato qaytaradi.
 ```
 src/
 ├── app/
-│   ├── layout.tsx           # umumiy karkas: metadata, tema, til, navbar/footer
-│   ├── page.tsx             # bosh sahifa (server) + JSON-LD
-│   ├── HomeContent.tsx      # bosh sahifa mazmuni (client)
-│   ├── about/               # men haqimda + CV yuklab olish
-│   ├── projects/            # loyihalar ro'yxati va [slug] sahifasi
-│   ├── contact/             # aloqa formasi
+│   ├── layout.tsx           # umumiy karkas: metadata, tema, til
+│   ├── (site)/              # navbar + footer bo'lgan barcha sahifalar
+│   │   ├── layout.tsx
+│   │   ├── page.tsx + HomeContent.tsx        # bosh sahifa
+│   │   ├── about/           # men haqimda + CV yuklab olish
+│   │   ├── projects/        # loyihalar ro'yxati va [slug] sahifasi
+│   │   └── contact/         # aloqa formasi
 │   ├── api/contact/route.ts # forma → Telegram
 │   ├── opengraph-image.tsx  # ijtimoiy tarmoq preview rasmi (avtomatik)
+│   ├── not-found.tsx        # 404
 │   ├── sitemap.ts, robots.ts
 │   └── icon.svg             # favicon
 ├── components/              # qayta ishlatiladigan UI

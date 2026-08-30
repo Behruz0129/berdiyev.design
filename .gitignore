@@ -39,3 +39,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# vaqtincha: "ish stoli" (OS) versiyasi, commit qilinmagan
+/.os-version
+

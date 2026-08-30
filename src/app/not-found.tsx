@@ -12,9 +12,9 @@ export default function NotFound() {
     <main>
       <Section className="pt-10 md:pt-14">
         <Container>
-          <div className="glass rounded-2xl p-8">
-            <div className="text-sm text-foreground/60">404</div>
-            <h1 className="mt-2 text-2xl font-semibold tracking-tight text-foreground">
+          <div>
+            <div className="eyebrow">404</div>
+            <h1 className="mt-3 text-[clamp(2rem,6vw,3rem)] font-semibold leading-tight tracking-[-0.035em] text-foreground">
               {t("notFound.title")}
             </h1>
             <p className="mt-3 text-sm leading-6 text-foreground/70">
