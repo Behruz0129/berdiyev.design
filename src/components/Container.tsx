@@ -1,12 +1,18 @@
 import { cn } from "@/lib/cn";
 
 /**
- * Ikki kenglik: `reading` — matn uchun qulay tor ustun (maqola, case study),
- * `wide` — bento grid va ro'yxatlar uchun. Bosh sahifa keng, qolgani tor.
+ * Sahifaning yon chekkasi. Butun sayt bitta kenglikda turadi: navbar,
+ * footer, bosh sahifa va ichki sahifalar — hammasi `wide`. Shuning uchun
+ * u standart qiymat: sahifadan sahifaga o'tganda chap chekka joyida
+ * qoladi, sarlavha kontentdan siljib ketmaydi.
+ *
+ * `reading` — istisno: uzun matn uchun tor ustun. Lekin uni sahifa
+ * darajasida ishlatmaslik kerak, aks holda chekka yana siljiydi; matn
+ * ustunini ichkarida `max-w-*` bilan cheklash to'g'riroq.
  */
 export function Container({
   className,
-  size = "reading",
+  size = "wide",
   children,
 }: {
   className?: string;

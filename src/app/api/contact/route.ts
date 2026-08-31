@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 const TOKEN = process.env.TELEGRAM_BOT_TOKEN;
 const CHAT_ID = process.env.TELEGRAM_CHAT_ID;
 
-const LIMITS = { name: 80, email: 120, message: 2000 } as const;
+const LIMITS = { name: 80, contact: 120, message: 2000 } as const;
 
 /**
  * Telegram xabari `parse_mode: "HTML"` bilan yuboriladi, shuning uchun
@@ -23,8 +23,8 @@ function escapeHtml(value: string) {
  * lekin oddiy spam-botni to'xtatish uchun yetarli.
  *
  * MUHIM: hisob faqat **to'g'ri to'ldirilgan** so'rovlar uchun yuritiladi
- * (pastdagi chaqiruv joyiga qarang). Aks holda emailini ikki marta xato yozgan
- * odam bloklanib qolardi.
+ * (pastdagi chaqiruv joyiga qarang). Aks holda maydonni ikki marta xato
+ * to'ldirgan odam bloklanib qolardi.
  */
 const RATE_LIMIT = { max: 5, windowMs: 60_000 };
 const hits = new Map<string, number[]>();
@@ -60,7 +60,7 @@ export async function POST(request: Request) {
 
   const body = (payload ?? {}) as Record<string, unknown>;
   const name = typeof body.name === "string" ? body.name.trim() : "";
-  const email = typeof body.email === "string" ? body.email.trim() : "";
+  const contact = typeof body.contact === "string" ? body.contact.trim() : "";
   const message = typeof body.message === "string" ? body.message.trim() : "";
   const honeypot = typeof body.website === "string" ? body.website.trim() : "";
 
@@ -73,15 +73,24 @@ export async function POST(request: Request) {
     return NextResponse.json({ ok: true });
   }
 
-  if (!email || !message) {
+  if (!contact || !message) {
     return NextResponse.json({ ok: false, error: "missing_fields" }, { status: 400 });
   }
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) {
-    return NextResponse.json({ ok: false, error: "invalid_email" }, { status: 400 });
+
+  /*
+    Aloqa maydoni Telegram nomi ham, telefon raqami ham bo'lishi mumkin —
+    formati qat'iy emas. Shuning uchun faqat eng zarurini talab qilamiz:
+    kamida to'rtta belgi va ichida harf yoki raqam bo'lsin. Qattiqroq
+    tekshiruv haqiqiy odamni to'sib qo'yardi (masalan "t.me/behruz" yoki
+    "99 518 29 01" ni), foydasi esa yo'q — xabarni baribir odam o'qiydi.
+  */
+  if (contact.length < 4 || !/[\p{L}\p{N}]/u.test(contact)) {
+    return NextResponse.json({ ok: false, error: "invalid_contact" }, { status: 400 });
   }
+
   if (
     name.length > LIMITS.name ||
-    email.length > LIMITS.email ||
+    contact.length > LIMITS.contact ||
     message.length > LIMITS.message
   ) {
     return NextResponse.json({ ok: false, error: "too_long" }, { status: 400 });
@@ -89,7 +98,7 @@ export async function POST(request: Request) {
 
   /*
     Sozlama tekshiruvi ataylab shu yerda — eng boshida emas. Bot ham,
-    emailini xato yozgan odam ham Telegram sozlanganini bilishi shart emas;
+    maydonni xato to'ldirgan odam ham Telegram sozlanganini bilishi shart emas;
     ular yuqoridagi javoblarni oladi. Bu yerga faqat haqiqiy, to'g'ri
     to'ldirilgan xabar yetib keladi.
   */
@@ -108,7 +117,7 @@ export async function POST(request: Request) {
     "<b>Yangi portfolio kontakt xabari</b>",
     "",
     `<b>Ism:</b> ${escapeHtml(name || "—")}`,
-    `<b>Email:</b> ${escapeHtml(email)}`,
+    `<b>Aloqa:</b> ${escapeHtml(contact)}`,
     "",
     "<b>Xabar:</b>",
     escapeHtml(message),

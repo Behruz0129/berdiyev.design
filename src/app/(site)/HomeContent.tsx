@@ -14,7 +14,7 @@ import { ScrambleText } from "@/components/ScrambleText";
 import { SectionHeader } from "@/components/SectionHeader";
 import { ServicesSection } from "@/components/ServicesSection";
 import { PricingSection } from "@/components/PricingSection";
-import { Phone, ArrowUpRight, DownloadSimple } from "@phosphor-icons/react";
+import { Phone, TelegramLogo, ArrowUpRight, DownloadSimple } from "@phosphor-icons/react";
 import { useLocale } from "@/contexts/LocaleContext";
 import { downloadResumePdf } from "@/lib/resume-pdf";
 import { projects } from "@/data/projects";
@@ -53,7 +53,7 @@ export function HomeContent() {
 
   return (
     <main>
-      <Container size="wide" className="pb-8 pt-14 sm:pb-10 sm:pt-20">
+      <Container className="pb-8 pt-14 sm:pb-10 sm:pt-20">
         {/* ── Sarlavha ──────────────────────────────────────────────────── */}
         {/*
           Sarlavha uchun keng ustun: «Men» va kasb bitta qatorga sig'ishi
@@ -403,9 +403,9 @@ export function HomeContent() {
                   {t("contact.pitch")}
                 </p>
                 {/*
-                  Email, telefon va Telegram to'liq yozilgan — ular
-                  ko'chirib olinadi. Profillar esa faqat ikonka: kerak
-                  bo'lsa topiladi, lekin asosiy aloqani bosib ketmaydi.
+                  Telegram va telefon to'liq yozilgan — ular ko'chirib
+                  olinadi. Profillar esa faqat ikonka: kerak bo'lsa
+                  topiladi, lekin asosiy aloqani bosib ketmaydi.
                 */}
                 <div className="mt-4 flex flex-wrap items-center gap-2">
                   <ContactPills />
@@ -414,10 +414,12 @@ export function HomeContent() {
               </div>
 
               <a
-                href={`mailto:${siteConfig.email}`}
+                href={siteConfig.socials.telegram}
+                target="_blank"
+                rel="noreferrer"
                 className="btn-accent flex-shrink-0 self-start hover:brightness-105 focus-visible:focus-ring sm:self-end"
               >
-                <Phone size={18} weight="fill" />
+                <TelegramLogo size={18} weight="fill" />
                 {t("home.contactMe")}
               </a>
             </div>

@@ -69,7 +69,7 @@ export function Navbar() {
   */
   return (
     <header className="sticky top-0 z-40 border-b border-line/70 backdrop-blur-md">
-      <Container size="wide" className="py-4">
+      <Container className="py-4">
         <div
           ref={panelRef}
           className="relative flex items-center justify-between gap-3"

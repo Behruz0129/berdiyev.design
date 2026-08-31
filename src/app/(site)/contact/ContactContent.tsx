@@ -2,7 +2,6 @@
 
 import {
   Phone,
-  EnvelopeSimple,
   TelegramLogo,
   MapPin,
   ArrowUpRight,
@@ -17,9 +16,8 @@ import { useLocale } from "@/contexts/LocaleContext";
 import { contactLinks, siteConfig } from "@/data/site";
 
 const ICONS: Record<string, Icon> = {
-  Email: EnvelopeSimple,
-  Telefon: Phone,
   Telegram: TelegramLogo,
+  Telefon: Phone,
 };
 
 /**
@@ -38,7 +36,7 @@ export function ContactContent() {
     <main>
       <PageHeader title={t("contact.title")} subtitle={t("contact.subtitle")} />
 
-      <Container size="wide" className="pb-16">
+      <Container className="pb-16">
         <div className="grid gap-4 lg:grid-cols-5">
           {/* ── Chap ustun: to'g'ridan-to'g'ri aloqa ──────────────────── */}
           <aside className="card p-6 sm:p-7 lg:col-span-2">
@@ -109,13 +107,15 @@ export function ContactContent() {
         </div>
 
         {/* Pastda takroriy chaqiruv: sahifa oxirigacha o'qigan odam uchun */}
-        <p className="mt-8 text-center text-[15px] leading-7 text-muted">
+        <p className="mx-auto mt-8 max-w-2xl text-center text-[15px] leading-7 text-muted">
           {t("contact.pitch")}{" "}
           <a
-            href={`mailto:${siteConfig.email}`}
+            href={siteConfig.socials.telegram}
+            target="_blank"
+            rel="noreferrer"
             className="font-mono text-foreground underline decoration-accent underline-offset-4"
           >
-            {siteConfig.email}
+            {siteConfig.telegramHandle}
           </a>
         </p>
       </Container>

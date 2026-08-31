@@ -1,30 +1,23 @@
 "use client";
 
-import {
-  Phone,
-  EnvelopeSimple,
-  TelegramLogo,
-  Link as LinkIcon,
-  type Icon,
-} from "@phosphor-icons/react";
+import { Phone, TelegramLogo, Link as LinkIcon, type Icon } from "@phosphor-icons/react";
 import { contactLinks } from "@/data/site";
 
 /**
- * Aloqa turi → ikonka. «Email», «Telefon» so'zlari o'rniga belgi turadi:
- * qiymatning o'zi (pochta manzili, raqam) nima ekanini aytib turibdi,
- * yozuv esa faqat joy egallardi. Tanish bo'lmagan tur uchun umumiy havola
- * belgisi — `site.ts` ga yangi qator qo'shilsa buzilmasin.
+ * Aloqa turi → ikonka. «Telegram», «Telefon» so'zlari o'rniga belgi turadi:
+ * qiymatning o'zi (nomi, raqami) nima ekanini aytib turibdi, yozuv esa
+ * faqat joy egallardi. Tanish bo'lmagan tur uchun umumiy havola belgisi —
+ * `site.ts` ga yangi qator qo'shilsa buzilmasin.
  */
 const ICONS: Record<string, Icon> = {
-  Email: EnvelopeSimple,
-  Telefon: Phone,
   Telegram: TelegramLogo,
+  Telefon: Phone,
 };
 
 /**
- * Pochta, telefon va Telegram — ikonka bilan, qiymati monospace da.
- * Bosh sahifada ham, «Men haqimda» sahifasida ham bir xil ko'rinadi,
- * shuning uchun bitta komponent.
+ * Telegram va telefon — ikonka bilan, qiymati monospace da. Bosh sahifada
+ * ham, «Men haqimda» sahifasida ham bir xil ko'rinadi, shuning uchun
+ * bitta komponent.
  */
 export function ContactPills({ className = "" }: { className?: string }) {
   return (

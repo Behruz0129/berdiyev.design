@@ -1,14 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import { PaperPlaneTilt, EnvelopeSimple, CheckCircle } from "@phosphor-icons/react";
+import { PaperPlaneTilt, TelegramLogo, CheckCircle } from "@phosphor-icons/react";
 import { useLocale } from "@/contexts/LocaleContext";
 import { siteConfig } from "@/data/site";
 
 /** Server qaytaradigan xato kodi → i18n kaliti. */
 const ERROR_KEYS: Record<string, string> = {
   rate_limited: "contact.errorRateLimited",
-  invalid_email: "contact.errorInvalidEmail",
+  invalid_contact: "contact.errorInvalidContact",
   missing_fields: "contact.errorMissingFields",
   too_long: "contact.errorTooLong",
   // Ikkalasi ham server tomonidagi nosozlik: sozlanmagan yoki Telegram
@@ -20,15 +20,20 @@ const ERROR_KEYS: Record<string, string> = {
 export function ContactForm() {
   const { t } = useLocale();
   const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
+  /**
+   * Telegram nomi yoki telefon raqami. Email so'ralmaydi: javob baribir
+   * Telegram yoki qo'ng'iroq orqali keladi, so'ralgan-u ishlatilmaydigan
+   * maydon esa faqat forma uzunligini oshiradi.
+   */
+  const [contact, setContact] = useState("");
   const [message, setMessage] = useState("");
   /** Bot uchun tuzoq — odam bu maydonni ko'rmaydi, bot esa to'ldiradi. */
   const [website, setWebsite] = useState("");
   const [sent, setSent] = useState(false);
   const [sending, setSending] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  /** Xato server tomonida bo'lsa pochta orqali yuborish yo'li taklif qilinadi. */
-  const [offerMail, setOfferMail] = useState(false);
+  /** Xato server tomonida bo'lsa Telegramga o'tish yo'li taklif qilinadi. */
+  const [offerTelegram, setOfferTelegram] = useState(false);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -36,13 +41,13 @@ export function ContactForm() {
     setSending(true);
     setError(null);
     setSent(false);
-    setOfferMail(false);
+    setOfferTelegram(false);
 
     try {
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, message, website }),
+        body: JSON.stringify({ name, contact, message, website }),
       });
 
       const data = (await res.json().catch(() => null)) as { error?: string } | null;
@@ -51,28 +56,22 @@ export function ContactForm() {
         const code = data?.error ?? "";
         setError(t(ERROR_KEYS[code] ?? "contact.errorGeneric") || t("contact.errorGeneric"));
         // Foydalanuvchi xatosi emas, server tomonidagi nosozlik bo'lsa —
-        // xabar yo'qolmasin, pochta orqali yuborish taklif qilinadi.
-        setOfferMail(code === "send_failed" || code === "server_not_configured" || !code);
+        // xabar yo'qolmasin, Telegramga o'tish taklif qilinadi.
+        setOfferTelegram(code === "send_failed" || code === "server_not_configured" || !code);
         return;
       }
 
       setSent(true);
       setName("");
-      setEmail("");
+      setContact("");
       setMessage("");
     } catch {
       setError(t("contact.errorSendFailed"));
-      setOfferMail(true);
+      setOfferTelegram(true);
     } finally {
       setSending(false);
     }
   }
-
-  /** Yozilgan matn bilan oldindan to'ldirilgan pochta havolasi. */
-  const mailHref =
-    `mailto:${siteConfig.email}` +
-    `?subject=${encodeURIComponent(`Portfolio — ${name || email || "xabar"}`)}` +
-    `&body=${encodeURIComponent(message)}`;
 
   const fieldClass =
     "w-full rounded-xl border border-line bg-background px-4 text-[15px] text-foreground placeholder:text-muted/70 transition-colors hover:border-foreground/20 focus:border-accent/60 focus-visible:focus-ring";
@@ -98,17 +97,16 @@ export function ContactForm() {
           </div>
 
           <div className="grid gap-1.5">
-            <label className="text-[13px] text-muted" htmlFor="email">
-              {t("contact.emailLabel")}
+            <label className="text-[13px] text-muted" htmlFor="contact">
+              {t("contact.contactLabel")}
             </label>
             <input
-              id="email"
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              id="contact"
+              value={contact}
+              onChange={(e) => setContact(e.target.value)}
               className={`h-12 ${fieldClass}`}
-              placeholder={t("contact.emailPlaceholder")}
-              autoComplete="email"
+              placeholder={t("contact.contactPlaceholder")}
+              autoComplete="tel"
               maxLength={120}
               required
             />
@@ -173,13 +171,15 @@ export function ContactForm() {
           {error ? (
             <div className="rounded-xl border border-accent/30 bg-accent/8 px-4 py-3 text-[14px] leading-6 text-foreground">
               {error}
-              {offerMail ? (
+              {offerTelegram ? (
                 <a
-                  href={mailHref}
+                  href={siteConfig.socials.telegram}
+                  target="_blank"
+                  rel="noreferrer"
                   className="mt-2.5 inline-flex items-center gap-1.5 rounded-full border border-line bg-background px-3.5 py-2 text-[13px] font-medium text-foreground transition-colors hover:bg-surface-2 focus-visible:focus-ring"
                 >
-                  <EnvelopeSimple size={15} />
-                  {t("contact.mailFallback")}
+                  <TelegramLogo size={15} />
+                  {t("contact.telegramFallback")}
                 </a>
               ) : null}
             </div>

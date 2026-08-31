@@ -25,7 +25,7 @@ const ICONS: Record<string, Icon> = {
 
 /**
  * Ijtimoiy tarmoqlar — faqat ikonka. Matnli yozuv yo'q, chunki bevosita
- * aloqa (email, telefon, Telegram) yonida turadi va e'tiborni bo'lmasligi
+ * aloqa (Telegram, telefon) yonida turadi va e'tiborni bo'lmasligi
  * kerak: kerak bo'lganda topiladi, kerak bo'lmaganda ko'zga tashlanmaydi.
  */
 export function SocialIconLinks({ className = "" }: { className?: string }) {

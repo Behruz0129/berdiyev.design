@@ -35,7 +35,7 @@ const cyrillic = Manrope({
   display: "swap",
 });
 
-// Raqam, pochta, telefon va sana kabi "ma'lumot" uchun. Kirill ham
+// Raqam, telefon, havola va sana kabi "ma'lumot" uchun. Kirill ham
 // so'ralgan: yorliqlar tarjima qilinsa fallbackka tushib qolmasin.
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",

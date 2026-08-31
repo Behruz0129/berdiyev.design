@@ -13,7 +13,7 @@ export function Footer() {
 
   return (
     <footer className="mt-8 border-t border-line py-8">
-      <Container size="wide">
+      <Container>
         <div className="text-sm font-medium text-foreground">{t("footer.name")}</div>
         <div className="mt-1 text-sm text-muted">{t("footer.role")}</div>
         <div className="mt-4 text-sm text-muted">

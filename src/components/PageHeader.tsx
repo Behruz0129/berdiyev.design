@@ -5,23 +5,28 @@ import { Container } from "@/components/Container";
  *
  * Bosh sahifadagi bento tili bilan bir xil o'lcham kontrasti (11px yorliq ↔
  * katta sarlavha), lekin bezaksiz — bu sahifalarda asosiysi matn.
+ *
+ * Yuqoridagi bo'shliq va yon chekka barcha ichki sahifada bir xil: shu
+ * komponent ularning yagona manbai, shuning uchun sahifadan sahifaga
+ * o'tganda sarlavha joyidan qimirlamaydi.
  */
 export function PageHeader({
   eyebrow,
   title,
   subtitle,
-  size = "reading",
+  size,
   children,
 }: {
   eyebrow?: string;
   title: string;
   subtitle?: string;
+  /** Sahifa kengligi — standarti `Container` bilan bir xil. */
   size?: "reading" | "wide";
   children?: React.ReactNode;
 }) {
   return (
     <section>
-      <Container size={size} className="pb-8 pt-8 sm:pt-10">
+      <Container size={size} className="pb-8 pt-10 sm:pt-14">
         {eyebrow ? <p className="card-label">{eyebrow}</p> : null}
         <h1 className="mt-4 text-[clamp(1.9rem,5.5vw,3.1rem)] font-semibold leading-[1.06] tracking-[-0.035em] text-foreground">
           {title}

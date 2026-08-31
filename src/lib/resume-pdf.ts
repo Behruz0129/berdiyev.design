@@ -130,15 +130,17 @@ export async function downloadResumePdf(t: Translate, locale: Locale) {
 
   setText(9, false, COLORS.accent);
   doc.text(
-    [siteConfig.email, siteConfig.phoneDisplay, siteConfig.url.replace("https://", "")].join(
-      "   ·   ",
-    ),
+    [
+      `Telegram: ${siteConfig.telegramHandle}`,
+      siteConfig.phoneDisplay,
+      siteConfig.url.replace("https://", ""),
+    ].join("   ·   "),
     margin,
     y,
   );
   y += 13;
   doc.text(
-    ["Telegram: @CBehruz", "GitHub: Behruz0129", "Toshkent, UTC+5"].join("   ·   "),
+    ["GitHub: Behruz0129", "Instagram: @berdiyev.design", "Toshkent, UTC+5"].join("   ·   "),
     margin,
     y,
   );

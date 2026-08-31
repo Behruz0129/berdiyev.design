@@ -69,13 +69,13 @@ export function ProjectDetailContent({ project }: { project: Project }) {
           alt={title}
           width={1200}
           height={750}
-          sizes="(max-width: 768px) 100vw, 768px"
+          sizes="(max-width: 1024px) 100vw, 1100px"
           priority
           className="h-auto w-full rounded-2xl border border-line"
         />
 
         <Block title={t("projects.detail.overviewTitle")}>
-          <dl className="space-y-4">
+          <dl className="max-w-3xl space-y-4">
             <Row label={t("projects.detail.role")} value={field("overviewRole", project.overview.role)} />
             <Row label={t("projects.detail.duration")} value={duration} />
             <div className="flex flex-wrap gap-x-3 gap-y-2">
@@ -93,7 +93,12 @@ export function ProjectDetailContent({ project }: { project: Project }) {
           </dl>
         </Block>
 
-        <div className="mt-4 grid gap-3">
+        {/*
+          Muammo / yechim / natija — keng ekranda yonma-yon. Ular bir-birini
+          o'qib chiqiladigan uch qism emas, balki bitta hikoyaning uch
+          bosqichi; yonma-yon turgani buni ko'rsatib beradi.
+        */}
+        <div className="mt-4 grid gap-3 lg:grid-cols-3">
           <Panel title={t("projects.detail.problemTitle")}>
             <BulletList items={indexed("problem", [...project.problem])} />
           </Panel>
@@ -127,15 +132,17 @@ export function ProjectDetailContent({ project }: { project: Project }) {
                     alt={shot.title}
                     width={1200}
                     height={750}
-                    sizes="(max-width: 768px) 100vw, 768px"
+                    sizes="(max-width: 1024px) 100vw, 1100px"
                     className="h-auto w-full rounded-2xl border border-line"
                   />
-                  <h3 className="mt-4 text-[15px] font-medium text-foreground">
-                    {field(`screenshot${i}Title`, shot.title)}
-                  </h3>
-                  <p className="mt-1 text-sm leading-6 text-muted">
-                    {field(`screenshot${i}Desc`, shot.description ?? "")}
-                  </p>
+                  <Prose>
+                    <h3 className="mt-4 text-[15px] font-medium text-foreground">
+                      {field(`screenshot${i}Title`, shot.title)}
+                    </h3>
+                    <p className="mt-1 text-sm leading-6 text-muted">
+                      {field(`screenshot${i}Desc`, shot.description ?? "")}
+                    </p>
+                  </Prose>
                 </li>
               ))}
             </ul>
@@ -153,6 +160,11 @@ function Block({ title, children }: { title: string; children: React.ReactNode }
       <div className="mt-5">{children}</div>
     </section>
   );
+}
+
+/** Matn ustuni — kartochka keng bo'lsa ham qator uzunligi o'qishli qoladi. */
+function Prose({ children }: { children: React.ReactNode }) {
+  return <div className="max-w-3xl">{children}</div>;
 }
 
 /** Muammo / yechim / natija — ketma-ket uch blok. */

@@ -109,6 +109,44 @@ body {
   }
 }
 
+/*
+  TEMA ALMASHINUVI
+
+  Ranglar `:root` va `[data-theme]` dagi CSS o'zgaruvchilaridan keladi.
+  O'zgaruvchining o'zini animatsiya qilib bo'lmaydi (`@property` siz ular
+  bir zumda almashadi), shuning uchun o'tishni elementlarning o'ziga
+  beramiz.
+
+  Lekin doimiy emas — faqat tugma bosilgan paytda. `theme-changing`
+  klassi <html> ga qo'yiladi va ~320 ms dan keyin olib tashlanadi
+  (`ThemeToggle`). Doimiy qoldirilsa: sahifa birinchi ochilganda tema
+  skript orqali qo'yiladi va shu o'tish ko'zga tashlanib qolardi, hover
+  effektlari esa «og'irlashib» ketardi.
+
+  `next-themes` dagi `disableTransitionOnChange` ataylab o'chirilgan —
+  u aynan shu o'tishni bostirardi.
+*/
+@media (prefers-reduced-motion: no-preference) {
+  /*
+    Media so'rovi shart: yuqoridagi «harakatni kamaytirish» bloki ham
+    `!important` ishlatadi, bu qoida esa undan keyin turibdi — shartsiz
+    qoldirilsa uni bosib ketardi.
+  */
+  html.theme-changing,
+  html.theme-changing *,
+  html.theme-changing *::before,
+  html.theme-changing *::after {
+    transition:
+      background-color 320ms ease,
+      border-color 320ms ease,
+      color 320ms ease,
+      fill 320ms ease,
+      stroke 320ms ease,
+      opacity 320ms ease !important;
+    transition-delay: 0ms !important;
+  }
+}
+
 /* Menyu paneli — pastdan chiqib, biroz kattalashadi */
 @keyframes menu-in {
   from {

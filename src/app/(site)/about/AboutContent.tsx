@@ -39,7 +39,7 @@ export function AboutContent() {
             height={176}
             className="h-44 w-44 flex-shrink-0 rounded-2xl border border-line object-cover"
           />
-          <div className="min-w-0">
+          <div className="min-w-0 max-w-2xl">
             <p className="text-[15px] leading-7 text-foreground/85">{t("about.bio1")}</p>
             <p className="mt-3 text-[15px] leading-7 text-foreground/85">{t("about.bio2")}</p>
           </div>
@@ -66,7 +66,6 @@ export function AboutContent() {
       </PageHeader>
 
       <Container className="pb-16">
-
         <Block title={t("about.experience")}>
           {/*
             Ish joylari orasida ingichka chiziq va kengroq oraliq. Avval
@@ -153,11 +152,17 @@ export function AboutContent() {
   );
 }
 
+/**
+ * Kartochka sahifaning to'liq enini egallaydi — chap chekkasi navbar va
+ * sarlavha bilan bir chiziqda tursin. Matn esa ichkarida `max-w-3xl` bilan
+ * cheklanadi: to'liq enida bir qator 140 belgiga yetib, ko'z keyingi
+ * qatorning boshini yo'qotardi.
+ */
 function Block({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <section className="card mt-4 p-5 sm:p-6">
       <h2 className="card-label">{title}</h2>
-      <div className="mt-5">{children}</div>
+      <div className="mt-5 max-w-3xl">{children}</div>
     </section>
   );
 }
