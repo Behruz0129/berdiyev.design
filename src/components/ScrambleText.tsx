@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 
 /**
  * Aralashtirish qancha davom etadi. 02UI tavsiyasi: mahsulot interfeysida
@@ -75,6 +75,53 @@ export function ScrambleText({
 }) {
   const [display, setDisplay] = useState(phrases[0] ?? "");
   const timers = useRef<number[]>([]);
+  const boxRef = useRef<HTMLSpanElement>(null);
+  const sizerRef = useRef<HTMLSpanElement>(null);
+
+  /*
+    IBORA HAR DOIM BITTA QATORDA.
+
+    Tor ekranda «Men Front End dasturchiman.» sarlavha o'lchamida qatorga
+    sig'maydi. Avval u pastga tushardi — quti esa bir qatorga mo'ljallangani
+    uchun matn ostidagi paragrafning ustiga chiqib ketardi.
+
+    Endi qator hech qachon bo'linmaydi: sig'masa shrift shu qatorning
+    o'zida kichrayadi. Kichrayish 0.62 dan pastga tushmaydi — undan keyin
+    matn o'qilmay qoladi, shuning uchun qolgani oddiygina kesiladi
+    (ko'rinadigan qatlamda `overflow: hidden`).
+
+    O'lchash tartibi muhim: avval mavjud kenglik olinadi va u oldingisi
+    bilan bir xil bo'lsa umuman tegilmaydi — aks holda shriftni
+    o'zgartirish sarlavha balandligini o'zgartirib, `ResizeObserver` ni
+    qayta chaqirar va cheksiz aylanish hosil bo'lardi.
+  */
+  useLayoutEffect(() => {
+    const box = boxRef.current;
+    const sizer = sizerRef.current;
+    const parent = box?.parentElement;
+    if (!box || !sizer || !parent) return;
+
+    let lastAvailable = -1;
+
+    const fit = () => {
+      const available = parent.getBoundingClientRect().width;
+      if (!available || Math.abs(available - lastAvailable) < 0.5) return;
+      lastAvailable = available;
+
+      // O'z o'lchamiga qaytarib o'lchaymiz, aks holda hisob o'ziga bog'lanib qoladi
+      box.style.fontSize = "";
+      const natural = sizer.getBoundingClientRect().width;
+      if (!natural) return;
+
+      const ratio = available / natural;
+      box.style.fontSize = ratio < 1 ? `${Math.max(ratio, 0.62)}em` : "";
+    };
+
+    fit();
+    const ro = new ResizeObserver(fit);
+    ro.observe(parent);
+    return () => ro.disconnect();
+  }, [phrases]);
 
   useEffect(() => {
     if (phrases.length < 2) return;
@@ -172,16 +219,24 @@ export function ScrambleText({
       Shu sabab almashish paytida qator soni o'zgarmaydi. Avval tor ekranda
       matn oddiy oqimda edi: tasodifiy harflarning eni turlicha bo'lgani
       uchun ibora goh bir, goh ikki qatorga tushib, sarlavha sakrardi.
+      Endi u umuman bo'linmaydi — yuqoridagi «sig'dirish» effektiga qarang.
 
       «Men» ham shu qutining ichida — tashqarida qolsa, quti butun
       kenglikni egallab, u yolg'iz qatorda qolib ketardi.
     */
-    <span className="relative inline-block max-w-full whitespace-normal sm:whitespace-nowrap">
-      <span className="invisible" aria-hidden>
+    <span ref={boxRef} className="relative inline-block max-w-full whitespace-nowrap">
+      <span ref={sizerRef} className="invisible" aria-hidden>
         {lead}
         {longest}
       </span>
-      <span className="absolute inset-0" aria-hidden>
+      {/*
+        Ko'rinadigan qatlam kesiladi. Aralashtirish paytida tasodifiy
+        harflar tayyor matndan kengroq bo'lishi mumkin — o'shanda oxiri
+        qirqiladi va bir zumdan keyin joyiga tushadi. Qutining o'zida
+        emas, aynan shu absolyut qatlamda: `overflow` inline-block ning
+        tayanch chizig'ini o'zgartiradi va sarlavha qatori siljib ketardi.
+      */}
+      <span className="absolute inset-0 overflow-hidden" aria-hidden>
         {lead ? <span className="text-foreground">{lead}</span> : null}
         <span className={className}>{display}</span>
       </span>
