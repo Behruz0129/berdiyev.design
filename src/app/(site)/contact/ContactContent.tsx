@@ -10,6 +10,7 @@ import {
 } from "@phosphor-icons/react";
 import { Container } from "@/components/Container";
 import { PageHeader } from "@/components/PageHeader";
+import { Reveal } from "@/components/Reveal";
 import { ContactForm } from "@/components/ContactForm";
 import { SocialIconLinks } from "@/components/SocialIcons";
 import { useLocale } from "@/contexts/LocaleContext";
@@ -39,7 +40,7 @@ export function ContactContent() {
       <Container className="pb-16">
         <div className="grid gap-4 lg:grid-cols-5">
           {/* ── Chap ustun: to'g'ridan-to'g'ri aloqa ──────────────────── */}
-          <aside className="card p-6 sm:p-7 lg:col-span-2">
+          <Reveal as="aside" className="card p-6 sm:p-7 lg:col-span-2">
             {/*
               Javob muddati eng tepada va yashil nuqta bilan: «bu yerda tirik
               odam bor» degani birinchi o'qiladigan narsa bo'lishi kerak.
@@ -95,15 +96,15 @@ export function ContactContent() {
               <p className="eyebrow">{t("contact.socials")}</p>
               <SocialIconLinks className="mt-3" />
             </div>
-          </aside>
+          </Reveal>
 
           {/* ── O'ng ustun: forma ────────────────────────────────────── */}
-          <section className="card p-6 sm:p-8 lg:col-span-3">
+          <Reveal as="section" delay={110} className="card p-6 sm:p-8 lg:col-span-3">
             <h2 className="card-label">{t("contact.formTitle")}</h2>
             <div className="mt-6">
               <ContactForm />
             </div>
-          </section>
+          </Reveal>
         </div>
 
         {/* Pastda takroriy chaqiruv: sahifa oxirigacha o'qigan odam uchun */}

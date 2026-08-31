@@ -40,12 +40,32 @@ async function loadFontBase64(file: string) {
   return base64;
 }
 
+/**
+ * Saytning yorug' temasidagi tokenlar (`globals.css`). CV va sayt bir tilda
+ * gapirishi kerak: aksent — o'sha apelsin, matn — o'sha qora, kartochka —
+ * o'sha ochiq kulrang, burchaklar yumaloq.
+ *
+ * Sahifa foni ataylab OQ qoldirilgan. Saytda u kulrang, lekin CV bosmaga
+ * chiqariladi va butun varaqni bo'yash siyohni behuda yeydi — bento
+ * tuyg'usi kartochkalar orqali beriladi.
+ */
 const COLORS = {
-  text: [17, 20, 28],
-  muted: [110, 116, 130],
-  accent: [124, 58, 237],
-  hairline: [222, 226, 234],
+  ink: [15, 16, 19],
+  muted: [107, 114, 125],
+  accent: [233, 74, 18],
+  card: [244, 245, 247],
+  line: [220, 222, 227],
+  white: [255, 255, 255],
 } as const;
+
+const MARGIN = 46;
+const SECTION_GAP = 20;
+
+/** Kartochka ichidagi o'lchamlar. */
+const CARD = { padX: 14, padY: 13, radius: 9 } as const;
+
+/** Qator balandliklari — matn o'lchamiga bog'liq, shuning uchun bir joyda. */
+const LINE = { title: 14, body: 13.5, bullet: 13 } as const;
 
 /** CV'ni PDF qilib yaratadi va brauzerda yuklab olishni boshlaydi. */
 export async function downloadResumePdf(t: Translate, locale: Locale) {
@@ -60,137 +80,232 @@ export async function downloadResumePdf(t: Translate, locale: Locale) {
 
   const pageWidth = doc.internal.pageSize.getWidth();
   const pageHeight = doc.internal.pageSize.getHeight();
-  const margin = 48;
-  const maxWidth = pageWidth - margin * 2;
-  let y = margin;
+  const contentWidth = pageWidth - MARGIN * 2;
+  const innerWidth = contentWidth - CARD.padX * 2;
+  let y = MARGIN;
 
-  const setText = (size: number, bold = false, color: readonly number[] = COLORS.text) => {
+  // ── Chizish yordamchilari ────────────────────────────────────────────────
+
+  const font = (size: number, bold = false, color: readonly number[] = COLORS.ink) => {
     doc.setFont(FONT_FAMILY, bold ? "bold" : "normal");
     doc.setFontSize(size);
     doc.setTextColor(color[0], color[1], color[2]);
   };
 
+  const fill = (color: readonly number[]) => doc.setFillColor(color[0], color[1], color[2]);
+  const stroke = (color: readonly number[]) => doc.setDrawColor(color[0], color[1], color[2]);
+  const wrap = (text: string, width: number) => doc.splitTextToSize(text, width) as string[];
+
   const ensureSpace = (needed: number) => {
-    if (y + needed <= pageHeight - margin) return;
-    doc.addPage();
-    y = margin;
+    if (y + needed > pageHeight - MARGIN - 26) {
+      doc.addPage();
+      y = MARGIN;
+    }
   };
 
-  const sectionTitle = (label: string) => {
-    ensureSpace(46);
-    y += 10;
-    setText(11, true, COLORS.accent);
-    doc.text(label.toUpperCase(), margin, y);
-    y += 8;
-    doc.setDrawColor(COLORS.hairline[0], COLORS.hairline[1], COLORS.hairline[2]);
-    doc.setLineWidth(0.8);
-    doc.line(margin, y, pageWidth - margin, y);
+  /**
+   * Bo'lim yorlig'i — saytdagi `eyebrow` bilan bir xil: kichkina, katta
+   * harflarda, harflar orasi kengaytirilgan, apelsin rangda. Ostida butun
+   * kenglikka ingichka chiziq.
+   */
+  const sectionLabel = (label: string) => {
+    ensureSpace(56);
+    y += SECTION_GAP;
+    font(8.5, true, COLORS.accent);
+    doc.setCharSpace(1.2);
+    doc.text(label.toUpperCase(), MARGIN, y);
+    doc.setCharSpace(0);
+    y += 7;
+    stroke(COLORS.line);
+    doc.setLineWidth(0.7);
+    doc.line(MARGIN, y, pageWidth - MARGIN, y);
     y += 16;
   };
 
-  const paragraph = (text: string, size = 10, color: readonly number[] = COLORS.text) => {
-    if (!text) return;
-    setText(size, false, color);
-    const lines = doc.splitTextToSize(text, maxWidth) as string[];
-    ensureSpace(lines.length * (size + 4));
-    doc.text(lines, margin, y);
-    y += lines.length * (size + 4) + 6;
+  /**
+   * Bir blok — yaxlit kartochka: sarlavha, o'ng chetda davri, matnlar va
+   * ro'yxat.
+   *
+   * Balandlik OLDIN hisoblanadi. jsPDF chizilgan narsaning ORQASIGA hech
+   * narsa qo'ya olmaydi — avval fon, keyin matn kerak, ya'ni fonning
+   * balandligi matn chizilishidan oldin ma'lum bo'lishi shart.
+   *
+   * Blok butun varaqqa sig'masa kartochkasiz, oddiy oqim bilan chiziladi:
+   * bunday blokni ikkiga bo'lish CV uchun ortiqcha murakkablik bo'lardi.
+   */
+  const card = (opts: {
+    title?: string;
+    meta?: string;
+    paragraphs?: string[];
+    bullets?: string[];
+  }) => {
+    const { title, meta, paragraphs = [], bullets = [] } = opts;
+
+    let metaWidth = 0;
+    if (meta) {
+      font(9);
+      metaWidth = doc.getTextWidth(meta) + 16;
+    }
+
+    font(10.5, true);
+    const titleLines = title ? wrap(title, innerWidth - metaWidth) : [];
+
+    font(9.5);
+    const paraLines = paragraphs.filter(Boolean).map((p) => wrap(p, innerWidth));
+    const bulletLines = bullets.filter(Boolean).map((b) => wrap(b, innerWidth - 13));
+
+    let height = CARD.padY * 2;
+    if (titleLines.length) height += titleLines.length * LINE.title + 6;
+    for (const p of paraLines) height += p.length * LINE.body + 6;
+    for (const b of bulletLines) height += b.length * LINE.bullet + 4;
+    if (bulletLines.length) height -= 4;
+
+    const boxed = height <= pageHeight - MARGIN * 2 - 26;
+    if (boxed) ensureSpace(height + 8);
+
+    const top = y;
+    if (boxed) {
+      fill(COLORS.card);
+      doc.roundedRect(MARGIN, top, contentWidth, height, CARD.radius, CARD.radius, "F");
+    }
+
+    const x = MARGIN + (boxed ? CARD.padX : 0);
+    y = top + (boxed ? CARD.padY : 0) + 9;
+
+    if (titleLines.length) {
+      font(10.5, true);
+      doc.text(titleLines, x, y);
+      if (meta) {
+        font(9, false, COLORS.muted);
+        doc.text(meta, pageWidth - MARGIN - (boxed ? CARD.padX : 0), y, { align: "right" });
+      }
+      y += titleLines.length * LINE.title + 6;
+    }
+
+    for (const p of paraLines) {
+      if (!boxed) ensureSpace(p.length * LINE.body);
+      font(9.5, false, COLORS.muted);
+      doc.text(p, x, y);
+      y += p.length * LINE.body + 6;
+    }
+
+    for (const b of bulletLines) {
+      if (!boxed) ensureSpace(b.length * LINE.bullet);
+      font(9.5, false, COLORS.ink);
+      // Belgi — kichkina apelsin kvadrat: saytdagi urg'u bilan bir xil ohang
+      fill(COLORS.accent);
+      doc.rect(x, y - 5.4, 3, 3, "F");
+      doc.text(b, x + 13, y);
+      y += b.length * LINE.bullet + 4;
+    }
+
+    y = (boxed ? top + height : y) + 8;
   };
 
-  const bullet = (text: string) => {
-    if (!text) return;
-    setText(10);
-    const indent = 14;
-    const lines = doc.splitTextToSize(text, maxWidth - indent) as string[];
-    ensureSpace(lines.length * 14 + 4);
-    doc.setFillColor(COLORS.accent[0], COLORS.accent[1], COLORS.accent[2]);
-    doc.circle(margin + 3, y - 3.2, 1.6, "F");
-    doc.text(lines, margin + indent, y);
-    y += lines.length * 14 + 4;
-  };
+  // ── Sarlavha ─────────────────────────────────────────────────────────────
 
-  const jobHeader = (title: string, period: string) => {
-    ensureSpace(34);
-    setText(11, true);
-    const periodWidth = doc.getTextWidth(period);
-    const titleLines = doc.splitTextToSize(title, maxWidth - periodWidth - 16) as string[];
-    doc.text(titleLines, margin, y);
-    setText(9.5, false, COLORS.muted);
-    doc.text(period, pageWidth - margin, y, { align: "right" });
-    y += titleLines.length * 14 + 6;
-  };
+  /*
+    Ism yonidagi kichkina apelsin kvadrat — saytdagi logotipning o'rnini
+    bosadi. Rasm yuklashdan ko'ra shakl chizish arzon va u hech qachon
+    «yuklanmadim» bo'lib qolmaydi.
+  */
+  const mark = 26;
+  fill(COLORS.accent);
+  doc.roundedRect(MARGIN, y, mark, mark, 7, 7, "F");
+  font(14, true, COLORS.white);
+  doc.text("B", MARGIN + mark / 2, y + mark / 2 + 5, { align: "center" });
 
-  // ── Sarlavha ──────────────────────────────────────────────────────────────
-  setText(24, true);
-  doc.text(siteConfig.name, margin, y + 6);
-  y += 26;
-  setText(11, false, COLORS.muted);
-  doc.text(siteConfig.role, margin, y);
-  y += 18;
+  const headLeft = MARGIN + mark + 14;
+  font(21, true, COLORS.ink);
+  doc.text(siteConfig.name, headLeft, y + 12);
+  font(10, false, COLORS.muted);
+  doc.text(siteConfig.role, headLeft, y + 27);
+  y += mark + 20;
 
-  setText(9, false, COLORS.accent);
+  const dot = "     ·     ";
+  font(8.8, false, COLORS.ink);
   doc.text(
     [
-      `Telegram: ${siteConfig.telegramHandle}`,
+      `Telegram ${siteConfig.telegramHandle}`,
       siteConfig.phoneDisplay,
       siteConfig.url.replace("https://", ""),
-    ].join("   ·   "),
-    margin,
+    ].join(dot),
+    MARGIN,
     y,
   );
-  y += 13;
+  y += 12;
+  font(8.8, false, COLORS.muted);
   doc.text(
-    ["GitHub: Behruz0129", "Instagram: @berdiyev.design", "Toshkent, UTC+5"].join("   ·   "),
-    margin,
+    ["GitHub Behruz0129", "Instagram @berdiyev.design", "Toshkent · UTC+5"].join(dot),
+    MARGIN,
     y,
   );
-  y += 14;
+  y += 16;
 
-  doc.setDrawColor(COLORS.accent[0], COLORS.accent[1], COLORS.accent[2]);
-  doc.setLineWidth(1.6);
-  doc.line(margin, y, pageWidth - margin, y);
-  y += 22;
+  // Qisqa apelsin bo'lak, davomi ingichka kulrang — saytdagi urg'u ohangi
+  stroke(COLORS.accent);
+  doc.setLineWidth(2);
+  doc.line(MARGIN, y, MARGIN + 54, y);
+  stroke(COLORS.line);
+  doc.setLineWidth(0.7);
+  doc.line(MARGIN + 54, y, pageWidth - MARGIN, y);
+  y += 18;
 
-  // ── Men haqimda ───────────────────────────────────────────────────────────
-  paragraph(t("about.bio1"), 10, COLORS.muted);
-  paragraph(t("about.bio2"), 10, COLORS.muted);
+  // ── Men haqimda ──────────────────────────────────────────────────────────
+  card({ paragraphs: [t("about.bio1"), t("about.bio2")] });
 
-  // ── Tajriba ───────────────────────────────────────────────────────────────
-  sectionTitle(t("about.experience"));
+  // ── Tajriba ──────────────────────────────────────────────────────────────
+  sectionLabel(t("about.experience"));
 
-  jobHeader(t("about.modmeTitle"), t("about.modmePeriod"));
-  for (let i = 1; i <= 5; i++) bullet(t(`about.modmeBullet${i}`));
-  y += 6;
+  card({
+    title: t("about.modmeTitle"),
+    meta: t("about.modmePeriod"),
+    paragraphs: [t("about.modmeSummary")],
+    bullets: [1, 2, 3, 4, 5].map((i) => t(`about.modmeBullet${i}`)),
+  });
 
-  jobHeader(t("about.iccTitle"), t("about.iccPeriod"));
-  paragraph(t("about.iccDesc"), 10, COLORS.muted);
-  paragraph(t("about.iccApps"), 10, COLORS.muted);
-  for (let i = 1; i <= 8; i++) bullet(t(`about.iccBullet${i}`));
+  card({
+    title: t("about.iccTitle"),
+    meta: t("about.iccPeriod"),
+    paragraphs: [t("about.iccDesc"), t("about.iccApps")],
+    bullets: [1, 2, 3, 4, 5, 6, 7, 8].map((i) => t(`about.iccBullet${i}`)),
+  });
 
-  // ── Ta'lim ────────────────────────────────────────────────────────────────
-  sectionTitle(t("about.education"));
-  jobHeader(t("about.school2Desc"), t("about.school2"));
-  paragraph(t("about.school2Note"), 9.5, COLORS.muted);
+  // ── Ta'lim ───────────────────────────────────────────────────────────────
+  sectionLabel(t("about.education"));
+  card({
+    title: t("about.school2Desc"),
+    meta: t("about.school2"),
+    paragraphs: [t("about.school2Note")],
+  });
 
-  // ── Ko'nikmalar va qiziqishlar ────────────────────────────────────────────
-  sectionTitle(t("about.skillsTitle"));
-  bullet(t("about.skillsDesign"));
-  bullet(t("about.skillsCode"));
-  bullet(t("about.skillsBackend"));
-  bullet(t("about.skillsOther"));
-  bullet(t("about.skillsLanguages"));
+  // ── Ko'nikmalar ──────────────────────────────────────────────────────────
+  sectionLabel(t("about.skillsTitle"));
+  card({
+    bullets: [
+      t("about.skillsDesign"),
+      t("about.skillsCode"),
+      t("about.skillsBackend"),
+      t("about.skillsOther"),
+      t("about.skillsLanguages"),
+    ],
+  });
 
-  sectionTitle(t("about.interestsTitle"));
-  for (let i = 1; i <= 3; i++) bullet(t(`about.interest${i}`));
+  // ── Qiziqishlar ──────────────────────────────────────────────────────────
+  sectionLabel(t("about.interestsTitle"));
+  card({ bullets: [1, 2, 3].map((i) => t(`about.interest${i}`)) });
 
-  // ── Sahifa raqamlari ──────────────────────────────────────────────────────
+  // ── Kolontitul ───────────────────────────────────────────────────────────
   const pageCount = doc.getNumberOfPages();
   for (let page = 1; page <= pageCount; page++) {
     doc.setPage(page);
-    setText(8.5, false, COLORS.muted);
-    doc.text(`${page} / ${pageCount}`, pageWidth - margin, pageHeight - 24, { align: "right" });
-    doc.text(siteConfig.url.replace("https://", ""), margin, pageHeight - 24);
+    stroke(COLORS.line);
+    doc.setLineWidth(0.7);
+    doc.line(MARGIN, pageHeight - 40, pageWidth - MARGIN, pageHeight - 40);
+    font(8, false, COLORS.muted);
+    doc.text(siteConfig.url.replace("https://", ""), MARGIN, pageHeight - 26);
+    doc.text(`${page} / ${pageCount}`, pageWidth - MARGIN, pageHeight - 26, { align: "right" });
   }
 
-  doc.save(`berdiyev-bexruzbek-cv-${locale}.pdf`);
+  doc.save(`berdiyev-behruzbek-cv-${locale}.pdf`);
 }

@@ -5,6 +5,7 @@ import Link from "next/link";
 import { ArrowUpRight } from "@phosphor-icons/react";
 import { Container } from "@/components/Container";
 import { PageHeader } from "@/components/PageHeader";
+import { Reveal } from "@/components/Reveal";
 import { projects, type Project } from "@/data/projects";
 import { useLocale } from "@/contexts/LocaleContext";
 
@@ -30,12 +31,19 @@ export function ProjectsContent() {
 
       <Container className="pb-16">
         <div className="grid gap-4">
-          {featured ? <FeaturedCard project={featured} index={0} /> : null}
+          {featured ? (
+            <Reveal>
+              <FeaturedCard project={featured} index={0} />
+            </Reveal>
+          ) : null}
 
           {rest.length ? (
             <div className="grid gap-4 md:grid-cols-2">
               {rest.map((project, i) => (
-                <SmallCard key={project.slug} project={project} index={i + 1} />
+                /* Ketma-ket: ikkinchi kartochka birinchisidan bir oz keyin */
+                <Reveal key={project.slug} delay={i * 110}>
+                  <SmallCard project={project} index={i + 1} />
+                </Reveal>
               ))}
             </div>
           ) : null}

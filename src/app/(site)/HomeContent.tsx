@@ -14,6 +14,7 @@ import { ScrambleText } from "@/components/ScrambleText";
 import { SectionHeader } from "@/components/SectionHeader";
 import { ServicesSection } from "@/components/ServicesSection";
 import { PricingSection } from "@/components/PricingSection";
+import { Reveal } from "@/components/Reveal";
 import { Phone, TelegramLogo, ArrowUpRight, DownloadSimple } from "@phosphor-icons/react";
 import { useLocale } from "@/contexts/LocaleContext";
 import { downloadResumePdf } from "@/lib/resume-pdf";
@@ -60,7 +61,7 @@ export function HomeContent() {
           kerak, `max-w-3xl` (768px) da esa ular sig'may, kasb uchinchi
           qatorga tushib ketardi.
         */}
-        <div className="relative max-w-5xl">
+        <Reveal className="relative max-w-5xl">
           {/*
             Sarlavha bir gap, lekin ikki qatlamda: kulrang bog'lovchilar va
             qora asosiy so'zlar. Ko'z shu farq bo'ylab yuradi va gapni o'zi
@@ -89,19 +90,30 @@ export function HomeContent() {
               className="text-accent"
             />
           </h1>
+        </Reveal>
 
-          {/* Matn chapda, tugma o'ngda — ular qatorning ikki chetini egallaydi */}
-          <div className="mt-7 flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between sm:gap-10">
-            <p className="max-w-xl text-[16px] leading-7 text-foreground/75">{t("home.lead")}</p>
-            <Link
-              href="/contact"
-              className="btn-accent flex-shrink-0 self-start hover:brightness-105 focus-visible:focus-ring sm:self-auto"
-            >
-              <Phone size={18} weight="fill" />
-              {t("home.contactMe")}
-            </Link>
-          </div>
-        </div>
+        {/*
+          Matn chapda, tugma o'ngda. Bu qator ataylab sarlavha qutisidan
+          TASHQARIDA: sarlavha `max-w-5xl` da (kasb nomi bir qatorga sig'ishi
+          uchun), qator esa sahifaning to'liq enida — shunda tugmaning o'ng
+          cheti pastdagi kartochkalar bilan bir chiziqda turadi. Ilgari u
+          ichkarida bo'lgani uchun chekkaga yetmay qolardi.
+
+          Tekislash `start`: tugma ham, matn ham yuqoridan boshlanadi.
+        */}
+        <Reveal
+          delay={90}
+          className="mt-7 flex flex-col gap-6 sm:flex-row sm:items-start sm:justify-between sm:gap-12"
+        >
+          <p className="max-w-xl text-[16px] leading-7 text-foreground/75">{t("home.lead")}</p>
+          <Link
+            href="/contact"
+            className="btn-accent flex-shrink-0 self-start hover:brightness-105 focus-visible:focus-ring"
+          >
+            <Phone size={18} weight="fill" />
+            {t("home.contactMe")}
+          </Link>
+        </Reveal>
 
         {/*
           Ko'rsatkichlar sarlavhadan tashqarida va butun kenglikni oladi —
@@ -118,7 +130,11 @@ export function HomeContent() {
           Matn har uchalasida ham chapga tekislangan — raqam va izoh bir
           chiziqdan boshlansa, ko'z ularni ustun bo'lib o'qiydi.
         */}
-        <ul className="mt-10 flex flex-col gap-7 border-t border-line pt-6 sm:flex-row sm:justify-between sm:gap-8">
+        <Reveal
+          as="ul"
+          delay={180}
+          className="mt-10 flex flex-col gap-7 border-t border-line pt-6 sm:flex-row sm:justify-between sm:gap-8"
+        >
           {[1, 2, 3].map((i) => (
             <li key={i} className="sm:max-w-[15rem]">
               <div className="font-mono text-[clamp(1.5rem,3.4vw,2.1rem)] font-semibold leading-none tracking-[-0.03em] text-accent tabular-nums">
@@ -127,10 +143,10 @@ export function HomeContent() {
               <p className="mt-2 text-[13px] leading-5 text-muted">{t(`home.stat${i}Label`)}</p>
             </li>
           ))}
-        </ul>
+        </Reveal>
 
         {/* ── Loyihalar ─────────────────────────────────────────────────── */}
-        <section className="mt-12">
+        <Reveal as="section" className="mt-12">
           {/*
             Bo'lim sarlavhasi bir qatorda: chapda nom, o'ngda barcha
             loyihalarga o'tish. Bosh sahifada uchtasi ko'rinadi — qolgani
@@ -186,17 +202,17 @@ export function HomeContent() {
               );
             })}
           </div>
-        </section>
+        </Reveal>
 
         {/* ── Xizmatlar ─────────────────────────────────── */}
-        <div className="mt-16">
+        <Reveal className="mt-16">
           <ServicesSection />
-        </div>
+        </Reveal>
 
         {/* ── Narxlar ──────────────────────────────────── */}
-        <div className="mt-16">
+        <Reveal className="mt-16">
           <PricingSection />
-        </div>
+        </Reveal>
 
         {/*
           ── Men haqimda ──
@@ -212,7 +228,7 @@ export function HomeContent() {
           kartochkalar turli balandlikda va biri ikki ustunni egallaydi,
           shuning uchun ikkita ichma-ich ustun ishlatilgan.
         */}
-        <div className="mt-6 grid grid-cols-1 gap-3 lg:grid-cols-3">
+        <Reveal className="mt-6 grid grid-cols-1 gap-3 lg:grid-cols-3">
           {/* Chap ustun: tajriba (cho'ziladi) + vositalar */}
           <div className="flex flex-col gap-3">
             <Card label={t("about.experience")} bodyClassName="flex flex-col">
@@ -392,10 +408,10 @@ export function HomeContent() {
 
             <SetupCard />
           </div>
-        </div>
+        </Reveal>
 
         {/* ── Aloqa ─────────────────────────────────────────────────────── */}
-        <div className="mt-14">
+        <Reveal className="mt-14">
           <Card label={t("contact.detailsTitle")}>
             <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
               <div>
@@ -424,7 +440,7 @@ export function HomeContent() {
               </a>
             </div>
           </Card>
-        </div>
+        </Reveal>
       </Container>
     </main>
   );

@@ -99,6 +99,22 @@ export default async function RootLayout({
 
   return (
     <html lang={initialLocale} suppressHydrationWarning>
+      <head>
+        {/*
+          Ochilish animatsiyalari FAQAT JS bor bo'lganda yoqiladi.
+
+          Yashirin holat (`opacity: 0`) `html.has-js` ostida yozilgan,
+          shuning uchun JS o'chirilgan brauzerda — va qidiruv robotining
+          skriptsiz ko'rinishida — hamma narsa oddiygina ko'rinib turadi.
+          Skript <head> da va sinxron: birinchi bo'yoqdan oldin ishlaydi,
+          shuning uchun «ko'rindi → yashirindi → chiqdi» miltillashi bo'lmaydi.
+        */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `document.documentElement.classList.add("has-js")`,
+          }}
+        />
+      </head>
       <body
         className={`${sans.variable} ${cyrillic.variable} ${geistMono.variable} antialiased`}
       >

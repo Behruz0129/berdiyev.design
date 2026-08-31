@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { PaperPlaneTilt, TelegramLogo, CheckCircle } from "@phosphor-icons/react";
+import { PaperPlaneTilt, TelegramLogo, ArrowCounterClockwise } from "@phosphor-icons/react";
 import { useLocale } from "@/contexts/LocaleContext";
 import { siteConfig } from "@/data/site";
 
@@ -76,6 +76,73 @@ export function ContactForm() {
   const fieldClass =
     "w-full rounded-xl border border-line bg-background px-4 text-[15px] text-foreground placeholder:text-muted/70 transition-colors hover:border-foreground/20 focus:border-accent/60 focus-visible:focus-ring";
 
+  /*
+    Yuborilgach forma butunlay tasdiq paneliga almashadi — xabar tepasiga
+    kichkina qator qo'shib qo'yish emas. Sabab oddiy: bo'shab qolgan forma
+    «yana yozing» deb turadi, holbuki ish tugagan. Panelning o'zi esa
+    ketma-ket ochiladi: doira → halqa → belgi → matn.
+  */
+  if (sent) {
+    return (
+      <div aria-live="polite" className="py-6 text-center">
+        <span className="relative mx-auto flex h-16 w-16 items-center justify-center">
+          <span
+            className="sent-ring absolute inset-0 rounded-full border-2 border-ok"
+            aria-hidden
+          />
+          <span className="sent-mark flex h-16 w-16 items-center justify-center rounded-full bg-ok/12">
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" aria-hidden>
+              <path
+                className="sent-check"
+                d="M5 12.5 10 17.5 19 7"
+                stroke="var(--ok)"
+                strokeWidth="2.4"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </span>
+        </span>
+
+        <p
+          className="sent-line mt-5 text-[17px] font-medium text-foreground"
+          style={{ animationDelay: "440ms" }}
+        >
+          {t("contact.success")}
+        </p>
+        <p
+          className="sent-line mx-auto mt-2 max-w-sm text-[14px] leading-6 text-muted"
+          style={{ animationDelay: "540ms" }}
+        >
+          {t("contact.responseLabel")} — {t("contact.response")}
+        </p>
+
+        <div
+          className="sent-line mt-6 flex flex-wrap items-center justify-center gap-3"
+          style={{ animationDelay: "640ms" }}
+        >
+          <a
+            href={siteConfig.socials.telegram}
+            target="_blank"
+            rel="noreferrer"
+            className="btn-accent hover:brightness-105 focus-visible:focus-ring"
+          >
+            <TelegramLogo size={17} weight="fill" />
+            {t("contact.telegramFallback")}
+          </a>
+          <button
+            type="button"
+            onClick={() => setSent(false)}
+            className="inline-flex items-center gap-1.5 rounded-full border border-line bg-background px-4 py-2.5 text-[13.5px] font-medium text-foreground transition-colors hover:bg-surface-2 focus-visible:focus-ring"
+          >
+            <ArrowCounterClockwise size={15} weight="bold" />
+            {t("contact.successAgain")}
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <form onSubmit={handleSubmit} noValidate>
       <div className="grid gap-4">
@@ -148,26 +215,26 @@ export function ContactForm() {
         </div>
 
         <div className="flex flex-wrap items-center gap-4">
+          {/*
+            Yuborilayotganda samolyot uchib ketadi va qaytadi (`plane-away`).
+            Aylanuvchi spinner ham bo'lardi, lekin u har joyda bir xil —
+            bu yerdagi harakat esa aynan «xabar ketdi» degan ma'noni beradi.
+          */}
           <button
             type="submit"
             disabled={sending}
-            className="btn-accent hover:brightness-105 focus-visible:focus-ring disabled:cursor-not-allowed disabled:opacity-60"
+            className={`btn-accent hover:brightness-105 focus-visible:focus-ring disabled:cursor-not-allowed disabled:opacity-70 ${
+              sending ? "is-sending" : ""
+            }`}
           >
-            <PaperPlaneTilt size={17} weight="fill" />
+            <PaperPlaneTilt className="plane" size={17} weight="fill" />
             {sending ? t("contact.sending") : t("contact.submit")}
           </button>
           <p className="text-[13px] text-muted">{t("contact.formNote")}</p>
         </div>
 
-        {/* Natija xabarlari — ekran o'quvchilar uchun ham e'lon qilinadi. */}
+        {/* Xato xabari — ekran o'quvchilar uchun ham e'lon qilinadi. */}
         <div aria-live="polite" className="empty:hidden">
-          {sent ? (
-            <div className="flex items-start gap-2.5 rounded-xl border border-ok/30 bg-ok/10 px-4 py-3 text-[14px] leading-6 text-foreground">
-              <CheckCircle size={18} weight="fill" className="mt-0.5 flex-shrink-0 text-ok" />
-              {t("contact.success")}
-            </div>
-          ) : null}
-
           {error ? (
             <div className="rounded-xl border border-accent/30 bg-accent/8 px-4 py-3 text-[14px] leading-6 text-foreground">
               {error}

@@ -1,7 +1,39 @@
+import type { ProjectFontKey } from "@/lib/project-fonts";
+
 export type ProjectScreenshot = {
   title: string;
   image: string;
   description?: string;
+};
+
+/**
+ * Loyihada ishlatilgan rang. `role` — i18n kaliti
+ * (`projects.detail.dsRole<Role>`), shuning uchun nom uch tilda chiqadi;
+ * hex esa o'zgarmaydi.
+ */
+export type DesignSystemColor = {
+  role: "primary" | "deep" | "accent" | "soft" | "paper" | "ink";
+  hex: string;
+};
+
+/**
+ * Loyihaning dizayn tili: shriftlar, ranglar, burchak radiusi.
+ *
+ * Ma'lumot taxminiy emas — GIGU niki loyihaning o'z kodidan, Modme niki
+ * ishlab turgan saytning uslub faylidan olingan.
+ *
+ * Islom sivilizatsiyasi markazida bu blok YO'Q va ataylab: u landing emas,
+ * o'nlab turli dastur, har birining o'z ko'rinishi bilan — bitta palitra
+ * bilan umumlashtirsak, yolg'on bo'lardi.
+ */
+export type DesignSystem = {
+  display: { name: string; font: ProjectFontKey };
+  body: { name: string; font: ProjectFontKey };
+  colors: DesignSystemColor[];
+  /** Masalan: "6 → 20 px" */
+  radius: string;
+  /** Loyihaning o'z tugma matni — tarjima qilinmaydi, u iqtibos. */
+  sampleCta: string;
 };
 
 export type Project = {
@@ -27,6 +59,8 @@ export type Project = {
   siteFeatures?: string[];
   /** Optional: demo link (live site, demo page, or Telegram bot link). */
   demoUrl?: string;
+  /** Optional: loyihaning dizayn tili. Landing bo'lmagan ishlarda yo'q. */
+  designSystem?: DesignSystem;
 };
 
 export const projects: Project[] = [
@@ -99,6 +133,25 @@ export const projects: Project[] = [
       "Daily traffic and application report in Telegram",
     ],
     demoUrl: "https://giguacademy.uz",
+    /*
+      Loyihaning o'z kodidan olingan (`globals.css`, `layout.tsx`):
+      sarlavhalar seriflik Cormorant Garamond da — moda akademiyasiga
+      jurnal ohangini beradi; matn esa Outfit, u geometrik va tinch,
+      shuning uchun sarlavha bilan raqobatlashmaydi.
+    */
+    designSystem: {
+      display: { name: "Cormorant Garamond", font: "cormorant" },
+      body: { name: "Outfit", font: "outfit" },
+      colors: [
+        { role: "primary", hex: "#ff0d4f" },
+        { role: "deep", hex: "#d90b42" },
+        { role: "soft", hex: "#ffd4d4" },
+        { role: "paper", hex: "#faf8f8" },
+        { role: "ink", hex: "#120a0e" },
+      ],
+      radius: "6 → 20 px",
+      sampleCta: "Birinchi bepul darsga yozilish",
+    },
   },
   {
     slug: "modme-landing",
@@ -161,6 +214,24 @@ export const projects: Project[] = [
       "Demo so‘rash formasi — Telegram orqali platformaga yuboriladi",
     ],
     demoUrl: "https://modme.uz",
+    /*
+      Modme mahsulot sayti — shuning uchun bitta neytral shrift (Inter)
+      va bitta kuchli rang. Sariq faqat urg'u uchun: u apelsin bilan
+      yonma-yon turganda diqqatni tortadi, lekin uni bosib ketmaydi.
+    */
+    designSystem: {
+      display: { name: "Inter", font: "inter" },
+      body: { name: "Inter", font: "inter" },
+      colors: [
+        { role: "primary", hex: "#ff8000" },
+        { role: "accent", hex: "#ffd03d" },
+        { role: "soft", hex: "#fff8e8" },
+        { role: "paper", hex: "#fafafa" },
+        { role: "ink", hex: "#181c23" },
+      ],
+      radius: "10 → 24 px",
+      sampleCta: "Demo so'rash",
+    },
   },
   {
     slug: "islamic-civilization-center-interactives",

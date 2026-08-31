@@ -38,8 +38,12 @@ export const siteConfig = {
     /** ⚠ Havola hali yo'q. Bo'sh bo'lsa ikonka umuman chiqmaydi. */
     dribbble: "",
   },
-  /** PDF va OG rasmda ishlatiladigan brend rangi. */
-  brandColor: "#7c3aed",
+  /**
+   * Brend rangi — saytning yorug' temadagi aksenti bilan bir xil
+   * (`--accent`). CV PDF va OG rasm shu yerdan o'qiydi, shuning uchun
+   * aksent o'zgarsa ikkalasi ham birga o'zgaradi.
+   */
+  brandColor: "#e94a12",
 } as const;
 
 /**

@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useState } from "react";
 import { Container } from "@/components/Container";
 import { PageHeader } from "@/components/PageHeader";
+import { Reveal } from "@/components/Reveal";
 import { BulletList } from "@/components/BulletList";
 import { useLocale } from "@/contexts/LocaleContext";
 import { downloadResumePdf } from "@/lib/resume-pdf";
@@ -160,9 +161,9 @@ export function AboutContent() {
  */
 function Block({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <section className="card mt-4 p-5 sm:p-6">
+    <Reveal as="section" className="card mt-4 p-5 sm:p-6">
       <h2 className="card-label">{title}</h2>
       <div className="mt-5 max-w-3xl">{children}</div>
-    </section>
+    </Reveal>
   );
 }

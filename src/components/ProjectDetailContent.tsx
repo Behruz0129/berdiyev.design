@@ -3,6 +3,8 @@
 import Image from "next/image";
 import { Container } from "@/components/Container";
 import { PageHeader } from "@/components/PageHeader";
+import { Reveal } from "@/components/Reveal";
+import { DesignSystemBlock } from "@/components/DesignSystemBlock";
 import { BulletList } from "@/components/BulletList";
 import { useLocale } from "@/contexts/LocaleContext";
 import type { Project } from "@/data/projects";
@@ -64,15 +66,17 @@ export function ProjectDetailContent({ project }: { project: Project }) {
       </PageHeader>
 
       <Container className="pb-16">
-        <Image
-          src={project.heroImage}
-          alt={title}
-          width={1200}
-          height={750}
-          sizes="(max-width: 1024px) 100vw, 1100px"
-          priority
-          className="h-auto w-full rounded-2xl border border-line"
-        />
+        <Reveal>
+          <Image
+            src={project.heroImage}
+            alt={title}
+            width={1200}
+            height={750}
+            sizes="(max-width: 1024px) 100vw, 1100px"
+            priority
+            className="h-auto w-full rounded-2xl border border-line"
+          />
+        </Reveal>
 
         <Block title={t("projects.detail.overviewTitle")}>
           <dl className="max-w-3xl space-y-4">
@@ -102,10 +106,10 @@ export function ProjectDetailContent({ project }: { project: Project }) {
           <Panel title={t("projects.detail.problemTitle")}>
             <BulletList items={indexed("problem", [...project.problem])} />
           </Panel>
-          <Panel title={t("projects.detail.solutionTitle")}>
+          <Panel title={t("projects.detail.solutionTitle")} delay={110}>
             <BulletList items={indexed("solution", [...project.solution])} />
           </Panel>
-          <Panel title={t("projects.detail.resultsTitle")}>
+          <Panel title={t("projects.detail.resultsTitle")} delay={220}>
             <BulletList items={indexed("results", [...project.results])} />
           </Panel>
         </div>
@@ -119,6 +123,17 @@ export function ProjectDetailContent({ project }: { project: Project }) {
                 </li>
               ))}
             </ul>
+          </Block>
+        ) : null}
+
+        {/*
+          Dizayn tizimi — skrinshotlardan OLDIN: avval loyiha nima bilan
+          chizilgani ko'rinadi, keyin natija. Bu blok faqat landinglarda
+          bor (`projects.ts` ga qarang).
+        */}
+        {project.designSystem ? (
+          <Block title={t("projects.detail.dsTitle")}>
+            <DesignSystemBlock ds={project.designSystem} projectTitle={title} />
           </Block>
         ) : null}
 
@@ -155,10 +170,10 @@ export function ProjectDetailContent({ project }: { project: Project }) {
 
 function Block({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <section className="card mt-4 p-5 sm:p-6">
+    <Reveal as="section" className="card mt-4 p-5 sm:p-6">
       <p className="card-label">{title}</p>
       <div className="mt-5">{children}</div>
-    </section>
+    </Reveal>
   );
 }
 
@@ -168,12 +183,12 @@ function Prose({ children }: { children: React.ReactNode }) {
 }
 
 /** Muammo / yechim / natija — ketma-ket uch blok. */
-function Panel({ title, children }: { title: string; children: React.ReactNode }) {
+function Panel({ title, children, delay = 0 }: { title: string; children: React.ReactNode; delay?: number }) {
   return (
-    <section className="card p-5">
+    <Reveal as="section" delay={delay} className="card p-5">
       <p className="card-label">{title}</p>
       <div className="mt-4">{children}</div>
-    </section>
+    </Reveal>
   );
 }
 

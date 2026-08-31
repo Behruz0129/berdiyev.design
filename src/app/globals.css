@@ -77,6 +77,43 @@
 
 html {
   overflow-x: hidden;
+
+  /*
+    Skroll paneli sayt tiliga moslandi. Firefox faqat shu ikki xossani
+    biladi, Chrome/Safari esa pastdagi `::-webkit-scrollbar` ni — ikkalasi
+    ham yozilgan, shuning uchun ko'rinish bir xil qoladi.
+
+    `scrollbar-gutter: stable` — sahifa uzun-qisqa bo'lganda kontent yon
+    tomonga sakramasin: joy hamisha band turadi.
+  */
+  scrollbar-width: thin;
+  scrollbar-color: var(--line) transparent;
+  scrollbar-gutter: stable;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  /* Fon ko'rinib tursin: ramka shaffof, rang faqat ichkariga chiziladi */
+  background-color: var(--line);
+  border: 3px solid transparent;
+  background-clip: content-box;
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--muted);
+}
+
+::-webkit-scrollbar-corner {
+  background: transparent;
 }
 
 body {
@@ -500,5 +537,186 @@ body {
 @media (prefers-reduced-transparency: reduce) {
   .bg-glow {
     display: none;
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   OCHILISH ANIMATSIYALARI
+
+   Ikkita mustaqil qism:
+
+   1. Sahifa almashinuvi — `(site)/template.tsx`. Next har o'tishda
+      template'ni qaytadan o'rnatadi, shuning uchun animatsiya har safar
+      qayta ishlaydi (layout'da bunday bo'lmaydi \u2014 u saqlanib qoladi).
+
+   2. Skrollda ochilish — `Reveal` komponenti. Element ko'rinish maydoniga
+      kirganda `is-in` klassini oladi.
+
+   Ikkalasi ham `html.has-js` ostida. Yashirin holat sinxron skript bilan
+   yoqiladi (layout.tsx), ya'ni JS yo'q bo'lsa kontent hech qachon
+   yashirinmaydi \u2014 bu qidiruv robotlari va skriptsiz brauzer uchun muhim.
+   ══════════════════════════════════════════════════════════════════════ */
+
+@keyframes page-enter {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.has-js .page-enter {
+  animation: page-enter 480ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/*
+   Yashirin holat. `will-change` ataylab yo'q: sahifada o'nlab shunday
+   element bor va hammasini alohida qatlamga chiqarish xotirani behuda
+   yeydi \u2014 opacity bilan transform kompozitorda baribir arzon.
+*/
+.has-js [data-reveal] {
+  opacity: 0;
+  transform: translateY(16px);
+}
+
+.has-js [data-reveal].is-in {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity 620ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 620ms cubic-bezier(0.22, 1, 0.36, 1);
+  /* Ketma-ketlik: kechikish elementning o'zida `--reveal-delay` bilan */
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+/*
+   Harakatni kamaytirish so'ralgan bo'lsa: hech narsa yashirinmaydi va
+   hech narsa siljimaydi. Yuqoridagi umumiy blok `transition-duration` ni
+   nolga tushiradi, lekin bu yerda boshlang'ich holatning o'zi ham
+   bekor qilinadi \u2014 aks holda element ko'rinmay qolishi mumkin edi.
+*/
+@media (prefers-reduced-motion: reduce) {
+  .has-js .page-enter,
+  .has-js [data-reveal],
+  .has-js [data-reveal].is-in {
+    animation: none;
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   ALOQA FORMASI \u2014 YUBORILGANDAN KEYIN
+
+   Xabar ketgach forma o'rnini tasdiq paneli egallaydi. Animatsiya bir
+   necha qadamdan iborat va ular ketma-ket ishlaydi: doira chiqadi \u2192
+   halqa tarqaladi \u2192 belgi chiziladi \u2192 matn ko'tariladi. Hammasi
+   kechikish (`animation-delay`) bilan, JS taymer bilan emas \u2014 brauzer
+   ularni o'zi tartibda yuritadi.
+   ══════════════════════════════════════════════════════════════════════ */
+
+/* Yuborilayotganda samolyot uchib ketadi va qaytib keladi */
+@keyframes plane-away {
+  0% {
+    transform: none;
+    opacity: 1;
+  }
+  55% {
+    transform: translate(18px, -14px) rotate(12deg);
+    opacity: 0;
+  }
+  56% {
+    transform: translate(-14px, 10px) rotate(-8deg);
+    opacity: 0;
+  }
+  100% {
+    transform: none;
+    opacity: 1;
+  }
+}
+
+.is-sending .plane {
+  animation: plane-away 900ms cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+@keyframes pop-in {
+  from {
+    opacity: 0;
+    transform: scale(0.72);
+  }
+  60% {
+    transform: scale(1.06);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Doiradan tarqaladigan halqa \u2014 bir marta, keyin yo'qoladi */
+@keyframes ring-out {
+  from {
+    opacity: 0.5;
+    transform: scale(0.7);
+  }
+  to {
+    opacity: 0;
+    transform: scale(2.1);
+  }
+}
+
+/* Belgi chizilishi: uzunligi 32 ga teng chiziq bosqichma-bosqich ochiladi */
+@keyframes check-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.sent-mark {
+  animation: pop-in 460ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.sent-ring {
+  animation: ring-out 900ms cubic-bezier(0.22, 1, 0.36, 1) 220ms both;
+}
+
+.sent-check {
+  stroke-dasharray: 32;
+  stroke-dashoffset: 32;
+  animation: check-draw 420ms cubic-bezier(0.65, 0, 0.35, 1) 300ms both;
+}
+
+.sent-line {
+  animation: rise-in 460ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .is-sending .plane,
+  .sent-mark,
+  .sent-ring,
+  .sent-check,
+  .sent-line {
+    animation: none;
+  }
+  .sent-check {
+    stroke-dashoffset: 0;
+  }
+  .sent-ring {
+    opacity: 0;
   }
 }
