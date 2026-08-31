@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Image from "next/image";
 import { CaretLeft, CaretRight } from "@phosphor-icons/react";
+import { PixelDissolve } from "@/components/PixelDissolve";
 import { Card } from "@/components/Card";
 import { useLocale } from "@/contexts/LocaleContext";
 import { setupItems } from "@/data/setup";
@@ -18,10 +18,9 @@ const HOLD_MS = 4500;
  * qilib qo'yilsa kompyuterning yetti qatorli tarkibi sig'may, kartochka
  * qo'shnisidan ikki barobar uzun bo'lib ketardi.
  *
- * Rasmlar bir-birining ustiga qo'yiladi va faqat shaffofligi o'zgaradi —
- * shunda almashishda balandlik qimirlamaydi. Rasmlarning o'zi fonsiz PNG,
- * shuning uchun `object-contain`: buyum qirqilmaydi, kartochka foni
- * ustida turadi.
+ * Rasmlar canvas ustida kataklab almashadi (`PixelDissolve`): har kadrda
+ * tasodifiy bir necha katak eskisidan yangisiga o'tadi. Rasmlarning o'zi
+ * fonsiz PNG, shuning uchun `object-contain` — buyum qirqilmaydi.
  *
  * Ro'yxat bo'sh bo'lsa kartochka umuman chizilmaydi.
  */
@@ -52,7 +51,6 @@ export function SetupCard() {
   return (
     <Card
       label={t("personal.setupLabel")}
-      className="sm:col-span-2"
       bodyClassName="flex flex-col gap-4 sm:flex-row sm:gap-5"
       // Sichqoncha ustida to'xtaydi — izohni o'qish va tarkibni ko'rish
       // uchun vaqt qoladi.
@@ -65,23 +63,16 @@ export function SetupCard() {
         bekor qiladi; erkin qoldirilsa esa kompyuterning yetti qatorli
         tarkibi kartochkani cho'zib, har aylanishda qatorni sakratadi.
       */}
-      <div className="relative aspect-square w-full shrink-0 overflow-hidden rounded-2xl border border-line bg-card-2 sm:aspect-auto sm:h-[15rem] sm:w-[15rem] lg:h-[17rem] lg:w-[17rem]">
-        {setupItems.map((item, i) => (
-          <Image
-            key={item.id}
-            src={item.image}
-            alt={item.name}
-            fill
-            sizes="(max-width: 640px) 100vw, 272px"
-            // Birinchi rasm darhol kerak; qolganlari almashishdan oldin
-            // brauzer tomonidan yuklab qo'yiladi.
-            priority={i === 0}
-            className={`object-contain p-4 transition-opacity duration-300 ease-out ${
-              i === index ? "opacity-100" : "opacity-0"
-            }`}
-          />
-        ))}
-      </div>
+      {/*
+        Rasmlar erib emas, kataklab almashadi — sarlavhadagi harflar
+        aralashuvi bilan bir mavzuda.
+      */}
+      <PixelDissolve
+        sources={setupItems.map((item) => item.image)}
+        index={index}
+        sizes="(max-width: 640px) 100vw, 272px"
+        className="aspect-square w-full shrink-0 overflow-hidden rounded-2xl border border-line bg-card-2 sm:aspect-auto sm:h-[15rem] sm:w-[15rem] lg:h-[17rem] lg:w-[17rem]"
+      />
 
       <div className="flex min-h-0 min-w-0 flex-1 flex-col sm:h-[15rem] lg:h-[17rem]">
         <div className="text-[16px] font-medium leading-snug text-foreground">{active.name}</div>

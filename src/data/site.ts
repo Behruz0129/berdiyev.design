@@ -26,7 +26,7 @@ export const siteConfig = {
   socials: {
     telegram: "https://t.me/CBehruz",
     github: "https://github.com/Behruz0129",
-    instagram: "https://instagram.com/bekhruz.uiux",
+    instagram: "https://instagram.com/berdiyev.design",
     /** ⚠ Havola hali yo'q. Bo'sh bo'lsa ikonka umuman chiqmaydi. */
     dribbble: "",
   },

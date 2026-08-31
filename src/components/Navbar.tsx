@@ -11,17 +11,20 @@ import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { useLocale } from "@/contexts/LocaleContext";
 import { siteConfig } from "@/data/site";
 
+// «Bosh sahifa» yo'q: logotipning o'zi bosh sahifaga olib boradi va
+// menyuda takrorlanishi ortiqcha edi.
 const links = [
-  { href: "/", labelKey: "nav.home" as const },
   { href: "/about", labelKey: "nav.about" as const },
   { href: "/projects", labelKey: "nav.projects" as const },
   { href: "/contact", labelKey: "nav.contact" as const },
 ] as const;
 
 /**
- * Chapda logotip → apelsin nuqta → hozirgi ish o'rni terminal satrida.
- * O'ngda til va tema tugmalari doim ko'rinib turadi, ular yonida esa
- * gamburger — u endi faqat sahifa havolalarini ochadi.
+ * Chapda logotip, o'ngda til va tema tugmalari hamda gamburger.
+ *
+ * Lavozim satri bu yerdan olib tashlangan: portfolio frilans buyurtma
+ * uchun, hozirgi ish o'rni esa mijozga tegishli emas — u faqat tajriba
+ * bo'limida, tarix sifatida qoladi.
  *
  * Til va tema menyudan tashqariga chiqarilgan: ular tez-tez bosiladi,
  * har safar menyu ochish ortiqcha qadam edi.
@@ -57,20 +60,36 @@ export function Navbar() {
     };
   }, [open]);
 
+  /*
+    Menyuda fon rangi yo'q — u fondagi yorug'lik ustidan och tasma bo'lib
+    chiqib turardi. Faqat `backdrop-blur` qoldi: u rang qo'shmaydi, shuning
+    uchun dog'lar ko'rinaveradi, lekin scroll paytida ostidan o'tayotgan
+    matn yumshab, sarlavha o'qiladigan bo'lib qoladi. Pastdagi ingichka
+    chiziq esa menyuni sahifadan ajratib turadi.
+  */
   return (
-    <header className="sticky top-0 z-40 bg-background/85 backdrop-blur-md">
+    <header className="sticky top-0 z-40 border-b border-line/70 backdrop-blur-md">
       <Container size="wide" className="py-4">
-        <div ref={panelRef} className="relative flex items-center justify-between gap-3">
+        <div
+          ref={panelRef}
+          className="relative flex items-center justify-between gap-3"
+        >
           <div className="flex min-w-0 items-center gap-2.5">
+            {/*
+              Logotip yonida brend nomi — u ayni paytda saytning manzili
+              ham. Telefonda faqat belgi qoladi: yozuv sig'maganda kesilib
+              turgandan ko'ra butunlay yo'qligi toza ko'rinadi.
+            */}
             <Link
               href="/"
               aria-label={siteConfig.name}
-              className="flex-shrink-0 rounded-lg focus-visible:focus-ring"
+              className="flex flex-shrink-0 items-center gap-2.5 rounded-lg focus-visible:focus-ring"
             >
-              <Logo className="h-8 w-auto text-foreground" />
+              <Logo className="h-10 w-auto text-foreground" />
+              <span className="hidden text-[17px] font-semibold tracking-[-0.02em] text-foreground sm:block">
+                {siteConfig.shortName}
+              </span>
             </Link>
-            <span className="h-1.5 w-1.5 flex-shrink-0 rounded-full bg-accent" aria-hidden />
-            <TerminalLine text={t("nav.status")} />
           </div>
 
           {/*
@@ -80,7 +99,12 @@ export function Navbar() {
             turgani uchun til va tema tugmalarini bosib qolardi.
           */}
           <div className="relative flex flex-shrink-0 items-center gap-2">
-            <SiteMenu open={open} pathname={pathname} onNavigate={() => setOpen(false)} t={t} />
+            <SiteMenu
+              open={open}
+              pathname={pathname}
+              onNavigate={() => setOpen(false)}
+              t={t}
+            />
 
             {/* Til va tema — doim ko'rinadi, menyu ochish shart emas */}
             <LanguageSwitcher />
@@ -99,7 +123,10 @@ export function Navbar() {
                 Xochga aylanganda chetki ikkitasi o'rtaga 6px siljiydi
                 (markazlari 1 · 7 · 13 px da turadi).
               */}
-              <span className="relative flex h-[14px] w-[18px] flex-col justify-between" aria-hidden>
+              <span
+                className="relative flex h-[14px] w-[18px] flex-col justify-between"
+                aria-hidden
+              >
                 <span
                   className={cn(
                     "h-[2px] w-full origin-center rounded-full bg-foreground transition-transform",
@@ -121,7 +148,6 @@ export function Navbar() {
               </span>
             </button>
           </div>
-
         </div>
       </Container>
     </header>
@@ -177,7 +203,9 @@ function SiteMenu({
                 // Har band o'z foni va radiusiga ega — umumiy quti yo'q,
                 // shuning uchun ular alohida-alohida havoda turadi.
                 "card whitespace-nowrap rounded-full px-4 py-2 text-[15px] transition-colors focus-visible:focus-ring",
-                active ? "font-semibold text-foreground" : "text-muted hover:text-foreground",
+                active
+                  ? "font-semibold text-foreground"
+                  : "text-muted hover:text-foreground",
               )}
             >
               {t(l.labelKey)}
@@ -186,38 +214,5 @@ function SiteMenu({
         })}
       </nav>
     </div>
-  );
-}
-
-/**
- * Hozirgi ish o'rni bir qatorli terminal oynasida:
- * «IT Support Manager | Modme | To'liq stavka».
- *
- * Oyna sayt temasiga ergashadi: yorug'da och terminal, qorong'ida qora.
- * Telefonda umuman chiqmaydi:
- * logotip, til, tema va gamburgerdan keyin unga ~86px joy qolardi, matn
- * esa 121px talab qiladi — kesilgan «$ IT Support …» hech narsa
- * demaydi, ustiga sarlavhaning o'zi lavozimlarni aytib turadi.
- *
- * Matn i18n dan bitta satr bo'lib keladi va shu yerda `|` bo'yicha
- * bo'linadi — ajratgichlar ochroq rangda chiziladi, shunda lavozim
- * birinchi o'qiladi. Tarjimon uchun esa bu oddiy satrligicha qoladi.
- */
-function TerminalLine({ text }: { text: string }) {
-  const parts = text.split("|").map((p) => p.trim());
-
-  return (
-    <p className="terminal-line hidden min-w-0 items-center truncate rounded-md px-2.5 py-[3px] font-mono text-[11px] leading-[1.45] tracking-[0.01em] sm:flex sm:text-[12px]">
-      <span className="truncate">
-        {parts.map((part, i) => (
-          // Tor ekranda oxirgi qism yashiriladi — uchalasi sig'maganda
-          // `truncate` so'zni o'rtasidan kesib qo'yardi.
-          <span key={part} className={i >= 2 ? "hidden md:inline" : undefined}>
-            {i > 0 ? <span className="terminal-dim mx-1.5">|</span> : null}
-            <span className={i === 0 ? "terminal-strong" : undefined}>{part}</span>
-          </span>
-        ))}
-      </span>
-    </p>
   );
 }

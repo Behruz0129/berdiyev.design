@@ -59,7 +59,11 @@ export function LanguageSwitcher() {
       {open ? (
         <ul
           role="listbox"
-          className="card absolute top-[calc(100%+0.4rem)] left-0 z-50 w-40 animate-[fade-in_120ms_ease-out] p-1.5"
+          // Tashqi radius 16px, ichki 10px, oraliq 6px — 16 − 6 = 10.
+          // Kartochkaning standart 24px radiusi bu kichik ro'yxatga
+          // katta edi, ichkarisi esa 8px bo'lib qolib, ikkala burchak
+          // bir-biriga mos tushmasdi.
+          className="card absolute top-[calc(100%+0.4rem)] left-0 z-50 w-40 animate-[fade-in_120ms_ease-out] rounded-2xl p-1.5"
         >
           {LOCALES.map((l) => (
             <li key={l.value}>
@@ -72,7 +76,7 @@ export function LanguageSwitcher() {
                   setOpen(false);
                 }}
                 className={cn(
-                  "w-full rounded-lg px-3 py-2 text-left text-[14px] transition-colors focus-visible:focus-ring",
+                  "w-full rounded-[10px] px-3 py-2 text-left text-[14px] transition-colors focus-visible:focus-ring",
                   l.value === locale
                     ? "bg-card-2 font-medium text-foreground"
                     : "text-muted hover:bg-card-2 hover:text-foreground",

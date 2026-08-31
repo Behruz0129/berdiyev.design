@@ -1,63 +1,124 @@
 "use client";
 
+import {
+  Phone,
+  EnvelopeSimple,
+  TelegramLogo,
+  MapPin,
+  ArrowUpRight,
+  Link as LinkIcon,
+  type Icon,
+} from "@phosphor-icons/react";
 import { Container } from "@/components/Container";
 import { PageHeader } from "@/components/PageHeader";
 import { ContactForm } from "@/components/ContactForm";
-import { useLocale } from "@/contexts/LocaleContext";
 import { SocialIconLinks } from "@/components/SocialIcons";
-import { contactLinks } from "@/data/site";
+import { useLocale } from "@/contexts/LocaleContext";
+import { contactLinks, siteConfig } from "@/data/site";
 
+const ICONS: Record<string, Icon> = {
+  Email: EnvelopeSimple,
+  Telefon: Phone,
+  Telegram: TelegramLogo,
+};
+
+/**
+ * Aloqa sahifasi ikki ustunda: chapda odam bilan bog'lanishning barcha
+ * yo'llari, o'ngda forma.
+ *
+ * Avval uchta bir xil kartochka ustma-ust turardi — aloqa, forma, ijtimoiy
+ * tarmoqlar. Uchalasi bir xil ko'ringani uchun ko'z qayerdan boshlashni
+ * bilmasdi. Endi tanlov aniq: yozishni istasangiz o'ng tomonda forma,
+ * to'g'ridan-to'g'ri bog'lanmoqchi bo'lsangiz chap tomonda manzillar.
+ */
 export function ContactContent() {
   const { t } = useLocale();
 
   return (
     <main>
-      <PageHeader
-        eyebrow={`${t("contact.responseLabel")} \u2014 ${t("contact.response")}`}
-        title={t("contact.title")}
-        subtitle={t("contact.subtitle")}
-      />
+      <PageHeader title={t("contact.title")} subtitle={t("contact.subtitle")} />
 
-      <Container className="pb-16">
-        <section className="card p-6 sm:p-8">
-          <h2 className="card-label">{t("contact.detailsTitle")}</h2>
-          <dl className="mt-5 space-y-3">
-            {contactLinks.map((c) => (
-              <Row key={c.label} label={c.label}>
-                <a
-                  href={c.href}
-                  className="text-accent underline underline-offset-4 break-all"
-                >
-                  {c.value}
-                </a>
-              </Row>
-            ))}
-            <Row label={t("contact.locationLabel")}>{t("contact.location")}</Row>
-            <Row label={t("contact.availabilityLabel")}>{t("contact.availability")}</Row>
-          </dl>
-        </section>
+      <Container size="wide" className="pb-16">
+        <div className="grid gap-4 lg:grid-cols-5">
+          {/* ── Chap ustun: to'g'ridan-to'g'ri aloqa ──────────────────── */}
+          <aside className="card p-6 sm:p-7 lg:col-span-2">
+            {/*
+              Javob muddati eng tepada va yashil nuqta bilan: «bu yerda tirik
+              odam bor» degani birinchi o'qiladigan narsa bo'lishi kerak.
+            */}
+            <h2 className="card-label">{t("contact.detailsTitle")}</h2>
+            <p className="mt-2.5 flex items-center gap-2 text-[13px] text-muted">
+              <span className="live-dot" aria-hidden />
+              {t("contact.responseLabel")} — {t("contact.response")}
+            </p>
 
-        <section className="card mt-4 p-6 sm:p-8">
-          <h2 className="card-label">{t("contact.formTitle")}</h2>
-          <div className="mt-5">
-            <ContactForm />
-          </div>
-        </section>
+            <ul className="mt-5 space-y-2">
+              {contactLinks.map((c) => {
+                const Icon = ICONS[c.label] ?? LinkIcon;
+                return (
+                  <li key={c.label}>
+                    <a
+                      href={c.href}
+                      className="group flex items-center gap-3 rounded-2xl border border-line bg-card-2 px-4 py-3 transition-colors hover:bg-surface-2 focus-visible:focus-ring"
+                    >
+                      <Icon size={18} className="flex-shrink-0 text-muted" aria-hidden />
+                      <span className="min-w-0 flex-1 truncate font-mono text-[13.5px] tracking-[-0.01em] text-foreground">
+                        {c.value}
+                      </span>
+                      <ArrowUpRight
+                        size={14}
+                        weight="bold"
+                        className="flex-shrink-0 text-muted opacity-0 transition-opacity group-hover:opacity-100"
+                        aria-hidden
+                      />
+                    </a>
+                  </li>
+                );
+              })}
+            </ul>
 
-        <section className="card mt-4 p-6 sm:p-8">
-          <h2 className="card-label">{t("contact.socials")}</h2>
-          <SocialIconLinks className="mt-5" />
-        </section>
+            <dl className="mt-6 space-y-4 border-t border-line pt-6">
+              <div>
+                <dt className="eyebrow">{t("contact.locationLabel")}</dt>
+                <dd className="mt-1.5 flex items-center gap-1.5 text-[14px] text-foreground/85">
+                  <MapPin size={15} className="flex-shrink-0 text-muted" aria-hidden />
+                  {t("contact.location")}
+                </dd>
+              </div>
+              <div>
+                <dt className="eyebrow">{t("contact.availabilityLabel")}</dt>
+                <dd className="mt-1.5 text-[14px] leading-6 text-foreground/85">
+                  {t("contact.availability")}
+                </dd>
+              </div>
+            </dl>
+
+            <div className="mt-6 border-t border-line pt-6">
+              <p className="eyebrow">{t("contact.socials")}</p>
+              <SocialIconLinks className="mt-3" />
+            </div>
+          </aside>
+
+          {/* ── O'ng ustun: forma ────────────────────────────────────── */}
+          <section className="card p-6 sm:p-8 lg:col-span-3">
+            <h2 className="card-label">{t("contact.formTitle")}</h2>
+            <div className="mt-6">
+              <ContactForm />
+            </div>
+          </section>
+        </div>
+
+        {/* Pastda takroriy chaqiruv: sahifa oxirigacha o'qigan odam uchun */}
+        <p className="mt-8 text-center text-[15px] leading-7 text-muted">
+          {t("contact.pitch")}{" "}
+          <a
+            href={`mailto:${siteConfig.email}`}
+            className="font-mono text-foreground underline decoration-accent underline-offset-4"
+          >
+            {siteConfig.email}
+          </a>
+        </p>
       </Container>
     </main>
-  );
-}
-
-function Row({ label, children }: { label: string; children: React.ReactNode }) {
-  return (
-    <div className="flex flex-wrap gap-x-3">
-      <dt className="w-32 flex-shrink-0 text-sm text-muted">{label}</dt>
-      <dd className="min-w-0 flex-1 text-[15px] text-foreground/85">{children}</dd>
-    </div>
   );
 }

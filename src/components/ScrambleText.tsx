@@ -23,9 +23,19 @@ const FRAME_MS = 40;
  * Tasodifiy harflar to'plami. Shriftga yaqin bo'lishi kerak: ekzotik
  * belgilar qo'shilsa qator "buzilgan" ko'rinadi, kenglik ham sakraydi.
  */
-const CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+const LATIN = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+const CYRILLIC =
+  "АБВГДЕЖЗИКЛМНОПРСТУФХЦЧШЭЮЯабвгдежзиклмнопрстуфхцчшэюя0123456789";
 
-const randomChar = () => CHARS[Math.floor(Math.random() * CHARS.length)];
+/**
+ * Aralashtirish uchun harf tanlaydi — maqsad harfi qaysi alifboda bo'lsa,
+ * o'sha alifbodan. Aks holda ruscha iborada lotin harflari paydo bo'lib,
+ * effekt "dekodlash" emas, "matn buzilgan" bo'lib ko'rinardi.
+ */
+const randomChar = (cyrillic: boolean) => {
+  const set = cyrillic ? CYRILLIC : LATIN;
+  return set[Math.floor(Math.random() * set.length)];
+};
 
 /**
  * Iboralarni ketma-ket almashtiradi: eski matn tasodifiy harflarga
@@ -51,9 +61,16 @@ const randomChar = () => CHARS[Math.floor(Math.random() * CHARS.length)];
  */
 export function ScrambleText({
   phrases,
+  prefix,
   className = "",
 }: {
   phrases: string[];
+  /**
+   * Iboradan oldin turadigan o'zgarmas so'z («Men»). U ataylab shu
+   * qutining ichida: tashqarida qolsa tor ekranda yolg'iz qatorda
+   * qolib ketardi.
+   */
+  prefix?: string;
   className?: string;
 }) {
   const [display, setDisplay] = useState(phrases[0] ?? "");
@@ -83,6 +100,12 @@ export function ScrambleText({
         return { start, end: start + 0.15 + Math.random() * 0.25 };
       });
 
+      // Alifbo butun ibora bo'yicha bir marta aniqlanadi. Har harf uchun
+      // alohida tekshirilsa, qisqa iboradan uzuniga o'tishda ortiqcha
+      // o'rinlarning maqsad harfi bo'sh bo'lib qoladi va o'sha joylarga
+      // lotin harflari tushib, ruscha qatorda «IRkt16B» kabi aralashma
+      // paydo bo'lardi.
+      const cyrillic = /[Ѐ-ӿ]/.test(to);
       const startedAt = performance.now();
 
       const tick = () => {
@@ -99,7 +122,7 @@ export function ScrambleText({
           } else if (t >= start) {
             // Bo'shliqlar aralashmaydi — so'zlar orasidagi ajratgich
             // qolgani uchun qator o'qiladigan bo'lib turadi.
-            out += target === " " ? " " : randomChar();
+            out += target === " " ? " " : randomChar(cyrillic);
           } else {
             out += from[i] ?? "";
           }
@@ -136,15 +159,36 @@ export function ScrambleText({
   // Kenglikni eng uzun ibora belgilaydi.
   const longest = phrases.reduce((a, b) => (b.length > a.length ? b : a), "");
 
+  const lead = prefix ? `${prefix} ` : "";
+
   return (
-    <span className={`relative inline-block whitespace-nowrap ${className}`}>
+    /*
+      Quti — yaxlit `inline-block`, ichida ikki qatlam:
+
+      • ko'rinmas nusxa eng uzun iborani chizadi va shu bilan qutining
+        ENI ham, BALANDLIGI ham qat'iy bo'lib qoladi;
+      • ko'rinadigan matn uning ustida absolyut turadi.
+
+      Shu sabab almashish paytida qator soni o'zgarmaydi. Avval tor ekranda
+      matn oddiy oqimda edi: tasodifiy harflarning eni turlicha bo'lgani
+      uchun ibora goh bir, goh ikki qatorga tushib, sarlavha sakrardi.
+
+      «Men» ham shu qutining ichida — tashqarida qolsa, quti butun
+      kenglikni egallab, u yolg'iz qatorda qolib ketardi.
+    */
+    <span className="relative inline-block max-w-full whitespace-normal sm:whitespace-nowrap">
       <span className="invisible" aria-hidden>
+        {lead}
         {longest}
       </span>
       <span className="absolute inset-0" aria-hidden>
-        {display}
+        {lead ? <span className="text-foreground">{lead}</span> : null}
+        <span className={className}>{display}</span>
       </span>
-      <span className="sr-only">{phrases.join(", ")}</span>
+      <span className="sr-only">
+        {prefix ? `${prefix} ` : ""}
+        {phrases.join(", ")}
+      </span>
     </span>
   );
 }

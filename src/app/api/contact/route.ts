@@ -51,11 +51,6 @@ function clientIp(request: Request) {
 }
 
 export async function POST(request: Request) {
-  if (!TOKEN || !CHAT_ID) {
-    console.error("Contact API: TELEGRAM_BOT_TOKEN yoki TELEGRAM_CHAT_ID sozlanmagan");
-    return NextResponse.json({ ok: false, error: "server_not_configured" }, { status: 500 });
-  }
-
   let payload: unknown;
   try {
     payload = await request.json();
@@ -67,6 +62,16 @@ export async function POST(request: Request) {
   const name = typeof body.name === "string" ? body.name.trim() : "";
   const email = typeof body.email === "string" ? body.email.trim() : "";
   const message = typeof body.message === "string" ? body.message.trim() : "";
+  const honeypot = typeof body.website === "string" ? body.website.trim() : "";
+
+  /*
+    Tuzoq maydon to'ldirilgan bo'lsa — bu bot. Xato qaytarilmaydi:
+    muvaffaqiyat deb javob beramiz, lekin hech narsa yubormaymiz. Aks
+    holda bot tuzoqni payqab, uni chetlab o'tishga o'rganardi.
+  */
+  if (honeypot) {
+    return NextResponse.json({ ok: true });
+  }
 
   if (!email || !message) {
     return NextResponse.json({ ok: false, error: "missing_fields" }, { status: 400 });
@@ -80,6 +85,17 @@ export async function POST(request: Request) {
     message.length > LIMITS.message
   ) {
     return NextResponse.json({ ok: false, error: "too_long" }, { status: 400 });
+  }
+
+  /*
+    Sozlama tekshiruvi ataylab shu yerda — eng boshida emas. Bot ham,
+    emailini xato yozgan odam ham Telegram sozlanganini bilishi shart emas;
+    ular yuqoridagi javoblarni oladi. Bu yerga faqat haqiqiy, to'g'ri
+    to'ldirilgan xabar yetib keladi.
+  */
+  if (!TOKEN || !CHAT_ID) {
+    console.error("Contact API: TELEGRAM_BOT_TOKEN yoki TELEGRAM_CHAT_ID sozlanmagan");
+    return NextResponse.json({ ok: false, error: "server_not_configured" }, { status: 500 });
   }
 
   // Faqat shu nuqtagacha yetib kelgan (ya'ni Telegram'ga ketadigan) so'rovlar

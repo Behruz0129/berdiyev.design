@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "music:sync": "node scripts/sync-music.mjs"
+    "music:sync": "node scripts/sync-music.mjs",
+    "tg:id": "node scripts/telegram-chat-id.mjs"
   },
   "dependencies": {
     "@phosphor-icons/react": "^2.1.10",

@@ -108,7 +108,7 @@ export const projects: Project[] = [
     shortDescription:
       "Landing page for Modme CRM & LMS: premium design, micro-animations, platform info (pricing, benefits, docs, gamification), resources, and Telegram-integrated demo form.",
     context:
-      "Modme LLC da IT qo'llab-quvvatlash menejeri sifatida ishlayman; landing sahifa asosiy vazifamdan tashqari loyiha bo'lib, dizayni va frontendini to'liq o'zim bajardim.",
+      "Modme CRMda IT Support Manager sifatida ishlayman; landing sahifa asosiy vazifamdan tashqari loyiha bo'lib, dizayni va frontendini to'liq o'zim bajardim.",
     heroImage: "/projects/modme.png",
     overview: {
       role: "UI/UX Design + Frontend Development",

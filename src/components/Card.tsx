@@ -12,7 +12,7 @@ export function Card({
   children,
   ...rest
 }: {
-  label?: string;
+  label?: React.ReactNode;
   className?: string;
   bodyClassName?: string;
   children: React.ReactNode;
@@ -22,7 +22,11 @@ export function Card({
   return (
     <section className={cn("card flex flex-col p-4 sm:p-5", className)} {...rest}>
       {label ? <p className="card-label self-start">{label}</p> : null}
-      <div className={cn("min-h-0 flex-1", label && "mt-4", bodyClassName)}>{children}</div>
+      {/* `Boolean(...)` — yorliq endi ReactNode, `0` kabi qiymat sinf
+          o'rniga tushib qolmasin */}
+      <div className={cn("min-h-0 flex-1", Boolean(label) && "mt-4", bodyClassName)}>
+        {children}
+      </div>
     </section>
   );
 }

@@ -2,23 +2,26 @@ import type { Messages } from "./en";
 
 export const uz: Messages = {
   nav: {
-    status: "IT Support Manager | Modme | To'liq stavka",
     home: "Bosh sahifa",
     about: "Men haqimda",
     projects: "Loyihalar",
     contact: "Aloqa",
   },
   home: {
-    heroBadge: "Modme LLC da to'liq stavkada · frilans loyihalarga ochiqman",
     name: "Berdiyev Behruzbek",
     greeting: "Salom, men",
     shortName: "Behruz!",
     rolePrefix: "Men",
     role1: "UI/UX Dizaynerman",
     role2: "Front End dasturchiman",
-    role3: "IT Support Managerman",
-    heroNote:
-      "Ko'rib chiqing \u2014 kerakli narsangiz shu yerda bo'lsa, yozing. Har xabarga o'zim javob beraman.",
+    lead:
+      "Mahsulotni birinchi eskizdan ishlab turgan saytgacha olib chiqaman — dizayn, frontend va serverga chiqarish, natija uchun bitta javobgar.",
+    stat1Value: "600+",
+    stat1Label: "interaktiv ekran va ilova ishga tushdi",
+    stat2Value: "90+",
+    stat2Label: "Lighthouse — barcha ko'rsatkichlar bo'yicha",
+    stat3Value: "15×",
+    stat3Label: "yengilroq media — 137 MB dan 9 MB gacha",
     title: "UI/UX Dizayner va Front End Dasturchi",
     description:
       "G'oyadan ishlab turgan mahsulotgacha: dizayn, frontend, backend va serverga chiqarish. Ta'lim va xizmat ko'rsatish biznesi uchun landing sahifa, veb-ilova va interaktiv tizimlar quraman.",
@@ -27,11 +30,9 @@ export const uz: Messages = {
     techStack: "Ishlaydigan vositalarim",
     selectedWork: "Tanlangan ishlar",
     viewAll: "Hammasini ko'rish",
-    statApps: "Islom sivilizatsiyasi markazi uchun interaktiv ekran va ilova",
-    statCenters: "Modme LLC da qo'llab-quvvatlaydigan ta'lim markazi",
-    statYears: "yillik amaliy dizayn va ishlab chiqish tajribasi",
   },
   services: {
+    lead: "Bitta bosqichni ham, hammasini ham buyurtma qilsangiz bo'ladi.",
     title: "Sizga nima qila olaman",
     subtitle:
       "Figmadagi birinchi eskizdan to serverda ishlab turgan tizimgacha. Bitta bosqichni ham, hammasini ham buyurtma qilsangiz bo'ladi.",
@@ -47,15 +48,6 @@ export const uz: Messages = {
     item4Title: "Internet-do'kon (e-commerce)",
     item4Desc:
       "Katalog, filtrlar, mahsulot sahifasi, savat va buyurtma rasmiylashtirish; to'lov va yetkazib berish integratsiyasi, buyurtmalar paneli.",
-    item5Title: "Veb-ilova va admin interfeyslari",
-    item5Desc:
-      "Dashboard, CRM va LMS panellari, jadvallar, hisobotlar va rollar — odamlar har kuni ishlaydigan ekranlar. Mavjud backendingiz ustiga dizayn va frontend.",
-    item6Title: "Veb-ilova va SaaS — backend bilan",
-    item6Desc:
-      "Tizimning o'zi: baza, autentifikatsiya va rollar, API, integratsiyalar, fon vazifalari va serverga chiqarish. Ko'p mijozli (multi-tenant) mahsulotlar uchun ham — har mijoz o'z sub-domenida, o'z ma'lumoti bilan.",
-    item7Title: "Qurilmalar uchun interaktiv tizimlar",
-    item7Desc:
-      "Sensorli ekran, kiosk va ko'rgazma o'rnatmalari. Android (.apk), Windows (.exe) yoki BrightSign uchun tayyor build ko'rinishida topshiriladi.",
     more:
       "Bundan tashqari: mavjud saytni qayta dizayn qilish va tezlashtirish, dizayn tizimi (UI kit) tuzish, tayyor maketni ishlaydigan kodga o'tkazish.",
   },
@@ -83,9 +75,9 @@ export const uz: Messages = {
     resumeGenerating: "PDF tayyorlanmoqda...",
     resumeError: "PDF yaratib bo'lmadi. Qaytadan urinib ko'ring.",
     bio1:
-      "Men UI/UX dizayner va Front End dasturchiman, Toshkentda ishlayman. Mahsulotni boshidan oxirigacha olib chiqaman: Figmada dizayn, frontend, backend va serverga chiqarish. Asosan ta'lim va xizmat ko'rsatish biznesi uchun landing sahifalar, veb-ilovalar va ko'rgazma ekranlari uchun interaktiv tizimlar.",
+      "Ismim Berdiyev Behruzbek, Toshkentda yashayman va ishlayman. UI/UX dizayn hamda Front End — mahsulotni Figmadagi birinchi eskizdan serverda ishlab turgan holatiga qadar olib chiqaman. Tajribamda asosan ta'lim va xizmat ko'rsatish biznesi uchun ishlaganman.",
     bio2:
-      "Dizayn, frontend va backendni bitta odam olib borgani uchun orada topshirish nuqtasi yo'q — hech narsa yo'qolmaydi va natijaga bitta odam javob beradi. Modme LLC da 400 dan ortiq ta'lim markazini qo'llab-quvvatlaganim menga foydalanuvchi haqiqatda qayerda qiynalishini yaqindan ko'rsatdi; har bir dizaynga o'sha tajribani olib kiraman.",
+      "Modme CRMda 400 dan ortiq ta'lim markazini qo'llab-quvvatlaganim menga foydalanuvchi haqiqatda qayerda qiynalishini yaqindan ko'rsatdi va har bir dizaynga o'sha tajribani olib kiraman.",
     modmeSummary:
       "400 dan ortiq ta'lim markaziga xizmat ko'rsataman, mijoz va dasturchi o'rtasida ko'prik bo'laman, mahsulot, sotuv va UI/UX rollarida ham ishladim.",
     iccSummary:
@@ -96,7 +88,7 @@ export const uz: Messages = {
     school2: "2022–2027",
     school2Desc: "Toshkent davlat texnika universiteti — bakalavr",
     school2Note: "Sirtqi ta'lim shakli.",
-    modmeTitle: "Modme LLC — IT qo'llab-quvvatlash menejeri",
+    modmeTitle: "Modme CRM — IT Support Manager",
     modmePeriod: "2024 – Hozirgacha",
     modmeBullet1: "400 dan ortiq ta'lim markazi bilan ishlash.",
     modmeBullet2: "Administratorlar, menejerlar va xodimlar bilan muloqot.",
@@ -108,6 +100,7 @@ export const uz: Messages = {
     iccTitle:
       "Islom sivilizatsiyasi markazi interaktiv tizimlari — UI/UX Dizayner va Loyiha menejeri",
     iccPeriod: "2025",
+    iccDuration: "8 oy",
     iccDesc:
       "Toshkentdagi Islom sivilizatsiyasi markazi uchun interaktiv raqamli tizimlarni yaratishda ishtirok etdim — ko'rgazma ekranlari va sensorli displeylar uchun dasturiy ta'minot.",
     iccTheme1: "Islomgacha davr",
@@ -163,9 +156,9 @@ export const uz: Messages = {
       shortDescription:
         "Moda akademiyasi uchun uch tilli sayt: 11 ta reklama landingi, arizalar to'g'ridan-to'g'ri Bitrix24 ga tushadi, har kuni Telegramga trafik hisoboti keladi.",
       context:
-        "To'liq loyiha — tadqiqot, dizayn, frontend hamda CRM va analitika integratsiyasi. giguacademy.uz da ishlab turibdi.",
+        "Buyurtmachining o'z jamoasida marketolog, targetolog, sotuvchi va backend dasturchisi bor edi — men autsorser sifatida qo'shildim va har biri bilan alohida gaplashib talablarini yig'dim. Tadqiqot, dizayn, frontend, CRM va analitika integratsiyasi mendan. Bir oyda topshirildi. giguacademy.uz da ishlab turibdi.",
       overviewRole: "UI/UX Dizayn + Frontend ishlab chiqish",
-      overviewDuration: "",
+      overviewDuration: "1 oy",
       overviewTool0: "Figma",
       overviewTool1: "Next.js",
       overviewTool2: "TypeScript",
@@ -175,22 +168,39 @@ export const uz: Messages = {
       overviewTool6: "Upstash Redis",
       overviewTool7: "Vercel",
       problem0:
-        "Akademiya bir vaqtning o'zida bir nechta kanalda reklama beradi, lekin ariza aynan qaysi kanaldan kelganini bilishning iloji yo'q edi.",
+        "Akademiyaning eski sayti bir tilda edi va ularning darajasiga mos kelmasdi — butunlay yangilash kerak bo'ldi.",
       problem1:
-        "Arizalar yuborilgan zahoti CRM ga tushish o'rniga qo'lda qayta ishlanardi.",
+        "Sayt «mamlakatdagi eng yaxshi o'quv markazlari darajasida» ko'rinishi kerak edi — moda akademiyasida ishonch birinchi ekrandan boshlanadi.",
       problem2:
-        "Auditoriya uch tilda o'qiydi va deyarli butunlay telefondan kiradi.",
+        "Talab: ko'p foto va video. Lekin ular sahifani og'irlashtirmasligi kerak edi — auditoriya deyarli butunlay telefondan, ko'pincha mobil internetdan kiradi.",
+      problem3:
+        "Auditoriya uch tilda o'qiydi.",
+      problem4:
+        "Ariza formasi buyurtmachining backend jamoasi tayyorlagan API ga ulanishi kerak edi.",
       solution0:
-        "Uch tilli saytni dizayn qilib, qurdim; ustiga 11 ta alohida reklama landingi — har bir reklama manbasining o'z URL i va UTM belgilari bor.",
+        "Uch tilli saytni dizayn qilib, qurdim; ustiga 11 ta alohida reklama landingi — har bir manba uchun o'z URL i bilan. Ular allaqachon ishlatayotgan UTM belgilari yangi saytga ham o'tkazildi.",
       solution1:
-        "Ariza formasini Bitrix24 ga to'g'ridan-to'g'ri uladim: kurs, filial va yosh maydonlari bilan — ariza sotuv jamoasiga o'zgartirilmagan holda yetib boradi.",
+        "Ariza formasini backend jamoasi bergan API orqali Bitrix24 ga uladim: kurs, filial va yosh maydonlari bilan — ariza sotuv jamoasiga o'zgartirilmagan holda yetib boradi.",
       solution2:
-        "O'z statistika qatlamini yozdim — tashrif, sahifa ko'rish, bosish va arizalar qurilma, OS, davlat va referrer kesimida; har kuni ertalab Telegramga hisobot yuboriladi.",
+        "Vizual til mijoz bilan birga shakllandi — u ham dizayner, shuning uchun har qaror muhokama qilindi. Sarlavhalarda Cormorant Garamond (serif, atelye kayfiyati), matnda Outfit (geometrik grotesk, mayda o'lchamda tiniq). Ranglar: to'q olcha-qora, issiq oq va bitta malina aksent — u faqat harakat tugmalarida ishlatiladi, shuning uchun «bu yerni bosing» degani hech qayerda adashmaydi.",
+      solution3:
+        "Layout fotosurat va videoga tayanadi: to'liq ekranli hero, ustozlar kartochkalari tajriba yili va o'quvchilar soni bilan, bitiruvchilar natijalari, 5 filial manzili. Mobil o'lchamdagi ko'rinish birinchi o'ringa qo'yib dizayn qilindi — trafikning asosiy qismi shundan keladi.",
+      solution4:
+        "Butun media qayta siqildi va bosqichma-bosqich yuklanadigan qilindi. Sahifada 60 dan ortiq rasm va video bo'lsa ham birinchi ekran darhol ochiladi.",
+      solution5:
+        "O'z statistika qatlamini yozdim: UTM manbalar, CTA bosishlar, arizalar va tashriflar — qurilma, OS, davlat va referrer kesimida. Har kuni ertalab Telegram botga hisobot tushadi.",
+      solution6:
+        "SEO: meta-teglar, tuzilgan ma'lumotlar va uch tilli sitemap.",
       results0:
-        "Sayt ishlab turibdi va 5 ta filial hamda 2 ta ta'lim dasturi bo'yicha ariza qabul qiladi.",
-      results1: "Arizalar bir zumda CRM ga tushadi — endi hech narsa qo'lda ko'chirilmaydi.",
+        "Lighthouse barcha ko'rsatkichlar bo'yicha 90+ , ba'zilari 100.",
+      results1:
+        "Media siqilgach public papka 137 MB dan ~9 MB ga tushdi — hosting trafigi keskin kamaydi.",
       results2:
-        "Media siqilgach public papka 137 MB dan ~9 MB ga tushdi, bu hosting trafigini keskin kamaytirdi.",
+        "Ariza formasi Bitrix24 ga to'g'ridan-to'g'ri ulangan — kurs, filial va yosh maydonlari bilan.",
+      results3:
+        "Har kuni ertalab marketing jamoasi Telegramda kunlik hisobotni oladi: qaysi manbadan necha tashrif, necha CTA bosilgan, necha ariza — qurilma va davlat kesimida.",
+      results4:
+        "Sayt 5 ta filial va 2 ta ta'lim dasturi bo'yicha ariza qabul qiladi.",
       siteFeature0: "Uch til (uz / ru / en)",
       siteFeature1: "11 ta reklama landingi, har birining o'z UTM belgisi bilan",
       siteFeature2: "Bitrix24 CRM ga ulangan ariza formasi",
@@ -213,7 +223,7 @@ export const uz: Messages = {
       shortDescription:
         "Ta'lim markazlari ishlatadigan Modme CRM va LMS platformasi uchun landing sahifa.",
       context:
-        "Modme LLC da IT qo'llab-quvvatlash menejeri bo'lib ishlayman; landing sahifa asosiy vazifamdan tashqari loyiha bo'ldi — dizayni va frontendini o'zim bajardim.",
+        "Modme CRMda IT Support Manager sifatida ishlayman; landing sahifa asosiy vazifamdan tashqari loyiha bo'ldi — dizaynini ham, frontendini ham o'zim qildim.",
       overviewRole: "UI/UX Dizayn + Frontend ishlab chiqish",
       overviewDuration: "3–4 hafta",
       overviewTool0: "Figma",
@@ -298,8 +308,15 @@ export const uz: Messages = {
       screenshot3Desc: "Ko'rgazma zalidagi interaktiv ekranlar.",
     },
   },
+  pricing: {
+    title: "Narxlar",
+    subtitle:
+      "Boshlang'ich narxlar. Aniq raqam brifdan keyin chiqadi — u sahifalar soniga, integratsiyalarga va tayyor matningiz bor-yo'qligiga bog'liq.",
+    from: "dan",
+    note: "Qaysi biri kerakligini bilmayapsizmi? Vazifani yozing — qaysi biri to'g'ri kelishini va qancha turishini aytaman.",
+  },
   contact: {
-    pitch: "Loyihangiz bormi? Yozing — hajmi, muddati va narxini birga aniqlaymiz. Be hijolat.",
+    pitch: "G'oyangiz bormi? Keling, uni haqiqatga aylantiramiz. Hajmi, muddati va narxi — birinchi suhbatdayoq aniq bo'ladi.",
     title: "Aloqa",
     subtitle:
       "Emailga yoki Telegramga yozing. Darrov foydali javob olish uchun loyiha turi, taxminiy muddat va byudjet oralig'ini yozib qo'ying.",
@@ -308,7 +325,7 @@ export const uz: Messages = {
     location: "Toshkent, O'zbekiston (UTC+5)",
     availabilityLabel: "Ish formati",
     availability:
-      "To'liq stavkada ishlayman. Frilans loyihalarga ochiqman — kechqurun va dam olish kunlari, masofadan.",
+      "Frilans, masofadan. Bir vaqtda bitta loyiha olaman — shuning uchun u to'liq e'tibor oladi.",
     responseLabel: "Javob muddati",
     response: "Odatda 24 soat ichida.",
     formTitle: "Yoki shu yerdan xabar yuboring",
@@ -327,6 +344,12 @@ export const uz: Messages = {
     errorInvalidEmail: "To'g'ri email manzil kiriting.",
     errorMissingFields: "Email va xabar maydonlarini to'ldiring.",
     errorTooLong: "Xabar juda uzun. Qisqartirib yuboring.",
+    errorSendFailed:
+      "Xabar yuborilmadi. Pochta orqali to'g'ridan-to'g'ri yuborishingiz mumkin — matningiz saqlanib qoldi.",
+    mailFallback:
+      "Pochta orqali yuborish",
+    formNote:
+      "Yoki shunchaki pochtaga yozing — forma majburiy emas.",
   },
   personal: {
     musicLabel: "Mening pleylistim",

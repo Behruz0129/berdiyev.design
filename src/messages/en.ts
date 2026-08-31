@@ -1,22 +1,25 @@
 export const en = {
   nav: {
-    status: "IT Support Manager | Modme | Full-time",
     home: "Home",
     about: "About",
     projects: "Projects",
     contact: "Contact",
   },
   home: {
-    heroBadge: "Full-time at Modme LLC · open to freelance projects",
     name: "Berdiyev Behruzbek",
     greeting: "Hi, I'm",
     shortName: "Behruz!",
     rolePrefix: "I'm",
     role1: "a UI/UX Designer",
     role2: "a Front End Developer",
-    role3: "an IT Support Manager",
-    heroNote:
-      "Take a look around \u2014 if something here fits what you need, write to me. I answer every message myself.",
+    lead:
+      "I take a product from the first sketch to the running site — design, frontend and deployment, one person answerable for the result.",
+    stat1Value: "600+",
+    stat1Label: "interactive screens and apps shipped",
+    stat2Value: "90+",
+    stat2Label: "Lighthouse across every metric",
+    stat3Value: "15×",
+    stat3Label: "lighter media — 137 MB down to 9 MB",
     title: "UI/UX Designer & Front End Developer",
     description:
       "From an idea to a running product: design, frontend, backend and deployment. I build landing pages, web apps and interactive systems for education and service businesses.",
@@ -25,11 +28,9 @@ export const en = {
     techStack: "Tools I work with",
     selectedWork: "Selected work",
     viewAll: "See all",
-    statApps: "interactive screens and apps built for the Islamic Civilization Center",
-    statCenters: "educational centers I support at Modme LLC",
-    statYears: "years of hands-on design and development work",
   },
   services: {
+    lead: "Order one stage or the whole thing.",
     title: "What I can do for you",
     subtitle:
       "From the first sketch in Figma to a system running on a server. You can order one step or the whole thing.",
@@ -45,15 +46,6 @@ export const en = {
     item4Title: "Online store (e-commerce)",
     item4Desc:
       "Catalogue, filters, product page, cart and checkout; payment and delivery integration, plus an order panel.",
-    item5Title: "Web app and admin interfaces",
-    item5Desc:
-      "Dashboards, CRM and LMS panels, tables, reports and roles — the screens people look at every working day. Design and frontend on top of the backend you already have.",
-    item6Title: "Web app and SaaS — with the backend",
-    item6Desc:
-      "The whole system: database, authentication and roles, API, integrations, background jobs and deployment. Including multi-client (multi-tenant) products, where every client gets their own subdomain and their own data.",
-    item7Title: "Interactive systems for devices",
-    item7Desc:
-      "Touch screens, kiosks and exhibition installations. Delivered as Android (.apk), Windows (.exe) or BrightSign builds.",
     more:
       "Also: redesigning and speeding up an existing site, building a design system (UI kit), and turning a ready mockup into working code.",
   },
@@ -81,9 +73,9 @@ export const en = {
     resumeGenerating: "Preparing PDF...",
     resumeError: "Could not generate the PDF. Please try again.",
     bio1:
-      "I'm a UI/UX designer and front end developer based in Tashkent, Uzbekistan. I take a product the whole way: design in Figma, frontend, backend and deployment. Mostly landing pages, web apps and interactive systems for exhibition screens — for education and service businesses.",
+      "My name is Berdiyev Behruzbek and I live and work in Tashkent. I do UI/UX design and front end — taking a product from the first sketch in Figma to a site running on a server. Most of my work has been for education and service businesses.",
     bio2:
-      "Working alone across design, frontend and backend means there is no handover where things get lost, and one person is answerable for the result. Supporting 400+ educational centers at Modme LLC showed me first-hand where users actually get stuck — that is the part I bring into every design.",
+      "Supporting more than 400 educational centres at Modme CRM showed me first-hand where users actually get stuck, and I bring that into every design.",
     modmeSummary:
       "Supported 400+ educational centers, bridged clients and developers, and moved between product, sales and UI/UX roles.",
     iccSummary:
@@ -94,7 +86,7 @@ export const en = {
     school2: "2022–2027",
     school2Desc: "Tashkent State Technical University — Bachelor student",
     school2Note: "External (part-time) format.",
-    modmeTitle: "Modme LLC — IT Support Manager",
+    modmeTitle: "Modme CRM — IT Support Manager",
     modmePeriod: "2024 – Present",
     modmeBullet1: "Work with more than 400 educational centers.",
     modmeBullet2: "Communicate with administrators, managers and staff.",
@@ -106,6 +98,7 @@ export const en = {
     iccTitle:
       "Islamic Civilization Center Interactive Systems — UI/UX Designer & Project Manager",
     iccPeriod: "2025",
+    iccDuration: "8 months",
     iccDesc:
       "Took part in building the interactive digital systems for the Center of Islamic Civilization in Tashkent — software for exhibition screens and touch displays.",
     iccTheme1: "Pre-Islamic period",
@@ -161,9 +154,9 @@ export const en = {
       shortDescription:
         "A three-language site for a fashion academy: 11 campaign landing pages, applications going straight into Bitrix24, and a daily traffic report in Telegram.",
       context:
-        "The whole project — research, design, frontend, and the CRM and analytics integration. Live at giguacademy.uz.",
+        "The client had their own team — a marketer, a media buyer, a salesperson and a backend developer. I joined as an outsourcer and gathered requirements from each of them separately. Research, design, frontend, the CRM and the analytics were mine. Delivered in one month. Live at giguacademy.uz.",
       overviewRole: "UI/UX Design + Frontend Development",
-      overviewDuration: "",
+      overviewDuration: "1 month",
       overviewTool0: "Figma",
       overviewTool1: "Next.js",
       overviewTool2: "TypeScript",
@@ -173,22 +166,39 @@ export const en = {
       overviewTool6: "Upstash Redis",
       overviewTool7: "Vercel",
       problem0:
-        "The academy advertises on several channels at once, and there was no way to tell which channel an application actually came from.",
+        "The academy's old site was single-language and did not match their standing — it needed a full rebuild.",
       problem1:
-        "Applications were processed by hand instead of landing in the CRM the moment they were sent.",
+        "The site had to look on par with the best training centres in the country — in a fashion academy trust starts at the first screen.",
       problem2:
-        "The audience reads in three languages and comes almost entirely from phones.",
+        "The brief called for a lot of photo and video — without making the page heavy: the audience comes almost entirely from phones, often on mobile data.",
+      problem3:
+        "The audience reads in three languages.",
+      problem4:
+        "The application form had to connect to an API prepared by the client's backend team.",
       solution0:
-        "Designed and built a three-language site, plus 11 separate campaign landing pages so every ad source has its own URL and UTM tags.",
+        "Designed and built a three-language site, plus 11 separate campaign landing pages — each source with its own URL. The UTM tags they already used were carried over to the new site.",
       solution1:
-        "Connected the application form directly to Bitrix24 with course, branch and age fields, so a lead reaches the sales team unedited.",
+        "Connected the form to Bitrix24 through the backend team's API, with course, branch and age fields, so a lead reaches the sales team unedited.",
       solution2:
-        "Built an in-house analytics layer — visits, page views, clicks and applications broken down by device, OS, country and referrer — which sends a report to Telegram every morning.",
+        "The visual language was worked out together with the client — a designer themselves, so every choice was argued through. Cormorant Garamond for headings (a serif, atelier mood), Outfit for text (a geometric grotesque that stays clear at small sizes). Colours: deep plum-black, warm white and a single raspberry accent used only on action buttons, so “press here” is never ambiguous.",
+      solution3:
+        "The layout leans on photography and video: a full-screen hero, teacher cards with years of experience and student counts, graduate results, five branch addresses. The design started at the mobile size — that is where the traffic comes from.",
+      solution4:
+        "Recompressed all media and staged the loading. Even with 60+ images and video, the first screen appears immediately.",
+      solution5:
+        "Wrote an in-house analytics layer: UTM sources, CTA clicks, applications and visits broken down by device, OS, country and referrer. A report goes to a Telegram bot every morning.",
+      solution6:
+        "SEO: meta tags, structured data and a three-language sitemap.",
       results0:
-        "The site is live and takes applications for 5 branches and 2 study programmes.",
-      results1: "Applications reach the CRM instantly; nothing is copied by hand any more.",
+        "Lighthouse 90+ across every metric, 100 on some of them.",
+      results1:
+        "After compression the public folder went from 137 MB down to about 9 MB — hosting traffic dropped sharply.",
       results2:
-        "Compressing the media brought the public folder from 137 MB down to about 9 MB, which cut hosting traffic sharply.",
+        "The application form is wired straight into Bitrix24, with course, branch and age fields.",
+      results3:
+        "Every morning the marketing team gets a daily report in Telegram: visits by source, CTA clicks and applications, broken down by device and country.",
+      results4:
+        "The site takes applications for 5 branches and 2 study programmes.",
       siteFeature0: "Three languages (uz / ru / en)",
       siteFeature1: "11 campaign landing pages with their own UTM tags",
       siteFeature2: "Application form connected to Bitrix24 CRM",
@@ -211,7 +221,7 @@ export const en = {
       shortDescription:
         "Landing page for the Modme CRM & LMS platform, used by educational centers.",
       context:
-        "I work at Modme LLC as IT Support Manager; the landing page was a project outside my main role — I did the design and the frontend myself.",
+        "I work at Modme CRM as IT Support Manager; the landing page was a project outside my main role — I did the design and the frontend myself.",
       overviewRole: "UI/UX Design + Frontend Development",
       overviewDuration: "3–4 weeks",
       overviewTool0: "Figma",
@@ -296,8 +306,15 @@ export const en = {
       screenshot3Desc: "Interactive screens in the exhibition hall.",
     },
   },
+  pricing: {
+    title: "Prices",
+    subtitle:
+      "Starting prices. The exact figure comes after the brief — it depends on the number of pages, the integrations and how much content you already have.",
+    from: "from",
+    note: "Not sure which one you need? Describe the task and I'll tell you which fits and what it will cost.",
+  },
   contact: {
-    pitch: "Have a project in mind? Write to me — we'll figure out the scope, the timeline and the price together. Don't be shy.",
+    pitch: "Got an idea? Let's turn it into something real. Scope, timeline and price become clear in the first conversation.",
     title: "Contact",
     subtitle:
       "Write by email or on Telegram. To get a useful answer straight away, tell me what kind of project it is, roughly when you need it, and your budget range.",
@@ -306,7 +323,7 @@ export const en = {
     location: "Tashkent, Uzbekistan (UTC+5)",
     availabilityLabel: "Availability",
     availability:
-      "Employed full-time. Open to freelance projects — evenings and weekends, remote.",
+      "Freelance, remote. I take one project at a time, so it gets my full attention.",
     responseLabel: "Response time",
     response: "Usually within 24 hours.",
     formTitle: "Or send a message here",
@@ -325,6 +342,12 @@ export const en = {
     errorInvalidEmail: "Please enter a valid email address.",
     errorMissingFields: "Please fill in your email and message.",
     errorTooLong: "The message is too long. Please shorten it.",
+    errorSendFailed:
+      "The message didn't go through. You can send it straight by email — your text is kept.",
+    mailFallback:
+      "Send by email",
+    formNote:
+      "Or just write to my email — the form is optional.",
   },
   personal: {
     musicLabel: "My music playlist",
