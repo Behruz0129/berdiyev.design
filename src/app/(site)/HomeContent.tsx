@@ -1,38 +1,38 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Container } from "@/components/Container";
 import { Card } from "@/components/Card";
+import { MusicCard } from "@/components/PersonalCards";
+import { SetupCard } from "@/components/SetupCard";
+import { TechMarquee } from "@/components/TechMarquee";
+import { SocialIconLinks } from "@/components/SocialIcons";
+import { ScrambleText } from "@/components/ScrambleText";
 import { Phone, ArrowUpRight, DownloadSimple } from "@phosphor-icons/react";
-import { Sticker } from "@/components/Sticker";
 import { useLocale } from "@/contexts/LocaleContext";
 import { downloadResumePdf } from "@/lib/resume-pdf";
 import { projects } from "@/data/projects";
-import { contactLinks, siteConfig, socialLinks } from "@/data/site";
-
-const STEPS = [1, 2, 3, 4];
-
-const SKILLS = [
-  "Figma",
-  "TypeScript",
-  "React",
-  "Next.js",
-  "TailwindCSS",
-  "Node.js",
-  "NestJS",
-  "Prisma",
-  "PostgreSQL",
-  "Redis",
-  "Docker",
-  "Bitrix24",
-];
+import { locationImage } from "@/data/personal";
+import { contactLinks, siteConfig } from "@/data/site";
 
 export function HomeContent() {
   const { t, locale } = useLocale();
-  const [step, setStep] = useState(1);
   const [pdfState, setPdfState] = useState<"idle" | "loading" | "error">("idle");
+
+  /*
+    Nuqta iboraning ichida turadi, tashqarisida emas: kenglik eng uzun
+    ibora bo'yicha band qilingani uchun qisqa iborada tashqi nuqta matndan
+    uzilib, havoda osilib qolardi.
+
+    Ro'yxat `useMemo` ichida — har renderda yangi massiv yasalsa,
+    almashtirish effekti qayta ishga tushib, hisob doim noldan boshlanardi.
+  */
+  const roles = useMemo(
+    () => [t("home.role1"), t("home.role2"), t("home.role3")].map((role) => `${role}.`),
+    [t],
+  );
 
   async function handleDownload() {
     setPdfState("loading");
@@ -51,11 +51,11 @@ export function HomeContent() {
         {/* ── Sarlavha ──────────────────────────────────────────────────── */}
         <div className="relative max-w-3xl">
           {/*
-            Sarlavha bir gap, lekin uch qatlamda: kulrang bog'lovchilar,
-            qora asosiy so'zlar, apelsin oxirgi qator. Ko'z shu farq bo'ylab
-            yuradi va gapni o'zi o'qib chiqadi.
+            Sarlavha bir gap, lekin ikki qatlamda: kulrang bog'lovchilar va
+            qora asosiy so'zlar. Ko'z shu farq bo'ylab yuradi va gapni o'zi
+            o'qib chiqadi.
           */}
-          <h1 className="text-[clamp(2rem,6vw,3.4rem)] font-semibold leading-[1.14] tracking-[-0.035em]">
+          <h1 className="text-[clamp(2rem,6vw,3.4rem)] font-semibold leading-[1.02] tracking-[-0.035em]">
             <span className="text-muted">{t("home.greeting")}</span>
             <Image
               src="/profile.jpg"
@@ -63,22 +63,16 @@ export function HomeContent() {
               width={160}
               height={160}
               priority
-              className="mx-2.5 inline-block h-[1.42em] w-[1.42em] -rotate-6 -translate-y-[0.1em] rounded-[0.26em] border border-line object-cover align-middle shadow-[0_2px_6px_rgba(16,18,24,0.12),0_16px_32px_-14px_rgba(16,18,24,0.45)]"
+              className="mx-2.5 inline-block h-[1.42em] w-[1.42em] -translate-y-[0.1em] -rotate-[10deg] rounded-[0.26em] border border-card-line object-cover align-middle shadow-[0_2px_6px_rgba(16,18,24,0.12),0_16px_32px_-14px_rgba(16,18,24,0.45)] transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-[0.18em] hover:rotate-[7deg] hover:scale-[1.15]"
             />
             <span className="text-foreground">{t("home.shortName")}</span>{" "}
-            <span className="text-foreground">{t("home.roleLine")}</span>{" "}
+            <span className="text-foreground">{t("home.rolePrefix")}</span>{" "}
             {/*
-              Nakleyka sarlavhaning oxirida, matn oqimida turadi — go'yo
-              gapning ustiga yopishtirilgan. Shakl SVG bilan chizilgan,
-              matn esa uning ustidagi haqiqiy HTML.
+              Lavozim bitta emas, uchta — shuning uchun matn joyida
+              almashib turadi. Kenglikni eng uzun ibora band qilib turadi,
+              ya'ni qator sakramaydi.
             */}
-            <Sticker
-              line1={t("home.stickerLine1")}
-              line2={t("home.stickerLine2")}
-              // Chapga suriladi: "dasturchiman." so'zining oxirini yarmigacha
-              // bosib turadi, go'yo matn ustiga yopishtirilgan.
-              className="relative z-10 -ml-[0.15em] w-[clamp(10.5rem,18vw,13rem)] -translate-y-[0.34em] rotate-[15deg] sm:-ml-[0.45em]"
-            />
+            <ScrambleText className="text-accent" phrases={roles} />
           </h1>
 
           <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-6">
@@ -139,105 +133,137 @@ export function HomeContent() {
               ))}
             </ol>
 
-            <p className="mt-auto pt-4">
+            {/*
+              CV va batafsil sahifa — ikkalasi ham tugma. CV to'ldirilgan,
+              chunki HR eng avval shuni bosadi; «Men haqimda» esa ramkali,
+              ikkinchi darajali yo'l bo'lib qoladi.
+            */}
+            <div className="mt-auto flex flex-wrap gap-2 pt-5">
+              <button
+                type="button"
+                onClick={handleDownload}
+                disabled={pdfState === "loading"}
+                className="btn px-4 py-2.5 text-[13.5px] hover:opacity-85 focus-visible:focus-ring disabled:opacity-60"
+              >
+                <DownloadSimple size={16} weight="bold" />
+                {pdfState === "loading" ? t("about.resumeGenerating") : t("about.resumeDownload")}
+              </button>
               <Link
                 href="/about"
-                className="inline-flex items-center gap-1 text-[13px] text-accent underline underline-offset-4 focus-visible:focus-ring"
+                className="card inline-flex items-center gap-1.5 rounded-full px-4 py-2.5 text-[13.5px] font-medium text-foreground transition-colors hover:bg-surface-2 focus-visible:focus-ring"
               >
                 {t("about.title")}
-                <ArrowUpRight size={13} weight="bold" />
+                <ArrowUpRight size={14} weight="bold" />
               </Link>
-            </p>
-          </Card>
-
-          {/* Xizmatlar */}
-          <Card label={t("services.title")}>
-            <ul className="space-y-2.5">
-              {[1, 2, 3, 4, 5, 6, 7].map((i) => (
-                <li key={i} className="flex gap-2.5 text-[14px] leading-snug text-foreground/85">
-                  <span className="mt-[7px] h-1 w-1 flex-shrink-0 rounded-full bg-accent" />
-                  {t(`services.item${i}Title`)}
-                </li>
-              ))}
-            </ul>
-          </Card>
-
-          {/* Joylashuv — referensdagi xarita kartochkasi */}
-          <Card label={t("contact.locationLabel")} bodyClassName="flex flex-col">
-            <div className="relative flex-1 overflow-hidden rounded-2xl border border-line bg-card-2">
-              <MapArt />
-              <div className="absolute inset-x-0 bottom-0 p-4 text-center">
-                <div className="text-lg font-medium tracking-[0.28em] text-foreground">
-                  TOSHKENT
-                </div>
-                <div className="mt-1 text-[11px] tracking-[0.2em] text-muted">
-                  41.2995° N, 69.2401° E · UTC+5
-                </div>
-              </div>
             </div>
-          </Card>
-
-          {/* Jarayon — bosqichli tablar bilan, referensdagidek */}
-          <Card label={t("process.title")} className="sm:col-span-2">
-            <div className="min-h-[9.5rem]">
-              <h3 className="text-[15px] font-medium text-foreground">
-                {t(`process.step${step}Title`)}
-              </h3>
-              <p className="mt-2.5 text-[14px] leading-6 text-foreground/75">
-                {t(`process.step${step}Desc`)}
-              </p>
-            </div>
-
-            <div className="mt-4 flex flex-wrap gap-1.5 rounded-full border border-line bg-card-2 p-1">
-              {STEPS.map((i) => (
-                <button
-                  key={i}
-                  type="button"
-                  onClick={() => setStep(i)}
-                  aria-pressed={step === i}
-                  className={
-                    step === i
-                      ? "flex-1 rounded-full bg-foreground px-3 py-2 text-[13px] font-medium text-background focus-visible:focus-ring"
-                      : "flex-1 rounded-full px-3 py-2 text-[13px] text-muted transition-colors hover:text-foreground focus-visible:focus-ring"
-                  }
-                >
-                  {String(i).padStart(2, "0")}
-                </button>
-              ))}
-            </div>
-          </Card>
-
-          {/* CV */}
-          <Card label="CV" bodyClassName="flex flex-col">
-            {/* Tillar ro'yxati Tajriba kartochkasida bor — bu yerda takrorlanmaydi. */}
-            <p className="text-[13px] leading-5 text-muted">PDF · uz / ru / en</p>
-            <button
-              type="button"
-              onClick={handleDownload}
-              disabled={pdfState === "loading"}
-              className="btn mt-auto w-full hover:opacity-85 focus-visible:focus-ring disabled:opacity-60"
-            >
-              <DownloadSimple size={17} weight="bold" />
-              {pdfState === "loading" ? t("about.resumeGenerating") : t("about.resumeDownload")}
-            </button>
             {pdfState === "error" ? (
               <p className="mt-2 text-[13px] text-red-600">{t("about.resumeError")}</p>
             ) : null}
           </Card>
 
-          {/* Ko'nikmalar */}
-          <Card label={t("home.techStack")} className="sm:col-span-2 lg:col-span-3">
-            <ul className="flex flex-wrap gap-1.5">
-              {SKILLS.map((s) => (
-                <li key={s} className="pill">
-                  {s}
-                </li>
-              ))}
-            </ul>
+          {/* Joylashuv — bosilsa xaritada ochiladi */}
+          <Card label={t("contact.locationLabel")} bodyClassName="flex flex-col">
+            <a
+              href={siteConfig.mapUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={t("contact.location")}
+              className="group relative min-h-[13.5rem] flex-1 overflow-hidden rounded-2xl border border-line bg-card-2 focus-visible:focus-ring"
+            >
+              {/*
+                Fon rasmi qo'yilsa u chiziladi, aks holda chizilgan ko'cha
+                to'ri qoladi — kartochka ikkala holatda ham to'la ko'rinadi.
+              */}
+              {locationImage ? (
+                <>
+                  {/*
+                    Rasm biroz kattalashtirilgan: to'liq holida ko'cha
+                    nomlari juda mayda chiqib, xarita shunchaki kulrang
+                    dog'ga aylanardi.
+                  */}
+                  <Image
+                    src={locationImage}
+                    alt=""
+                    fill
+                    sizes="(max-width: 1024px) 100vw, 380px"
+                    className="scale-[1.45] object-cover transition-transform duration-700 ease-out group-hover:scale-[1.6]"
+                  />
+                  {/*
+                    Pastdan qoraygan parda — yozuv rasmning istalgan joyida
+                    ham o'qiladigan bo'lib qolsin.
+                  */}
+                  <div
+                    className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/15 to-transparent"
+                    aria-hidden
+                  />
+                </>
+              ) : (
+                <MapArt />
+              )}
+
+              {/*
+                Koordinatalar olib tashlandi — ular hech kimga kerak
+                bo'lmagan aniqlik edi. Vaqt mintaqasi qoldi: chet eldagi
+                mijoz uchun "qachon yozsam javob beradi" degani shu.
+              */}
+              <div className="absolute inset-x-0 bottom-0 p-4 text-center">
+                <div
+                  className={
+                    locationImage
+                      ? "text-lg font-medium tracking-[0.28em] text-white"
+                      : "text-lg font-medium tracking-[0.28em] text-foreground"
+                  }
+                >
+                  TOSHKENT
+                </div>
+                <div
+                  className={
+                    locationImage
+                      ? "mt-1 text-[11px] tracking-[0.2em] text-white/70"
+                      : "mt-1 text-[11px] tracking-[0.2em] text-muted"
+                  }
+                >
+                  {siteConfig.timezone}
+                </div>
+              </div>
+            </a>
           </Card>
 
-          {/* Loyihalar — har biri alohida katak */}
-          {projects.map((project) => {
+          {/* Shaxsiy — pleylist va ish stoli jihozlari */}
+          <MusicCard />
+          <SetupCard />
+
+          {/* Vositalar — logotiplar cheksiz lenta bo'lib o'tadi */}
+          <Card label={t("home.techStack")} bodyClassName="flex flex-col">
+            <div className="flex flex-1 items-center">
+              <TechMarquee />
+            </div>
+          </Card>
+
+        </div>
+
+        {/* ── Loyihalar ─────────────────────────────────────────────────── */}
+        <section className="mt-14">
+          {/*
+            Bo'lim sarlavhasi bir qatorda: chapda nom, o'ngda barcha
+            loyihalarga o'tish. Bosh sahifada uchtasi ko'rinadi — qolgani
+            alohida sahifada.
+          */}
+          <div className="flex items-end justify-between gap-4">
+            <h2 className="text-[clamp(1.5rem,3.2vw,2rem)] font-semibold tracking-[-0.03em] text-foreground">
+              {t("nav.projects")}
+            </h2>
+            <Link
+              href="/projects"
+              className="card inline-flex flex-shrink-0 items-center gap-1.5 rounded-full px-4 py-2 text-[13.5px] font-medium text-foreground transition-colors hover:bg-surface-2 focus-visible:focus-ring"
+            >
+              {t("home.viewAll")}
+              <ArrowUpRight size={14} weight="bold" />
+            </Link>
+          </div>
+
+          <div className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          {projects.slice(0, 3).map((project) => {
             const title = t(`projects.${project.slug}.title`) || project.title;
             const role = t(`projects.${project.slug}.role`) || project.role;
             return (
@@ -264,36 +290,35 @@ export function HomeContent() {
               </Card>
             );
           })}
+          </div>
+        </section>
 
-          {/* Aloqa */}
-          <Card label={t("contact.detailsTitle")} className="sm:col-span-2 lg:col-span-3">
+        {/* ── Aloqa ─────────────────────────────────────────────────────── */}
+        <div className="mt-14">
+          <Card label={t("contact.detailsTitle")}>
             <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
               <div>
                 <p className="max-w-xl text-[17px] leading-7 text-foreground">
-                  {t("contact.availability")}
+                  {t("contact.pitch")}
                 </p>
-                <ul className="mt-4 flex flex-wrap gap-2">
-                  {contactLinks.map((c) => (
-                    <li key={c.label}>
-                      <a href={c.href} className="pill hover:bg-surface-2 focus-visible:focus-ring">
-                        <span className="text-muted">{c.label}</span>
-                        {c.value}
-                      </a>
-                    </li>
-                  ))}
-                  {socialLinks.map((s) => (
-                    <li key={s.label}>
-                      <a
-                        href={s.href}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="pill hover:bg-surface-2 focus-visible:focus-ring"
-                      >
-                        {s.label}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
+                {/*
+                  Email, telefon va Telegram to'liq yozilgan — ular
+                  ko'chirib olinadi. Profillar esa faqat ikonka: kerak
+                  bo'lsa topiladi, lekin asosiy aloqani bosib ketmaydi.
+                */}
+                <div className="mt-4 flex flex-wrap items-center gap-2">
+                  <ul className="flex flex-wrap gap-2">
+                    {contactLinks.map((c) => (
+                      <li key={c.label}>
+                        <a href={c.href} className="pill hover:bg-surface-2 focus-visible:focus-ring">
+                          <span className="text-muted">{c.label}</span>
+                          {c.value}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                  <SocialIconLinks />
+                </div>
               </div>
 
               <a

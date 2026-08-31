@@ -2,6 +2,7 @@ import type { Messages } from "./en";
 
 export const uz: Messages = {
   nav: {
+    status: "IT Support Manager | Modme | To'liq stavka",
     home: "Bosh sahifa",
     about: "Men haqimda",
     projects: "Loyihalar",
@@ -12,19 +13,20 @@ export const uz: Messages = {
     name: "Berdiyev Behruzbek",
     greeting: "Salom, men",
     shortName: "Behruz!",
-    roleLine: "Men UI/UX Dizayner va Front End dasturchiman.",
-    stickerLine1: "IT Support Manager",
-    stickerLine2: "Modme \u00b7 to'liq stavka",
+    rolePrefix: "Men",
+    role1: "UI/UX Dizaynerman",
+    role2: "Front End dasturchiman",
+    role3: "IT Support Managerman",
     heroNote:
-      "Portfolioni ko'rib chiqing va yozing — 24 soat ichida, odatda tezroq javob beraman.",
-    title: "UI/UX Dizayner va Full-stack Dasturchi",
+      "Ko'rib chiqing \u2014 kerakli narsangiz shu yerda bo'lsa, yozing. Har xabarga o'zim javob beraman.",
+    title: "UI/UX Dizayner va Front End Dasturchi",
     description:
       "G'oyadan ishlab turgan mahsulotgacha: dizayn, frontend, backend va serverga chiqarish. Ta'lim va xizmat ko'rsatish biznesi uchun landing sahifa, veb-ilova va interaktiv tizimlar quraman.",
     viewProjects: "Ishlarimni ko'rish",
     contactMe: "Bog'lanish",
     techStack: "Ishlaydigan vositalarim",
     selectedWork: "Tanlangan ishlar",
-    viewAll: "Barcha loyihalar",
+    viewAll: "Hammasini ko'rish",
     statApps: "Islom sivilizatsiyasi markazi uchun interaktiv ekran va ilova",
     statCenters: "Modme LLC da qo'llab-quvvatlaydigan ta'lim markazi",
     statYears: "yillik amaliy dizayn va ishlab chiqish tajribasi",
@@ -81,7 +83,7 @@ export const uz: Messages = {
     resumeGenerating: "PDF tayyorlanmoqda...",
     resumeError: "PDF yaratib bo'lmadi. Qaytadan urinib ko'ring.",
     bio1:
-      "Men UI/UX dizayner va full-stack dasturchiman, Toshkentda ishlayman. Mahsulotni boshidan oxirigacha olib chiqaman: Figmada dizayn, frontend, backend va serverga chiqarish. Asosan ta'lim va xizmat ko'rsatish biznesi uchun landing sahifalar, veb-ilovalar va ko'rgazma ekranlari uchun interaktiv tizimlar.",
+      "Men UI/UX dizayner va Front End dasturchiman, Toshkentda ishlayman. Mahsulotni boshidan oxirigacha olib chiqaman: Figmada dizayn, frontend, backend va serverga chiqarish. Asosan ta'lim va xizmat ko'rsatish biznesi uchun landing sahifalar, veb-ilovalar va ko'rgazma ekranlari uchun interaktiv tizimlar.",
     bio2:
       "Dizayn, frontend va backendni bitta odam olib borgani uchun orada topshirish nuqtasi yo'q — hech narsa yo'qolmaydi va natijaga bitta odam javob beradi. Modme LLC da 400 dan ortiq ta'lim markazini qo'llab-quvvatlaganim menga foydalanuvchi haqiqatda qayerda qiynalishini yaqindan ko'rsatdi; har bir dizaynga o'sha tajribani olib kiraman.",
     modmeSummary:
@@ -297,6 +299,7 @@ export const uz: Messages = {
     },
   },
   contact: {
+    pitch: "Loyihangiz bormi? Yozing — hajmi, muddati va narxini birga aniqlaymiz. Be hijolat.",
     title: "Aloqa",
     subtitle:
       "Emailga yoki Telegramga yozing. Darrov foydali javob olish uchun loyiha turi, taxminiy muddat va byudjet oralig'ini yozib qo'ying.",
@@ -305,7 +308,7 @@ export const uz: Messages = {
     location: "Toshkent, O'zbekiston (UTC+5)",
     availabilityLabel: "Ish formati",
     availability:
-      "Modme LLC da to'liq stavkada ishlayman. Frilans loyihalarga ochiqman — kechqurun va dam olish kunlari, masofadan.",
+      "To'liq stavkada ishlayman. Frilans loyihalarga ochiqman — kechqurun va dam olish kunlari, masofadan.",
     responseLabel: "Javob muddati",
     response: "Odatda 24 soat ichida.",
     formTitle: "Yoki shu yerdan xabar yuboring",
@@ -325,6 +328,16 @@ export const uz: Messages = {
     errorMissingFields: "Email va xabar maydonlarini to'ldiring.",
     errorTooLong: "Xabar juda uzun. Qisqartirib yuboring.",
   },
+  personal: {
+    musicLabel: "Mening pleylistim",
+    musicFallback: "Pleylist",
+    musicPlayYandex: "Yandex Music'da ochish",
+    musicPlaySpotify: "Spotify'da ochish",
+    musicTracks: "ta trek",
+    setupLabel: "Ish stolim",
+    setupPrev: "Oldingisi",
+    setupNext: "Keyingisi",
+  },
   theme: {
     light: "Yorug'",
     dark: "Qorong'i",
@@ -332,10 +345,8 @@ export const uz: Messages = {
   },
   footer: {
     name: "Berdiyev Behruzbek",
-    role: "UI/UX Dizayner va Full-stack Dasturchi",
-    about: "Men haqimda",
-    projects: "Loyihalar",
-    contact: "Aloqa",
+    role: "UI/UX Dizayner va Front End Dasturchi",
+    rights: "Barcha huquqlar himoyalangan",
   },
   notFound: {
     title: "Sahifa topilmadi",

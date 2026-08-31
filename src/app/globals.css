@@ -8,62 +8,46 @@
  * eng muhim joyda ishlatiladi (sarlavhaning oxirgi qatori, faol holat).
  */
 :root {
-  --bg: #ececed;
-  --card: #ffffff;
-  --card-2: #f6f7f8;
+  --bg: #e8e9ec;
+  --card: #f1f2f4;
+  --card-2: #e6e8ec;
+  --card-line: #ffffff;
   --fg: #0f1013;
-  --muted: #6f7681;
-  --line: #e7e8eb;
+  --muted: #6b727d;
+  --line: #dcdee3;
   --accent: #e94a12;
   --ok: #21c55d;
 
-  --shadow-card: 0 1px 2px rgba(16, 18, 24, 0.04), 0 8px 24px -12px rgba(16, 18, 24, 0.12);
-
-  /* Nakleyka (Sticker.tsx). Yorug' variantda yuzi ochroq, siyoh to'q jigarrang. */
-  --stk-shell: #f4f4f3;
-  --stk-edge-1: #f4f4f3;
-  --stk-edge-2: #fe4d07;
-  --stk-edge-2-a: 0.14;
-  --stk-edge-3: #ffffff;
-  --stk-face-1: #fe4d07;
-  --stk-face-2: #ffad8d;
-  --stk-ink: #4a1502;
+  --shadow-card: 0 1px 2px rgba(16, 18, 24, 0.05), 0 12px 30px -14px rgba(16, 18, 24, 0.28);
   --ring: #e94a12;
 
   /* Eski komponentlar shu tokenlarga tayanadi */
-  --surface: #f6f7f8;
-  --surface-2: #eef0f2;
+  --surface: #e6e8ec;
+  --surface-2: #dee1e6;
   --grad-a: #e94a12;
   --grad-b: #e94a12;
   --grad-c: #e94a12;
 }
 
 [data-theme="dark"] {
-  --bg: #0a0b0d;
-  --card: #141619;
-  --card-2: #1b1e22;
+  --bg: #0b0c0e;
+  --card: #16181c;
+  --card-2: #1e2126;
+  --card-line: rgba(255, 255, 255, 0.07);
   --fg: #f1f2f5;
   --muted: #949ba7;
-  --line: #232629;
+  --line: #262a2f;
   --accent: #ff7a45;
   --ok: #34d67f;
 
-  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.4), 0 8px 24px -12px rgba(0, 0, 0, 0.6);
+  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.45), 0 14px 32px -14px rgba(0, 0, 0, 0.75);
 
   /* Qorong'i variantda halqa to'qroq. Markaz ikkala temada ham och
      (#f4f4f3) — chizmada shunday, shuning uchun siyoh ham to'q qoladi. */
-  --stk-shell: #f4f4f3;
-  --stk-edge-1: #f4f4f3;
-  --stk-edge-2: #f4f4f3;
-  --stk-edge-2-a: 1;
-  --stk-edge-3: #f4f4f3;
-  --stk-face-1: #fe4d07;
-  --stk-face-2: #982e04;
-  --stk-ink: #331000;
   --ring: #ff7a45;
 
-  --surface: #1b1e22;
-  --surface-2: #22262b;
+  --surface: #1e2126;
+  --surface-2: #262a30;
   --grad-a: #ff7a45;
   --grad-b: #ff7a45;
   --grad-c: #ff7a45;
@@ -74,6 +58,7 @@
   --color-foreground: var(--fg);
   --color-muted: var(--muted);
   --color-line: var(--line);
+  --color-card-line: var(--card-line);
   --color-card: var(--card);
   --color-card-2: var(--card-2);
   --color-surface: var(--surface);
@@ -116,6 +101,22 @@ body {
   }
 }
 
+/*
+ * Desktopda menyu pastdan emas, gamburgerning yonidan ochiladi: kelib
+ * chiqish nuqtasi tugmaning o'ng cheti, shuning uchun panel eniga qarab
+ * chapga yoyiladi va yopilganda o'sha tugmaga qaytib singadi.
+ */
+@keyframes menu-side-in {
+  from {
+    opacity: 0;
+    transform: translateX(14px) scaleX(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0) scaleX(1);
+  }
+}
+
 /* Har bir band alohida — `animation-delay` bilan ketma-ket chiqadi */
 @keyframes menu-item-in {
   from {
@@ -141,7 +142,8 @@ body {
 @utility card {
   position: relative;
   border-radius: 1.5rem;
-  border: 1px solid var(--line);
+  /* Ramka toza oq — kulrang fonda kartochka ko'tarilib turadi */
+  border: 1px solid var(--card-line);
   background: var(--card);
   box-shadow: var(--shadow-card);
 }
@@ -161,30 +163,6 @@ body {
   font-size: 0.75rem;
   line-height: 1;
   color: var(--muted);
-}
-
-/**
- * Nakleyka matni. Tekis rang o'rniga harflar ichiga mayda shovqin
- * quyiladi (`background-clip: text`), shundan matn "bosilgan" bo'lib
- * ko'rinadi va nakleyka uslubiga qo'shilib ketadi.
- *
- * `@supports` shart: eski brauzerda `background-clip: text` ishlamasa
- * matn shaffof bo'lib yo'qolib qolmasin — u yerda oddiy rang qoladi.
- */
-.sticker-ink {
-  color: var(--stk-ink);
-}
-
-@supports ((-webkit-background-clip: text) or (background-clip: text)) {
-  .sticker-ink {
-    color: transparent;
-    background-color: var(--stk-ink);
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23g)' opacity='0.4'/%3E%3C/svg%3E");
-    background-size: 46px 46px;
-    background-blend-mode: overlay;
-    -webkit-background-clip: text;
-    background-clip: text;
-  }
 }
 
 /** Yumaloq teg — texnologiyalar, vositalar, havolalar uchun. */
@@ -315,4 +293,81 @@ body {
 @utility focus-ring {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
+}
+
+/*
+ * Cheksiz lenta. Ro'yxat uch marta chiziladi, lenta esa aynan uchdan biriga
+ * suriladi — sikl tugaganda ikkinchi nusxa birinchisining o'rniga tushadi
+ * va qaytish sezilmaydi. `translate3d` — GPU da yursin, matnni titratmasin.
+ */
+@keyframes marquee-slide {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-33.3333%, 0, 0);
+  }
+}
+
+.marquee-track {
+  animation: marquee-slide 34s linear infinite;
+  will-change: transform;
+}
+
+/* Ikkinchi qator teskari yuradi — `reverse` bilan bir xil kalit kadr */
+.marquee-track-reverse {
+  animation: marquee-slide 38s linear infinite reverse;
+  will-change: transform;
+}
+
+/* Sichqoncha ustida to'xtaydi — logotipni ko'rish yoki bosish uchun */
+.marquee-mask:hover .marquee-track,
+.marquee-mask:hover .marquee-track-reverse {
+  animation-play-state: paused;
+}
+
+/* Chetlarda so'nib ketadi: lenta kartochka ichidan chiqib kelayotgandek */
+.marquee-mask {
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent,
+    #000 12%,
+    #000 88%,
+    transparent
+  );
+  mask-image: linear-gradient(to right, transparent, #000 12%, #000 88%, transparent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track,
+  .marquee-track-reverse {
+    animation: none;
+  }
+}
+
+/*
+ * Lavozim qatori uchun bir qatorli terminal oyna. Sayt temasiga ergashadi:
+ * yorug'da och kulrang oyna qora matn bilan, qorong'ida esa aksincha.
+ * Ranglar shu yerda — Tailwind sinflari bilan yozilsa har elementga
+ * `dark:` variantini takrorlash kerak bo'lardi.
+ */
+.terminal-line {
+  border: 1px solid var(--line);
+  background: var(--surface-2);
+  color: color-mix(in oklab, var(--fg) 55%, transparent);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+
+.terminal-line .terminal-strong {
+  color: color-mix(in oklab, var(--fg) 90%, transparent);
+}
+
+.terminal-line .terminal-dim {
+  color: color-mix(in oklab, var(--fg) 28%, transparent);
+}
+
+[data-theme="dark"] .terminal-line {
+  border-color: rgba(255, 255, 255, 0.1);
+  background: #15171c;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
 }

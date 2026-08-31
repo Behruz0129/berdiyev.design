@@ -7,7 +7,7 @@ export const siteConfig = {
   url: "https://berdiyev.design",
   name: "Berdiyev Behruzbek",
   shortName: "berdiyev.design",
-  role: "UI/UX Designer & Full-stack Developer",
+  role: "UI/UX Designer & Front End Developer",
   locale: "en",
 
   email: "behruzberdiyev518@gmail.com",
@@ -16,23 +16,34 @@ export const siteConfig = {
   /** Ekranda ko'rinadigan ko'rinish. */
   phoneDisplay: "+998 99 518 29 01",
   timezone: "UTC+5",
+  /**
+   * Joylashuv kartochkasidagi xarita havolasi. Uzun Google Maps
+   * havolasidan faqat koordinatalar olindi — ular havolaning o'zida
+   * ochiq yozilgan (`!3d41.2974284!4d69.2861493`), shuning uchun aniq.
+   */
+  mapUrl: "https://www.google.com/maps/search/?api=1&query=41.2974284,69.2861493",
 
   socials: {
     telegram: "https://t.me/CBehruz",
-    linkedin: "https://www.linkedin.com/in/behruz-berdiyev-8a2800281/",
     github: "https://github.com/Behruz0129",
     instagram: "https://instagram.com/bekhruz.uiux",
+    /** ⚠ Havola hali yo'q. Bo'sh bo'lsa ikonka umuman chiqmaydi. */
+    dribbble: "",
   },
   /** PDF va OG rasmda ishlatiladigan brend rangi. */
   brandColor: "#7c3aed",
 } as const;
 
+/**
+ * Faqat ikonka bilan ko'rsatiladigan profillar. Telegram bu yerda yo'q — u
+ * `contactLinks` da to'liq yozilgan, ikkala ro'yxatda turgani takror bo'lardi.
+ * Havolasi bo'sh yozuv chiqarilmaydi.
+ */
 export const socialLinks = [
-  { label: "Telegram", href: siteConfig.socials.telegram },
-  { label: "LinkedIn", href: siteConfig.socials.linkedin },
-  { label: "GitHub", href: siteConfig.socials.github },
   { label: "Instagram", href: siteConfig.socials.instagram },
-] as const;
+  { label: "GitHub", href: siteConfig.socials.github },
+  { label: "Dribbble", href: siteConfig.socials.dribbble },
+].filter((s) => s.href.length > 0);
 
 /** Bevosita aloqa — HR va mijoz eng avval shularni qidiradi. */
 export const contactLinks = [

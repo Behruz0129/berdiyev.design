@@ -4,7 +4,8 @@ import { Container } from "@/components/Container";
 import { PageHeader } from "@/components/PageHeader";
 import { ContactForm } from "@/components/ContactForm";
 import { useLocale } from "@/contexts/LocaleContext";
-import { contactLinks, socialLinks } from "@/data/site";
+import { SocialIconLinks } from "@/components/SocialIcons";
+import { contactLinks } from "@/data/site";
 
 export function ContactContent() {
   const { t } = useLocale();
@@ -45,20 +46,7 @@ export function ContactContent() {
 
         <section className="card mt-4 p-6 sm:p-8">
           <h2 className="card-label">{t("contact.socials")}</h2>
-          <ul className="mt-5 flex flex-wrap gap-2">
-            {socialLinks.map((s) => (
-              <li key={s.label}>
-                <a
-                  href={s.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="pill hover:bg-surface-2 focus-visible:focus-ring"
-                >
-                  {s.label}
-                </a>
-              </li>
-            ))}
-          </ul>
+          <SocialIconLinks className="mt-5" />
         </section>
       </Container>
     </main>

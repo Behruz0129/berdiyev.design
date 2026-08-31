@@ -1,5 +1,6 @@
 export const en = {
   nav: {
+    status: "IT Support Manager | Modme | Full-time",
     home: "Home",
     about: "About",
     projects: "Projects",
@@ -10,19 +11,20 @@ export const en = {
     name: "Berdiyev Behruzbek",
     greeting: "Hi, I'm",
     shortName: "Behruz!",
-    roleLine: "I'm a UI/UX Designer and Frontend Developer.",
-    stickerLine1: "IT Support Manager",
-    stickerLine2: "Modme \u00b7 full-time",
+    rolePrefix: "I'm",
+    role1: "a UI/UX Designer",
+    role2: "a Front End Developer",
+    role3: "an IT Support Manager",
     heroNote:
-      "Look around the portfolio and get in touch — I answer within 24 hours, usually sooner.",
-    title: "UI/UX Designer & Full-stack Developer",
+      "Take a look around \u2014 if something here fits what you need, write to me. I answer every message myself.",
+    title: "UI/UX Designer & Front End Developer",
     description:
       "From an idea to a running product: design, frontend, backend and deployment. I build landing pages, web apps and interactive systems for education and service businesses.",
     viewProjects: "See my work",
     contactMe: "Get in touch",
     techStack: "Tools I work with",
     selectedWork: "Selected work",
-    viewAll: "All projects",
+    viewAll: "See all",
     statApps: "interactive screens and apps built for the Islamic Civilization Center",
     statCenters: "educational centers I support at Modme LLC",
     statYears: "years of hands-on design and development work",
@@ -79,7 +81,7 @@ export const en = {
     resumeGenerating: "Preparing PDF...",
     resumeError: "Could not generate the PDF. Please try again.",
     bio1:
-      "I'm a UI/UX designer and full-stack developer based in Tashkent, Uzbekistan. I take a product the whole way: design in Figma, frontend, backend and deployment. Mostly landing pages, web apps and interactive systems for exhibition screens — for education and service businesses.",
+      "I'm a UI/UX designer and front end developer based in Tashkent, Uzbekistan. I take a product the whole way: design in Figma, frontend, backend and deployment. Mostly landing pages, web apps and interactive systems for exhibition screens — for education and service businesses.",
     bio2:
       "Working alone across design, frontend and backend means there is no handover where things get lost, and one person is answerable for the result. Supporting 400+ educational centers at Modme LLC showed me first-hand where users actually get stuck — that is the part I bring into every design.",
     modmeSummary:
@@ -295,6 +297,7 @@ export const en = {
     },
   },
   contact: {
+    pitch: "Have a project in mind? Write to me — we'll figure out the scope, the timeline and the price together. Don't be shy.",
     title: "Contact",
     subtitle:
       "Write by email or on Telegram. To get a useful answer straight away, tell me what kind of project it is, roughly when you need it, and your budget range.",
@@ -303,7 +306,7 @@ export const en = {
     location: "Tashkent, Uzbekistan (UTC+5)",
     availabilityLabel: "Availability",
     availability:
-      "Full-time at Modme LLC. Open to freelance projects — evenings and weekends, remote.",
+      "Employed full-time. Open to freelance projects — evenings and weekends, remote.",
     responseLabel: "Response time",
     response: "Usually within 24 hours.",
     formTitle: "Or send a message here",
@@ -323,6 +326,16 @@ export const en = {
     errorMissingFields: "Please fill in your email and message.",
     errorTooLong: "The message is too long. Please shorten it.",
   },
+  personal: {
+    musicLabel: "My music playlist",
+    musicFallback: "Playlist",
+    musicPlayYandex: "Open in Yandex Music",
+    musicPlaySpotify: "Open in Spotify",
+    musicTracks: "tracks",
+    setupLabel: "My setup",
+    setupPrev: "Previous item",
+    setupNext: "Next item",
+  },
   theme: {
     light: "Light",
     dark: "Dark",
@@ -330,10 +343,8 @@ export const en = {
   },
   footer: {
     name: "Berdiyev Behruzbek",
-    role: "UI/UX Designer & Full-stack Developer",
-    about: "About",
-    projects: "Projects",
-    contact: "Contact",
+    role: "UI/UX Designer & Front End Developer",
+    rights: "All rights reserved",
   },
   notFound: {
     title: "Page not found",
