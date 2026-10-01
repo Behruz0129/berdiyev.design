@@ -16,6 +16,7 @@ import { siteConfig } from "@/data/site";
 const links = [
   { href: "/about", labelKey: "nav.about" as const },
   { href: "/projects", labelKey: "nav.projects" as const },
+  { href: "/resources", labelKey: "nav.resources" as const },
   { href: "/contact", labelKey: "nav.contact" as const },
 ] as const;
 

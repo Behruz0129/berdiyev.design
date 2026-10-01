@@ -337,6 +337,38 @@ body {
 }
 
 /** Yashil "jonli" nuqta — atrofida sekin pulsatsiya. */
+/**
+ * `scroll-fade` ning yon tomonga suriladigan varianti — chiplar qatori
+ * uchun. Vertikal variantni bu yerda ishlatib bo'lmaydi: u `overflow-y`
+ * ni ochadi va niqobni yuqori-pastga qo'yadi, ya'ni chiplarning tepasi
+ * bilan pasti so'nib qolardi.
+ */
+@utility scroll-fade-x {
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0,
+    #000 16px,
+    #000 calc(100% - 16px),
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent 0,
+    #000 16px,
+    #000 calc(100% - 16px),
+    transparent 100%
+  );
+}
+
+@utility scroll-fade-x-off {
+  overflow-x: visible;
+  -webkit-mask-image: none;
+  mask-image: none;
+}
+
 @utility live-dot {
   position: relative;
   display: inline-block;
