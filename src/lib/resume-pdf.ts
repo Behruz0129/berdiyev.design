@@ -58,14 +58,29 @@ const COLORS = {
   white: [255, 255, 255],
 } as const;
 
-const MARGIN = 46;
-const SECTION_GAP = 20;
+/*
+  Chekka 46 emas, 40. Ruscha matn o'zbekcha va inglizchadan uzunroq va
+  46 pt da bir varaqqa sig'masdi. Kengroq ustun qatorlar sonini ham
+  kamaytiradi, ya'ni yutuq ikki tomonlama.
+*/
+const MARGIN = 40;
+
+/*
+  Oraliqlar bir varaqqa sig'ish uchun qisilgan. CV qisqartirilgandan keyin
+  mazmun bir betga deyarli sig'ardi — faqat «Ko'nikmalar» ikkinchi betga
+  o'tib ketardi, ya'ni ikkinchi bet bitta kartochka uchun ochilardi.
+  Bo'sh ikkinchi betdan ko'ra zich bitta bet yaxshiroq.
+*/
+const SECTION_GAP = 13;
 
 /** Kartochka ichidagi o'lchamlar. */
-const CARD = { padX: 14, padY: 13, radius: 9 } as const;
+const CARD = { padX: 14, padY: 10, radius: 9 } as const;
+
+/** Kartochkalar orasidagi oraliq. */
+const CARD_GAP = 5;
 
 /** Qator balandliklari — matn o'lchamiga bog'liq, shuning uchun bir joyda. */
-const LINE = { title: 14, body: 13.5, bullet: 13 } as const;
+const LINE = { title: 13.5, body: 13, bullet: 12.4 } as const;
 
 /** CV'ni PDF qilib yaratadi va brauzerda yuklab olishni boshlaydi. */
 export async function downloadResumePdf(t: Translate, locale: Locale) {
@@ -109,7 +124,14 @@ export async function downloadResumePdf(t: Translate, locale: Locale) {
    * kenglikka ingichka chiziq.
    */
   const sectionLabel = (label: string) => {
-    ensureSpace(56);
+    /*
+      Yorliq yolg'iz qolmasligi kerak. Agar varaq oxirida faqat yorliqqa
+      joy qolsa, u bir betda, kartochkasi esa keyingisida chiqib ketardi —
+      o'quvchi «Ko'nikmalar» deb o'qiydi va ostida hech narsa topmaydi.
+      Shuning uchun yorliqning o'zidan tashqari kamida bitta kichik
+      kartochkaga ham joy talab qilinadi.
+    */
+    ensureSpace(56 + 70);
     y += SECTION_GAP;
     font(8.5, true, COLORS.accent);
     doc.setCharSpace(1.2);
@@ -119,7 +141,7 @@ export async function downloadResumePdf(t: Translate, locale: Locale) {
     stroke(COLORS.line);
     doc.setLineWidth(0.7);
     doc.line(MARGIN, y, pageWidth - MARGIN, y);
-    y += 16;
+    y += 13;
   };
 
   /**
@@ -199,7 +221,70 @@ export async function downloadResumePdf(t: Translate, locale: Locale) {
       y += b.length * LINE.bullet + 4;
     }
 
-    y = (boxed ? top + height : y) + 8;
+    y = (boxed ? top + height : y) + CARD_GAP;
+  };
+
+  /**
+   * Ko'nikmalar — ikki ustunda.
+   *
+   * Bu bo'lim beshta uzun qatordan iborat va bitta ustunda chizilganda
+   * varaqqa sig'may, butun boshli ikkinchi bet ochilardi — faqat shu
+   * kartochka uchun. Ikki ustun balandlikni deyarli ikki barobar
+   * qisqartiradi va ro'yxatni ko'z bilan solishtirish ham osonlashadi.
+   *
+   * Ustunlar balandligi tenglashtiriladi: qatorlar emas, QATOR SONI
+   * bo'yicha bo'linadi — ba'zi band ikki qatorga chiqadi, shuning uchun
+   * oddiy yarmidan bo'lish ustunlarni nomutanosib qoldirardi.
+   */
+  const skillsCard = (items: string[]) => {
+    const list = items.filter(Boolean);
+    const colGap = 16;
+    const colWidth = (innerWidth - colGap) / 2;
+    const textWidth = colWidth - 13;
+
+    font(9.5);
+    const wrapped = list.map((b) => wrap(b, textWidth));
+    const heightOf = (col: string[][]) =>
+      col.reduce((sum, lines) => sum + lines.length * LINE.bullet + 4, 0) - 4;
+
+    /*
+      Bo'linish nuqtasi barcha variantni sinab tanlanadi: eng baland ustun
+      eng past bo'ladigani yutadi. Oddiy «yarmigacha to'ldir» usuli bu yerda
+      ishlamaydi — bandlar turli uzunlikda va natija nomutanosib chiqib,
+      kartochka keraksiz balandlashadi.
+    */
+    let split = 1;
+    let best = Infinity;
+    for (let i = 1; i < wrapped.length; i++) {
+      const tallest = Math.max(heightOf(wrapped.slice(0, i)), heightOf(wrapped.slice(i)));
+      if (tallest < best) {
+        best = tallest;
+        split = i;
+      }
+    }
+
+    const cols = [wrapped.slice(0, split), wrapped.slice(split)];
+    const bodyHeight = Math.max(heightOf(cols[0]), heightOf(cols[1]));
+    const height = CARD.padY * 2 + bodyHeight;
+
+    ensureSpace(height + CARD_GAP);
+    const top = y;
+    fill(COLORS.card);
+    doc.roundedRect(MARGIN, top, contentWidth, height, CARD.radius, CARD.radius, "F");
+
+    cols.forEach((col, i) => {
+      const x = MARGIN + CARD.padX + i * (colWidth + colGap);
+      let cy = top + CARD.padY + 9;
+      for (const lines of col) {
+        font(9.5, false, COLORS.ink);
+        fill(COLORS.accent);
+        doc.rect(x, cy - 5.4, 3, 3, "F");
+        doc.text(lines, x + 13, cy);
+        cy += lines.length * LINE.bullet + 4;
+      }
+    });
+
+    y = top + height + CARD_GAP;
   };
 
   // ── Sarlavha ─────────────────────────────────────────────────────────────
@@ -220,7 +305,7 @@ export async function downloadResumePdf(t: Translate, locale: Locale) {
   doc.text(siteConfig.name, headLeft, y + 12);
   font(10, false, COLORS.muted);
   doc.text(siteConfig.role, headLeft, y + 27);
-  y += mark + 20;
+  y += mark + 17;
 
   const dot = "     ·     ";
   font(8.8, false, COLORS.ink);
@@ -240,7 +325,7 @@ export async function downloadResumePdf(t: Translate, locale: Locale) {
     MARGIN,
     y,
   );
-  y += 16;
+  y += 14;
 
   // Qisqa apelsin bo'lak, davomi ingichka kulrang — saytdagi urg'u ohangi
   stroke(COLORS.accent);
@@ -249,26 +334,47 @@ export async function downloadResumePdf(t: Translate, locale: Locale) {
   stroke(COLORS.line);
   doc.setLineWidth(0.7);
   doc.line(MARGIN + 54, y, pageWidth - MARGIN, y);
-  y += 18;
+  y += 15;
 
-  // ── Men haqimda ──────────────────────────────────────────────────────────
-  card({ paragraphs: [t("about.bio1"), t("about.bio2")] });
+  /*
+    CV «Men haqimda» sahifasining nusxasi EMAS.
+
+    Sahifada o'quvchi qiziqib kelgan va batafsil o'qiydi; CV ni esa ishga
+    oluvchi bir necha soniyada ko'zdan kechiradi. Shuning uchun bu yerda
+    faqat UI/UX ga aloqador narsa qoladi: bitta qisqa profil, dizaynga oid
+    bandlar va natija. Qolgani (to'liq backend ro'yxati, qiziqishlar, ish
+    jarayonidagi mayda vazifalar) saytda qoladi — o'chirilmaydi, shunchaki
+    CV ga chiqmaydi.
+
+    Tanlangan bandlar raqam bilan ko'rsatilgan: matnni o'zgartirmasdan
+    qaysi biri CV ga tushishini shu yerdan boshqarish mumkin.
+  */
+
+  // ── Profil ───────────────────────────────────────────────────────────────
+  card({ paragraphs: [t("about.resumeProfile")] });
 
   // ── Tajriba ──────────────────────────────────────────────────────────────
   sectionLabel(t("about.experience"));
+
+  /*
+    Islom sivilizatsiyasi markazi BIRINCHI o'ringa chiqdi. Xronologik
+    jihatdan Modme yangiroq, lekin bu UI/UX CV si: eng tepada aynan
+    dizayn roli turishi kerak, qo'llab-quvvatlash roli emas.
+  */
+  card({
+    title: t("about.iccTitle"),
+    meta: `${t("about.iccPeriod")} · ${t("about.iccDuration")}`,
+    paragraphs: [t("about.iccSummary")],
+    // 2 Figmada dizayn · 5 ekranlarga moslash · 3 dasturchiga topshirish · 8 natija
+    bullets: [2, 5, 3, 8].map((i) => t(`about.iccBullet${i}`)),
+  });
 
   card({
     title: t("about.modmeTitle"),
     meta: t("about.modmePeriod"),
     paragraphs: [t("about.modmeSummary")],
-    bullets: [1, 2, 3, 4, 5].map((i) => t(`about.modmeBullet${i}`)),
-  });
-
-  card({
-    title: t("about.iccTitle"),
-    meta: t("about.iccPeriod"),
-    paragraphs: [t("about.iccDesc"), t("about.iccApps")],
-    bullets: [1, 2, 3, 4, 5, 6, 7, 8].map((i) => t(`about.iccBullet${i}`)),
+    // 5 landing dizayni va frontendi · 4 CRM va ta'lim jarayonlarini bilish
+    bullets: [5, 4].map((i) => t(`about.modmeBullet${i}`)),
   });
 
   // ── Ta'lim ───────────────────────────────────────────────────────────────
@@ -281,19 +387,23 @@ export async function downloadResumePdf(t: Translate, locale: Locale) {
 
   // ── Ko'nikmalar ──────────────────────────────────────────────────────────
   sectionLabel(t("about.skillsTitle"));
-  card({
-    bullets: [
-      t("about.skillsDesign"),
-      t("about.skillsCode"),
-      t("about.skillsBackend"),
-      t("about.skillsOther"),
-      t("about.skillsLanguages"),
-    ],
-  });
+  skillsCard([
+    t("about.skillsDesign"),
+    t("about.skillsCode"),
+      /*
+        Backend qisqa variantda. To'liq ro'yxat (NestJS, Prisma, Redis,
+        Docker, Caddy, Hetzner...) UI/UX CV sida diqqatni dizayndan
+        chalg'itadi — u «Men haqimda» sahifasida to'liq turibdi.
+      */
+    t("about.skillsBackendShort"),
+    t("about.skillsOtherShort"),
+    t("about.skillsLanguages"),
+  ]);
 
-  // ── Qiziqishlar ──────────────────────────────────────────────────────────
-  sectionLabel(t("about.interestsTitle"));
-  card({ bullets: [1, 2, 3].map((i) => t(`about.interest${i}`)) });
+  /*
+    «Qiziqishlar» CV dan olib tashlandi — bir varaqqa sig'dirish uchun
+    birinchi qisqartiriladigan bo'lim shu. Saytda qolaveradi.
+  */
 
   // ── Kolontitul ───────────────────────────────────────────────────────────
   const pageCount = doc.getNumberOfPages();

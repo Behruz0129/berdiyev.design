@@ -123,8 +123,17 @@ export const uz: Messages = {
       "Dizayn — Figma, dizayn tizimlari va UI kit, prototiplash, mobil va desktop maketlar, dasturchiga topshirish.",
     skillsCode:
       "Frontend — HTML, CSS/SCSS, TailwindCSS, JavaScript, TypeScript, React, Next.js, Framer Motion.",
+    /** Faqat CV uchun: bio o'rniga turadigan qisqa, dizaynga qaratilgan profil. */
+    resumeProfile:
+      "UI/UX dizayner va Front End dasturchi. Mahsulotni Figmadagi birinchi eskizdan ishlab turgan saytgacha olib chiqaman. Oxirgi yirik ish — Islom sivilizatsiyasi markazi uchun 600 dan ortiq interaktiv ekran; undan oldin 400 dan ortiq ta'lim markazi bilan ishlaganim foydalanuvchi qayerda qiynalishini yaqindan ko'rsatdi.",
+    /** CV dagi qisqa variant — to'liq ro'yxat «Men haqimda» sahifasida qoladi. */
+    skillsBackendShort:
+      "Backend asoslari — REST API, autentifikatsiya va rollar, deploy (Vercel, o'z serveri).",
     skillsBackend:
       "Backend — Node.js, NestJS, Prisma, PostgreSQL, Redis, REST API, autentifikatsiya va rollar tizimi, Docker, o'z serveriga chiqarish (Caddy, Hetzner) va Vercel.",
+    /** CV varianti — fayl kengaytmalarisiz, bir qator qisqaroq. */
+    skillsOtherShort:
+      "Integratsiyalar — Bitrix24 CRM, Telegram Bot API, analitika; Android, Windows va BrightSign uchun buildlar.",
     skillsOther:
       "Integratsiyalar — Bitrix24 CRM, Telegram Bot API, analitika va trafik hisoboti, Android (.apk), Windows (.exe) va BrightSign uchun buildlar.",
     skillsLanguages:

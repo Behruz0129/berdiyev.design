@@ -123,8 +123,17 @@ export const ru: Messages = {
       "Дизайн — Figma, дизайн-системы и UI kit, прототипирование, мобильные и десктопные макеты, передача в разработку.",
     skillsCode:
       "Фронтенд — HTML, CSS/SCSS, TailwindCSS, JavaScript, TypeScript, React, Next.js, Framer Motion.",
+    /** Только для CV. */
+    resumeProfile:
+      "UI/UX-дизайнер и фронтенд-разработчик. Веду продукт от эскиза в Figma до работающего сайта. Последняя крупная работа — 600+ интерактивных экранов для Центра исламской цивилизации; до этого — поддержка 400+ учебных центров.",
+    /** Короткий вариант для CV. */
+    skillsBackendShort:
+      "Основы бэкенда — REST API, аутентификация и роли, деплой (Vercel, свой сервер).",
     skillsBackend:
       "Бэкенд — Node.js, NestJS, Prisma, PostgreSQL, Redis, REST API, аутентификация и система ролей, Docker, деплой на собственный сервер (Caddy, Hetzner) и на Vercel.",
+    /** Вариант для CV. */
+    skillsOtherShort:
+      "Интеграции — Bitrix24 CRM, Telegram Bot API, аналитика; сборки для Android, Windows и BrightSign.",
     skillsOther:
       "Интеграции — Bitrix24 CRM, Telegram Bot API, аналитика и отчёты по трафику, сборки под Android (.apk), Windows (.exe) и BrightSign.",
     skillsLanguages:

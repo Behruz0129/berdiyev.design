@@ -121,8 +121,17 @@ export const en = {
       "Design — Figma, design systems and UI kits, prototyping, mobile and desktop layouts, developer handoff.",
     skillsCode:
       "Frontend — HTML, CSS/SCSS, TailwindCSS, JavaScript, TypeScript, React, Next.js, Framer Motion.",
+    /** CV only: a short, design-first profile that replaces the bio. */
+    resumeProfile:
+      "UI/UX designer and front end developer. I take a product from the first sketch in Figma to a site running on a server. Most recent major piece — 600+ interactive screens for the Islamic Civilization Center; before that, working with 400+ educational centres showed me first-hand where users actually get stuck.",
+    /** Short form for the CV — the full list stays on the About page. */
+    skillsBackendShort:
+      "Backend basics — REST API, auth and roles, deployment (Vercel, self-hosted).",
     skillsBackend:
       "Backend — Node.js, NestJS, Prisma, PostgreSQL, Redis, REST API, authentication and role systems, Docker, deployment to a private server (Caddy, Hetzner) and to Vercel.",
+    /** CV variant — no file extensions, one line shorter. */
+    skillsOtherShort:
+      "Integrations — Bitrix24 CRM, Telegram Bot API, analytics; Android, Windows and BrightSign builds.",
     skillsOther:
       "Integrations — Bitrix24 CRM, Telegram Bot API, analytics and traffic reporting, builds for Android (.apk), Windows (.exe) and BrightSign.",
     skillsLanguages:
