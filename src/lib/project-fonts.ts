@@ -1,4 +1,4 @@
-import { Cormorant_Garamond, Outfit, Inter } from "next/font/google";
+import { Cormorant_Garamond, Outfit, Inter, Onest } from "next/font/google";
 
 /**
  * Loyihalarda ISHLATILGAN shriftlar \u2014 portfolioning o'z shriftlari emas.
@@ -36,10 +36,19 @@ const inter = Inter({
   preload: false,
 });
 
+/** RAMZ FILM \u2014 matn. Sarlavhalarda o'sha Cormorant Garamond ishlatilgan. */
+const onest = Onest({
+  subsets: ["latin"],
+  weight: ["400", "500"],
+  display: "swap",
+  preload: false,
+});
+
 export const projectFonts = {
   cormorant: cormorant.className,
   outfit: outfit.className,
   inter: inter.className,
+  onest: onest.className,
 } as const;
 
 export type ProjectFontKey = keyof typeof projectFonts;

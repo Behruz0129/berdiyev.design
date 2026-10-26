@@ -292,6 +292,56 @@ export const en = {
       screenshot3Title: "Demo request",
       screenshot3Desc: "The form; submissions are delivered to Telegram.",
     },
+    "ramz-film": {
+      title: "RAMZ FILM studio",
+      role: "UI/UX Design + Frontend",
+      shortDescription:
+        "The first website for a Tashkent film studio founded in 2006 — a catalogue of 27 films in three languages, built from an archive of raw material.",
+      context:
+        "The studio had no site at all: twenty years of films lived in an archive folder and in people's memory. It came to me through acquaintances rather than as a paid commission, so I did everything myself — design, frontend, content structure and the media pipeline.",
+      overviewRole: "UI/UX Design + Frontend Development",
+      overviewDuration: "1 week",
+      overviewTool0: "Figma",
+      overviewTool1: "Next.js 16",
+      overviewTool2: "TypeScript",
+      overviewTool3: "TailwindCSS",
+      overviewTool4: "next-intl",
+      overviewTool5: "sharp",
+      overviewTool6: "ffmpeg",
+      overviewTool7: "Cloudflare R2",
+      overviewTool8: "Vercel",
+      problem0:
+        "A studio with twenty years of work and no website — films, awards and people existed only as folders of raw files.",
+      problem1:
+        "The audience reads in three languages, and a film studio cannot look like a generic business site: it is judged on how the work is presented.",
+      problem2:
+        "The archive was heavy — raw posters, stills and trailers that a website could not serve as they were.",
+      solution0:
+        "Designed an editorial, cinema-first layout: the film is the poster and the frame, the interface stays out of the way — serif headings, no rounded corners, lapis and gold on paper.",
+      solution1:
+        "Built the site in Next.js 16 with next-intl, where every route is translated too (/uz/filmlar, /ru/filmy, /en/films) rather than a language prefix on English paths.",
+      solution2:
+        "Wrote a media pipeline (sharp + ffmpeg) that turns archive files into web-ready sizes, and moved the video off the repository onto Cloudflare R2 — only changed files are re-uploaded.",
+      solution3:
+        "Shaped the content as plain typed files with a { uz, ru, en } field on every text, ready to migrate into a CMS without rewriting the pages.",
+      results0: "The studio has its first website, live at ramzfilm.com in three languages.",
+      results1:
+        "27 films, 17 people and 16 awards are now structured data instead of an archive folder.",
+      results2:
+        "180 images and 30 videos were prepared from the raw archive; the video is served from R2, so the repository stays light.",
+      siteFeature0: "Film catalogue with a page per film — poster, stills, trailer, crew",
+      siteFeature1: "Studio history by era, services and partners",
+      siteFeature2: "Team and screenwriters",
+      siteFeature3: "Awards",
+      siteFeature4: "News",
+      siteFeature5: "Three languages with translated routes",
+      screenshot0Title: "Films",
+      screenshot0Desc: "The catalogue — a grid of posters, split by type and year.",
+      screenshot1Title: "Film page",
+      screenshot1Desc: "A frame, the synopsis, the crew and behind-the-scenes material.",
+      screenshot2Title: "Studio",
+      screenshot2Desc: "The studio's history and its founder.",
+    },
     "islamic-civilization-center-interactives": {
       title: "Islamic Civilization Center Interactives",
       role: "UI/UX Designer & Project Manager",

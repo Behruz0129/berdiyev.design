@@ -294,6 +294,56 @@ export const uz: Messages = {
       screenshot3Title: "Demo so'rovi",
       screenshot3Desc: "Forma; to'ldirilgach Telegramga yuboriladi.",
     },
+    "ramz-film": {
+      title: "RAMZ FILM kinostudiyasi",
+      role: "UI/UX Dizayn + Frontend",
+      shortDescription:
+        "2006-yilda tashkil topgan Toshkent kinostudiyasining birinchi sayti — uch tilda, 27 ta filmdan iborat katalog, arxivdagi xom materialdan yig'ilgan.",
+      context:
+        "Studiyaning sayti umuman yo'q edi: yigirma yillik ish arxiv papkasida va odamlarning xotirasida turardi. Loyiha tanishlar orqali keldi, buyurtma sifatida emas — shuning uchun hammasini o'zim qildim: dizayn, frontend, kontent tuzilishi va media quvuri.",
+      overviewRole: "UI/UX Dizayn + Frontend ishlab chiqish",
+      overviewDuration: "1 hafta",
+      overviewTool0: "Figma",
+      overviewTool1: "Next.js 16",
+      overviewTool2: "TypeScript",
+      overviewTool3: "TailwindCSS",
+      overviewTool4: "next-intl",
+      overviewTool5: "sharp",
+      overviewTool6: "ffmpeg",
+      overviewTool7: "Cloudflare R2",
+      overviewTool8: "Vercel",
+      problem0:
+        "Yigirma yillik ishi bor studiyaning sayti yo'q edi — filmlar, mukofotlar va odamlar faqat xom fayllar papkasi bo'lib turardi.",
+      problem1:
+        "Auditoriya uch tilda o'qiydi, kinostudiya esa oddiy biznes sayti kabi ko'rinmasligi kerak: uni ishini qanday ko'rsatishiga qarab baholashadi.",
+      problem2:
+        "Arxiv og'ir edi — xom plakatlar, kadrlar va treylerlarni sayt o'z holicha ko'tara olmasdi.",
+      solution0:
+        "Kinoni birinchi o'ringa qo'yadigan jurnal uslubidagi maket: ekranda film plakati va kadri turadi, interfeys chetga chiqadi — serif sarlavhalar, yumaloq burchaksiz, qog'oz ustida lojuvard va oltin.",
+      solution1:
+        "Sayt Next.js 16 va next-intl da; marshrutlarning o'zi ham tarjima qilingan (/uz/filmlar, /ru/filmy, /en/films) — inglizcha manzilga til prefiksi qo'yish emas.",
+      solution2:
+        "Media quvuri yozdim (sharp + ffmpeg): arxiv fayllarini saytga yaroqli o'lchamlarga aylantiradi. Videolar repozitoriydan chiqarilib Cloudflare R2 ga olindi — faqat o'zgargani qayta yuklanadi.",
+      solution3:
+        "Kontent oddiy tiplangan fayllarda, har matnda { uz, ru, en } maydoni bor — sahifalarni qayta yozmasdan CMS ga ko'chirishga tayyor.",
+      results0: "Studiyaning birinchi sayti bor — ramzfilm.com, uch tilda ishlab turibdi.",
+      results1:
+        "27 ta film, 17 ta odam va 16 ta mukofot endi arxiv papkasi emas, tuzilgan ma'lumot.",
+      results2:
+        "Xom arxivdan 180 ta rasm va 30 ta video tayyorlandi; video R2 dan beriladi, shuning uchun repozitoriy yengil qoladi.",
+      siteFeature0: "Filmlar katalogi, har filmga alohida sahifa — plakat, kadrlar, treyler, jamoa",
+      siteFeature1: "Studiya tarixi davrlar bo'yicha, xizmatlar va hamkorlar",
+      siteFeature2: "Jamoa va ssenariy mualliflari",
+      siteFeature3: "Mukofotlar",
+      siteFeature4: "Yangiliklar",
+      siteFeature5: "Uch til — marshrutlar ham tarjima qilingan",
+      screenshot0Title: "Filmlar",
+      screenshot0Desc: "Katalog — posterlar to'ri, tur va yil bo'yicha ajratilgan.",
+      screenshot1Title: "Film sahifasi",
+      screenshot1Desc: "Kadr, tavsif, ijodiy guruh va kadr ortidagi material.",
+      screenshot2Title: "Studiya",
+      screenshot2Desc: "Studiya tarixi va asoschisi haqida.",
+    },
     "islamic-civilization-center-interactives": {
       title: "Islom sivilizatsiyasi markazi interaktivlari",
       role: "UI/UX Dizayner va Loyiha menejeri",
